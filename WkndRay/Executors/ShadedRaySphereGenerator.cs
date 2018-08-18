@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ShadedRaySphereGenerator.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay.Executors
 {
@@ -37,6 +41,7 @@ namespace WkndRay.Executors
         var n = (ray.GetPointAtParameter(t) - new PosVector(0.0, 0.0, -1.0)).ToUnitVector();
         return (0.5 * new PosVector(n.X + 1.0, n.Y + 1.0, n.Z + 1.0)).ToColorVector();
       }
+
       PosVector unitDirection = ray.Direction.ToUnitVector();
       t = 0.5 * (unitDirection.Y + 1.0);
       return ((1.0 - t) * PosVector.One + t * new PosVector(0.5, 0.7, 1.0)).ToColorVector();

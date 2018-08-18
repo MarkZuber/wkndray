@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="DialectricMaterial.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay.Materials
 {
   public class DialectricMaterial : IMaterial
   {
-    private readonly IRandomService _randomService;
-    public DialectricMaterial(IRandomService randomService, double refractionIndex)
+    public DialectricMaterial(double refractionIndex)
     {
-      _randomService = randomService;
       RefractionIndex = refractionIndex;
     }
 
@@ -49,7 +51,7 @@ namespace WkndRay.Materials
         reflectProbability = 1.0;
       }
 
-      if (_randomService.NextDouble() < reflectProbability)
+      if (RandomService.NextDouble() < reflectProbability)
       {
         scattered = new Ray(hitRecord.P, reflected);
       }

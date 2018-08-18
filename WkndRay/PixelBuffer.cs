@@ -1,7 +1,10 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="PixelBuffer.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -22,31 +25,18 @@ namespace WkndRay
     public int Height => _image.Height;
 
     /// <summary>
-    /// Our Y axis is UP (right handed coordinate system)
-    /// X is right, and positive Z is out of the screen towards
-    /// the viewer.  So our calculated Y pixels are
-    /// the opposite direction of the Y in the image buffer.
-    /// If IsYUp is true then we'll invert Y when setting it into
-    /// the image.
+    ///   Our Y axis is UP (right handed coordinate system)
+    ///   X is right, and positive Z is out of the screen towards
+    ///   the viewer.  So our calculated Y pixels are
+    ///   the opposite direction of the Y in the image buffer.
+    ///   If IsYUp is true then we'll invert Y when setting it into
+    ///   the image.
     /// </summary>
     public bool IsYUp { get; }
 
     public void SetPixelColor(int x, int y, ColorVector color)
     {
       SetPixelColor(x, y, color.ToRgba32());
-    }
-
-    private int CalculateActualY(int y)
-    {
-      return IsYUp ? (Height - 1 - y) : y;
-    }
-
-    private void SetPixelColor(int x, int y, Rgba32 rgba)
-    {
-      lock (_lock)
-      {
-        _image[x, CalculateActualY(y)] = rgba;
-      }
     }
 
     public void SetPixelColor(int x, int y, byte r, byte g, byte b)
@@ -74,6 +64,19 @@ namespace WkndRay
           _image[x, actualY] = color.ToRgba32();
           x++;
         }
+      }
+    }
+
+    private int CalculateActualY(int y)
+    {
+      return IsYUp ? (Height - 1 - y) : y;
+    }
+
+    private void SetPixelColor(int x, int y, Rgba32 rgba)
+    {
+      lock (_lock)
+      {
+        _image[x, CalculateActualY(y)] = rgba;
       }
     }
   }

@@ -17,8 +17,8 @@ namespace RayCon
   public static class Program
   {
     private const string OutputDirectory = @"c:\repos\wkndray\images";
-    private const int Width = 800;
-    private const int Height = 600;
+    private const int Width = 200;
+    private const int Height = 100;
 
     public static void Main(string[] args)
     {
@@ -26,9 +26,8 @@ namespace RayCon
       const int RayTraceDepth = 50;
       const int NumSamples = 100;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
-      var randomService = new RandomService();
 
-      var scene = new ManySpheresScene(randomService);
+      var scene = new ManySpheresScene();
       var renderer = new Renderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
 
@@ -40,7 +39,6 @@ namespace RayCon
 
       var sw = Stopwatch.StartNew();
       renderer.Render(
-        randomService,
         pixelBuffer,
         scene.GetCamera(pixelBuffer.Width, pixelBuffer.Height),
         scene.GetWorld(),
@@ -48,7 +46,7 @@ namespace RayCon
       sw.Stop();
       Console.WriteLine();
       Console.WriteLine($"Render complete: {sw.ElapsedMilliseconds}ms");
-  
+
       string outputPath = Path.Combine(OutputDirectory, $"{name}.png");
       Console.WriteLine($"Saving image to {outputPath}");
       pixelBuffer.SaveAsFile(outputPath);
@@ -56,16 +54,16 @@ namespace RayCon
       // RunExecutors();
     }
 
-    public static void RunExecutors(IRandomService randomService)
+    public static void RunExecutors()
     {
       const int NumSamples = 100;
       var executors = new List<IExecutor>
       {
-        new ManySpheresGenerator(randomService, NumSamples),
-        //new BetterCameraGenerator(randomService, NumSamples),
-        //new MaterialGenerator(randomService, NumSamples),
-        //new DiffuseGenerator(randomService, NumSamples),
-        // new FirstCameraTracer(randomService, NumSamples),
+        new ManySpheresGenerator(NumSamples),
+        //new BetterCameraGenerator(NumSamples),
+        //new MaterialGenerator(NumSamples),
+        //new DiffuseGenerator(NumSamples),
+        // new FirstCameraTracer(NumSamples),
         //new FirstHitableTracer(),
         //new ShadedRaySphereGenerator(),
         //new SimpleRaySphereGenerator(),

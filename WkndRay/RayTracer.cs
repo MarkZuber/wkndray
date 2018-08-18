@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="RayTracer.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay
 {
   public class RayTracer : IRayTracer
   {
-    private readonly IRandomService _randomService;
     private readonly Camera _camera;
-    private readonly IHitable _world;
-    private readonly RenderConfig _renderConfig;
-    private readonly double _imageWidth;
     private readonly double _imageHeight;
+    private readonly double _imageWidth;
+    private readonly RenderConfig _renderConfig;
+    private readonly IHitable _world;
 
-    public RayTracer(IRandomService randomService, Camera camera, IHitable world, RenderConfig renderConfig, int imageWidth, int imageHeight)
+    public RayTracer(Camera camera, IHitable world, RenderConfig renderConfig, int imageWidth, int imageHeight)
     {
-      _randomService = randomService;
       _camera = camera;
       _world = world;
       _renderConfig = renderConfig;
@@ -33,8 +35,8 @@ namespace WkndRay
       {
         for (int sample = 0; sample < _renderConfig.NumSamples; sample++)
         {
-          double u = (xDouble + _randomService.NextDouble()) / _imageWidth;
-          double v = (yDouble + _randomService.NextDouble()) / _imageHeight;
+          double u = (xDouble + RandomService.NextDouble()) / _imageWidth;
+          double v = (yDouble + RandomService.NextDouble()) / _imageHeight;
           var r = _camera.GetRay(u, v);
 
           color += GetRayColor(r, _world, 0);
@@ -65,6 +67,7 @@ namespace WkndRay
             return scatterResult.Attenuation * GetRayColor(scatterResult.ScatteredRay, world, depth + 1);
           }
         }
+
         return ColorVector.Zero;
       }
       else

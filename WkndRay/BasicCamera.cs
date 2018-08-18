@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="BasicCamera.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace WkndRay
 {
@@ -22,7 +23,7 @@ namespace WkndRay
 
     public Ray GetRay(double u, double v)
     {
-      return new Ray(Origin, LowerLeftCorner + u*Horizontal + v * Vertical - Origin);
+      return new Ray(Origin, LowerLeftCorner + u * Horizontal + v * Vertical - Origin);
     }
   }
 }

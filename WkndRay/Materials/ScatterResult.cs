@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ScatterResult.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace WkndRay.Materials
 {
@@ -12,7 +14,7 @@ namespace WkndRay.Materials
       Attenuation = attenuation;
       ScatteredRay = scatteredRay;
     }
-      
+
     public bool IsScattered { get; }
     public ColorVector Attenuation { get; }
     public Ray ScatteredRay { get; }

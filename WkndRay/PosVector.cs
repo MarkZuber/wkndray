@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="PosVector.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay
 {
@@ -20,7 +24,7 @@ namespace WkndRay
     public static PosVector Zero => new PosVector(0.0, 0.0, 0.0);
     public static PosVector One => new PosVector(1.0, 1.0, 1.0);
     public static PosVector UnitX => new PosVector(1.0, 0.0, 0.0);
-    public static PosVector UnitY=> new PosVector(0.0, 1.0, 0.0);
+    public static PosVector UnitY => new PosVector(0.0, 1.0, 0.0);
     public static PosVector UnitZ => new PosVector(0.0, 0.0, 1.0);
 
     public override string ToString()
@@ -119,12 +123,13 @@ namespace WkndRay
       return X * b.X + Y * b.Y + Z * b.Z;
     }
 
-    public static PosVector GetRandomInUnitSphere(IRandomService randomService)
+    public static PosVector GetRandomInUnitSphere()
     {
       PosVector pv;
       do
       {
-        pv = 2.0 * new PosVector(randomService.NextDouble(), randomService.NextDouble(), randomService.NextDouble()) - PosVector.One;
+        pv = 2.0 * new PosVector(RandomService.NextDouble(), RandomService.NextDouble(), RandomService.NextDouble()) -
+             PosVector.One;
       }
       while (pv.MagnitudeSquared() >= 1.0);
 

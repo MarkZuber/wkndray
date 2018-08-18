@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="FirstCameraTracer.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay.Executors
 {
   public class FirstCameraTracer : IExecutor
   {
-    private readonly Random _random = new Random();
     private readonly int _numSamples;
+    private readonly Random _random = new Random();
+
     public FirstCameraTracer(int numSamples)
     {
       _numSamples = numSamples;
@@ -52,6 +57,7 @@ namespace WkndRay.Executors
 
           pixelBuffer.SetPixelColor(i, j, color);
         }
+
         Console.Write(".");
       }
 

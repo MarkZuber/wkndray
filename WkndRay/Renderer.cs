@@ -16,26 +16,16 @@ namespace WkndRay
   {
     public event EventHandler<RenderProgressEventArgs> Progress;
 
-    public void Render(
-      IRandomService randomService,
-      IPixelBuffer pixelArray,
-      Camera camera,
-      IHitable world,
-      RenderConfig renderConfig)
+    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig)
     {
       Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
 
-      RenderMultiThreaded(randomService, pixelArray, camera, world, renderConfig);
+      RenderMultiThreaded(pixelArray, camera, world, renderConfig);
     }
 
-    private void RenderMultiThreaded(
-      IRandomService randomService,
-      IPixelBuffer pixelArray,
-      Camera camera,
-      IHitable world,
-      RenderConfig renderConfig)
+    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig)
     {
-      var rayTracer = new RayTracer(randomService, camera, world, renderConfig, pixelArray.Width, pixelArray.Height);
+      var rayTracer = new RayTracer(camera, world, renderConfig, pixelArray.Width, pixelArray.Height);
       ThreadPool.SetMinThreads(renderConfig.NumThreads * 3, renderConfig.NumThreads * 3);
 
       var queueDataAvailableEvent = new AutoResetEvent(false);

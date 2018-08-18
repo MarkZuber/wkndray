@@ -1,10 +1,15 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="HitableList.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Text;
 
 namespace WkndRay
 {
-  public class HitableList : List<IHitable>, IHitable
+  public class HitableList : List<IHitable>,
+                             IHitable
   {
     public HitRecord Hit(Ray ray, double tMin, double tMax)
     {

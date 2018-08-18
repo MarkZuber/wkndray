@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="RandomService.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay
 {
-  public class RandomService : IRandomService
+  public class RandomService
   {
-    private readonly Random _random = new Random();
-    private readonly object _lock = new object();
+    private static readonly Random Random = new Random();
+    private static readonly object Lock = new object();
 
-    /// <inheritdoc />
-    public double NextDouble()
+    public static double NextDouble()
     {
-      lock (_lock)
+      lock (Lock)
       {
-        return _random.NextDouble();
+        return Random.NextDouble();
       }
     }
   }

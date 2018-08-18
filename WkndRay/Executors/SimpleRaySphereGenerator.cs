@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="SimpleRaySphereGenerator.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay.Executors
 {
@@ -35,6 +39,7 @@ namespace WkndRay.Executors
       {
         return new ColorVector(1.0, 0.0, 0.0);
       }
+
       PosVector unitDirection = ray.Direction.ToUnitVector();
       double t = 0.5 * (unitDirection.Y + 1.0);
       var pv = (1.0 - t) * PosVector.One + t * new PosVector(0.5, 0.7, 1.0);

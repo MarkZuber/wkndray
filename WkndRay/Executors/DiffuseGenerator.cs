@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="DiffuseGenerator.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay.Executors
 {
   public class DiffuseGenerator : IExecutor
   {
-    private readonly IRandomService _randomService;
     private readonly int _numSamples;
-    public DiffuseGenerator(IRandomService randomService, int numSamples)
+
+    public DiffuseGenerator(int numSamples)
     {
       _numSamples = numSamples;
-      _randomService = randomService;
     }
 
     public PixelBuffer Execute(int width, int height)
@@ -42,8 +45,8 @@ namespace WkndRay.Executors
           ColorVector color = new ColorVector(0.0, 0.0, 0.0);
           for (int sample = 0; sample < _numSamples; sample++)
           {
-            double u = Convert.ToDouble(i + GetRandom()) / Convert.ToDouble(width);
-            double v = Convert.ToDouble(j + GetRandom()) / Convert.ToDouble(height);
+            double u = Convert.ToDouble(i + RandomService.NextDouble()) / Convert.ToDouble(width);
+            double v = Convert.ToDouble(j + RandomService.NextDouble()) / Convert.ToDouble(height);
             var r = camera.GetRay(u, v);
 
             color += GetRayColor(r, world);
@@ -54,16 +57,12 @@ namespace WkndRay.Executors
 
           pixelBuffer.SetPixelColor(i, j, color);
         }
+
         Console.Write(".");
       }
 
       Console.WriteLine();
       return pixelBuffer;
-    }
-
-    private double GetRandom()
-    {
-      return _randomService.NextDouble();
     }
 
     private ColorVector GetRayColor(Ray ray, IHitable world)
@@ -72,7 +71,7 @@ namespace WkndRay.Executors
       HitRecord hr = world.Hit(ray, 0.001, double.MaxValue);
       if (hr != null)
       {
-        var target = hr.P + hr.Normal + PosVector.GetRandomInUnitSphere(_randomService);
+        var target = hr.P + hr.Normal + PosVector.GetRandomInUnitSphere();
         return (0.5 * GetRayColor(new Ray(hr.P, target - hr.P), world));
       }
       else

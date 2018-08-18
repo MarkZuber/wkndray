@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="BetterCameraGenerator.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 using WkndRay.Materials;
 
 namespace WkndRay.Executors
 {
   public class BetterCameraGenerator : IExecutor
   {
-    private readonly IRandomService _randomService;
     private readonly int _numSamples;
-    public BetterCameraGenerator(IRandomService randomService, int numSamples)
+
+    public BetterCameraGenerator(int numSamples)
     {
       _numSamples = numSamples;
-      _randomService = randomService;
     }
 
     public PixelBuffer Execute(int width, int height)
@@ -23,22 +26,21 @@ namespace WkndRay.Executors
       var lookAt = new PosVector(0.0, 0.0, -1.0);
       double distanceToFocus = (lookFrom - lookAt).Magnitude();
       var camera = new Camera(
-        _randomService,
-        lookFrom, 
-        lookAt, 
-        new PosVector(0.0, 1.0, 0.0), 
-        30.0, 
-        Convert.ToDouble(width) / Convert.ToDouble(height), 
+        lookFrom,
+        lookAt,
+        new PosVector(0.0, 1.0, 0.0),
+        30.0,
+        Convert.ToDouble(width) / Convert.ToDouble(height),
         aperture,
         distanceToFocus);
 
       var hitables = new HitableList
       {
-        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5, new LambertianMaterial(_randomService, new ColorVector(0.1, 0.2, 0.5))),
-        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0, new LambertianMaterial(_randomService, new ColorVector(0.8, 0.8, 0.0))),
-        new Sphere(new PosVector(1.0, 0.0, -1.0), 0.5, new MetalMaterial(_randomService, new ColorVector(0.8, 0.6, 0.2), 0.3)),
-        new Sphere(new PosVector(-1.0, 0.0, -1.0), 0.5, new DialectricMaterial(_randomService, 1.5)),
-        new Sphere(new PosVector(-1.0, 0.0, -1.0), -0.45, new DialectricMaterial(_randomService, 1.5)),
+        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5, new LambertianMaterial(new ColorVector(0.1, 0.2, 0.5))),
+        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0, new LambertianMaterial(new ColorVector(0.8, 0.8, 0.0))),
+        new Sphere(new PosVector(1.0, 0.0, -1.0), 0.5, new MetalMaterial(new ColorVector(0.8, 0.6, 0.2), 0.3)),
+        new Sphere(new PosVector(-1.0, 0.0, -1.0), 0.5, new DialectricMaterial(1.5)),
+        new Sphere(new PosVector(-1.0, 0.0, -1.0), -0.45, new DialectricMaterial(1.5)),
       };
 
       var world = new HitableList
@@ -53,8 +55,8 @@ namespace WkndRay.Executors
           ColorVector color = new ColorVector(0.0, 0.0, 0.0);
           for (int sample = 0; sample < _numSamples; sample++)
           {
-            double u = Convert.ToDouble(i + GetRandom()) / Convert.ToDouble(width);
-            double v = Convert.ToDouble(j + GetRandom()) / Convert.ToDouble(height);
+            double u = Convert.ToDouble(i + RandomService.NextDouble()) / Convert.ToDouble(width);
+            double v = Convert.ToDouble(j + RandomService.NextDouble()) / Convert.ToDouble(height);
             var r = camera.GetRay(u, v);
 
             color += GetRayColor(r, world, 0);
@@ -65,16 +67,12 @@ namespace WkndRay.Executors
 
           pixelBuffer.SetPixelColor(i, j, color);
         }
+
         Console.Write(".");
       }
 
       Console.WriteLine();
       return pixelBuffer;
-    }
-
-    private double GetRandom()
-    {
-      return _randomService.NextDouble();
     }
 
     private ColorVector GetRayColor(Ray ray, IHitable world, int depth)
@@ -91,6 +89,7 @@ namespace WkndRay.Executors
             return scatterResult.Attenuation * GetRayColor(scatterResult.ScatteredRay, world, depth + 1);
           }
         }
+
         return ColorVector.Zero;
       }
       else

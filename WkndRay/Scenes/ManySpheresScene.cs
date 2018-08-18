@@ -11,12 +11,6 @@ namespace WkndRay.Scenes
 {
   public class ManySpheresScene : IScene
   {
-    private readonly IRandomService _randomService;
-    public ManySpheresScene(IRandomService randomService)
-    {
-      _randomService = randomService;
-    }
-
     public Camera GetCamera(int imageWidth, int imageHeight)
     {
       double aperture = 0.01;
@@ -24,7 +18,6 @@ namespace WkndRay.Scenes
       var lookAt = PosVector.UnitY;
       double distanceToFocus = (lookFrom - lookAt).Magnitude();
       return new Camera(
-        _randomService,
         lookFrom,
         lookAt,
         PosVector.UnitY,
@@ -36,19 +29,18 @@ namespace WkndRay.Scenes
 
     public IHitable GetWorld()
     {
-      var random = new Random();
       var list = new HitableList();
       list.Add(
-        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(_randomService, new ColorVector(0.5, 0.5, 0.5))));
+        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new ColorVector(0.5, 0.5, 0.5))));
       for (int a = -11; a < 11; a++)
       {
         for (int b = -11; b < 11; b++)
         {
-          double chooseMat = _randomService.NextDouble();
+          double chooseMat = RandomService.NextDouble();
           var center = new PosVector(
-            Convert.ToDouble(a) * _randomService.NextDouble(),
+            Convert.ToDouble(a) * RandomService.NextDouble(),
             0.2,
-            Convert.ToDouble(b) + 0.9 * _randomService.NextDouble());
+            Convert.ToDouble(b) + 0.9 * RandomService.NextDouble());
 
           if ((center - new PosVector(4.0, 0.2, 0.0)).Magnitude() > 0.9)
           {
@@ -60,11 +52,10 @@ namespace WkndRay.Scenes
                   center,
                   0.2,
                   new LambertianMaterial(
-                    _randomService,
                     new ColorVector(
-                      _randomService.NextDouble() * _randomService.NextDouble(),
-                      _randomService.NextDouble() * _randomService.NextDouble(),
-                      _randomService.NextDouble() * _randomService.NextDouble()))));
+                      RandomService.NextDouble() * RandomService.NextDouble(),
+                      RandomService.NextDouble() * RandomService.NextDouble(),
+                      RandomService.NextDouble() * RandomService.NextDouble()))));
             }
             else if (chooseMat < 0.95)
             {
@@ -74,25 +65,24 @@ namespace WkndRay.Scenes
                   center,
                   0.2,
                   new MetalMaterial(
-                    _randomService,
                     new ColorVector(
-                      0.5 * (1.0 + _randomService.NextDouble()),
-                      0.5 * (1.0 + _randomService.NextDouble()),
-                      0.5 * (1.0 + _randomService.NextDouble())),
-                    0.5 * _randomService.NextDouble())));
+                      0.5 * (1.0 + RandomService.NextDouble()),
+                      0.5 * (1.0 + RandomService.NextDouble()),
+                      0.5 * (1.0 + RandomService.NextDouble())),
+                    0.5 * RandomService.NextDouble())));
             }
             else
             {
               // glass
-              list.Add(new Sphere(center, 0.2, new DialectricMaterial(_randomService, 1.5)));
+              list.Add(new Sphere(center, 0.2, new DialectricMaterial(1.5)));
             }
           }
         }
       }
 
-      list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(_randomService, 1.5)));
-      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(_randomService, new ColorVector(0.4, 0.2, 0.1))));
-      list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(_randomService, new ColorVector(0.7, 0.6, 0.5), 0.0)));
+      list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(1.5)));
+      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorVector(0.4, 0.2, 0.1))));
+      list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(new ColorVector(0.7, 0.6, 0.5), 0.0)));
 
       return list;
     }

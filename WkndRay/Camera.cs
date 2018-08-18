@@ -1,25 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Camera.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 
 namespace WkndRay
 {
   public class Camera
   {
-    private readonly IRandomService _randomService;
-
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="lookFrom"></param>
     /// <param name="lookAt"></param>
     /// <param name="up"></param>
     /// <param name="verticalFov">Top to bottom in degrees</param>
     /// <param name="aspect"></param>
-    public Camera(IRandomService randomService, PosVector lookFrom, PosVector lookAt, PosVector up, double verticalFov, double aspect, double aperture, double focusDistance)
+    public Camera(
+      PosVector lookFrom,
+      PosVector lookAt,
+      PosVector up,
+      double verticalFov,
+      double aspect,
+      double aperture,
+      double focusDistance)
     {
-      _randomService = randomService;
-
       LensRadius = aperture / 2.0;
       double theta = verticalFov * Math.PI / 180.0;
       double halfHeight = Math.Tan(theta / 2.0);
@@ -44,7 +50,7 @@ namespace WkndRay
 
     public Ray GetRay(double s, double t)
     {
-      var rd = LensRadius * PosVector.GetRandomInUnitSphere(_randomService);
+      var rd = LensRadius * PosVector.GetRandomInUnitSphere();
       var offset = U * rd.X + V * rd.Y;
       return new Ray(Origin + offset, LowerLeftCorner + s * Horizontal + t * Vertical - Origin - offset);
     }
