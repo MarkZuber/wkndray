@@ -5,11 +5,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Numerics;
 
-namespace WkndRay
+namespace WkndRay.Executors
 {
-  public class SimplePatternGenerator
+  public class SimplePatternGenerator : IExecutor
   {
     public PixelBuffer Execute(int width, int height)
     {
@@ -19,7 +18,7 @@ namespace WkndRay
       {
         for (int i = 0; i < width; i++)
         {
-          var color = new Vector3((float)(i) / (float)(width), (float)(j) / (float)(height), 0.2f);
+          var color = new ColorVector(Convert.ToDouble(i) / Convert.ToDouble(width), Convert.ToDouble(j) / Convert.ToDouble(height), 0.2);
           pixelBuffer.SetPixelColor(i, j, color);
         }
       }
