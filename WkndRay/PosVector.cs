@@ -27,6 +27,11 @@ namespace WkndRay
     public static PosVector UnitY => new PosVector(0.0, 1.0, 0.0);
     public static PosVector UnitZ => new PosVector(0.0, 0.0, 1.0);
 
+    public double[] ToDoubleArray()
+    {
+      return new double[] { X, Y, Z };
+    }
+
     public override string ToString()
     {
       return string.Format($"({X},{Y},{Z})");

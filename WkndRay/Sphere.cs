@@ -48,5 +48,11 @@ namespace WkndRay
 
       return null;
     }
+
+    /// <inheritdoc />
+    public AABB GetBoundingBox(double t0, double t1)
+    {
+      return new AABB(Center - new PosVector(Radius, Radius, Radius), Center + new PosVector(Radius, Radius, Radius));
+    }
   }
 }

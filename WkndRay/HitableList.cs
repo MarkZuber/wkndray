@@ -30,5 +30,33 @@ namespace WkndRay
 
       return hitRecord;
     }
+
+    /// <inheritdoc />
+    public AABB GetBoundingBox(double t0, double t1)
+    {
+      if (Count < 1)
+      {
+        return null;
+      }
+
+      AABB box = this[0].GetBoundingBox(t0, t1);
+      if (box == null)
+      {
+        return null;
+      }
+
+      for (int i = 1; i < Count; i++)
+      {
+        var tempBox = this[i].GetBoundingBox(t0, t1);
+        if (tempBox == null)
+        {
+          return null;
+        }
+
+        box = box.GetSurroundingBox(tempBox);
+      }
+
+      return box;
+    }
   }
 }

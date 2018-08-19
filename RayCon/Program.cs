@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using WkndRay;
 using WkndRay.Executors;
 using WkndRay.Scenes;
@@ -22,9 +23,9 @@ namespace RayCon
 
     public static void Main(string[] args)
     {
-      int numThreads = Environment.ProcessorCount;
+      int numThreads = 1; // Environment.ProcessorCount;
       const int RayTraceDepth = 50;
-      const int NumSamples = 100;
+      const int NumSamples = 10;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
       var scene = new ManySpheresScene();
