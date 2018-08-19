@@ -18,10 +18,10 @@ namespace WkndRay.Textures
     public PosVector Scale { get; }
 
     /// <inheritdoc />
-    public ColorVector GetValue(double u, double v, PosVector p)
+    public ColorVector GetValue(Point2D uvCoords, PosVector p)
     {
       double sines = Math.Sin(Scale.X * p.X) * Math.Sin(Scale.Y * p.Y) * Math.Sin(Scale.Z * p.Z);
-      return (sines < 0.0) ? T1.GetValue(u, v, p) : T2.GetValue(u, v, p);
+      return (sines < 0.0) ? T1.GetValue(uvCoords, p) : T2.GetValue(uvCoords, p);
     }
   }
 }

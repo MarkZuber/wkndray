@@ -19,7 +19,7 @@ namespace WkndRay.Textures
     public bool Interpolate { get; }
     public double Scale { get; }
 
-    public ColorVector GetValue(double u, double v, PosVector p)
+    public ColorVector GetValue(Point2D uvCoords, PosVector p)
     {
       return ColorVector.One * _noise.Noise(Scale * p, Interpolate);
     }

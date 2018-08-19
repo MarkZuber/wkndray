@@ -29,7 +29,7 @@ namespace WkndRay.Textures
     public double Scale { get; }
     public VectorNoiseMode Mode { get; }
 
-    public ColorVector GetValue(double u, double v, PosVector p)
+    public ColorVector GetValue(Point2D uvCoords, PosVector p)
     {
       switch (Mode)
       {

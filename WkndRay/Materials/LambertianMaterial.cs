@@ -4,6 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using WkndRay.Textures;
 
 namespace WkndRay.Materials
@@ -22,7 +23,7 @@ namespace WkndRay.Materials
     {
       var target = hitRecord.P + hitRecord.Normal + PosVector.GetRandomInUnitSphere();
       var scatteredRay = new Ray(hitRecord.P, target - hitRecord.P);
-      var attenuation = Albedo.GetValue(0.0, 0.0, hitRecord.P);
+      var attenuation = Albedo.GetValue(hitRecord.UvCoords, hitRecord.P);
       return new ScatterResult(true, attenuation, scatteredRay);
     }
   }

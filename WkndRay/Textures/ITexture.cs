@@ -6,6 +6,6 @@ namespace WkndRay.Textures
 {
   public interface ITexture
   {
-    ColorVector GetValue(double u, double v, PosVector p);
+    ColorVector GetValue(Point2D uvCoords, PosVector p);
   }
 }

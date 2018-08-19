@@ -15,7 +15,7 @@ namespace WkndRay.Textures
 
     public ColorVector Color { get; }
 
-    public ColorVector GetValue(double u, double v, PosVector p)
+    public ColorVector GetValue(Point2D uvCoords, PosVector p)
     {
       return Color;
     }

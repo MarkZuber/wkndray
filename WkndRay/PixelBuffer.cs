@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -19,6 +20,20 @@ namespace WkndRay
     {
       _image = new Image<Rgba32>(width, height);
       IsYUp = isYUp;
+    }
+
+    private PixelBuffer(Image<Rgba32> image, bool isYUp = true)
+    {
+      _image = image;
+      IsYUp = isYUp;
+    }
+
+    public static PixelBuffer FromFile(string inputFilePath)
+    {
+      using (var stream = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read))
+      {
+        return new PixelBuffer(Image.Load<Rgba32>(stream));
+      }
     }
 
     public int Width => _image.Width;
@@ -44,6 +59,14 @@ namespace WkndRay
       SetPixelColor(x, y, new Rgba32(r, g, b));
     }
 
+    public ColorVector GetPixelColor(int x, int y)
+    {
+      lock (_lock)
+      {
+        return _image[x, y].ToColorVector();
+      }
+    }
+
     public void SaveAsFile(string outputFilePath)
     {
       lock (_lock)
@@ -52,7 +75,6 @@ namespace WkndRay
       }
     }
 
-    /// <inheritdoc />
     public void SetPixelRowColors(int y, IEnumerable<ColorVector> rowPixels)
     {
       int actualY = CalculateActualY(y);

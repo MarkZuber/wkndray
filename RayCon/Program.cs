@@ -28,8 +28,10 @@ namespace RayCon
       const int NumSamples = 100;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
+      string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");
       // var scene = new ManySpheresScene();
-      var scene = new NoiseSpheresScene();
+      // var scene = new NoiseSpheresScene();
+      var scene = new ImageTextureScene(globeImagePath);
       var renderer = new Renderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
 

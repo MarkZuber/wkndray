@@ -25,6 +25,9 @@ namespace WkndRay
 
     void SetPixelColor(int x, int y, ColorVector color);
     void SetPixelColor(int x, int y, byte r, byte g, byte b);
+
+    ColorVector GetPixelColor(int x, int y);
+
     void SaveAsFile(string outputFilePath);
     void SetPixelRowColors(int y, IEnumerable<ColorVector> rowPixels);
   }

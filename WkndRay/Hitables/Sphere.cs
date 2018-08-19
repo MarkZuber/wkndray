@@ -35,14 +35,14 @@ namespace WkndRay
         if (temp < tMax & temp > tMin)
         {
           var p = ray.GetPointAtParameter(temp);
-          return new HitRecord(temp, p, (p - Center) / Radius, Material);
+          return new HitRecord(temp, p, (p - Center) / Radius, GetSphereUv(p), Material);
         }
 
         temp = (-b + Math.Sqrt(b * b - a * c)) / a;
         if (temp < tMax && temp > tMin)
         {
           var p = ray.GetPointAtParameter(temp);
-          return new HitRecord(temp, p, (p - Center) / Radius, Material);
+          return new HitRecord(temp, p, (p - Center) / Radius, GetSphereUv(p), Material);
         }
       }
 
@@ -53,6 +53,16 @@ namespace WkndRay
     public AABB GetBoundingBox(double t0, double t1)
     {
       return new AABB(Center - new PosVector(Radius, Radius, Radius), Center + new PosVector(Radius, Radius, Radius));
+    }
+
+    private Point2D GetSphereUv(PosVector p)
+    {
+      var punit = p.ToUnitVector();
+      double phi = Math.Atan2(punit.Z, punit.X);
+      double theta = Math.Asin(punit.Y);
+      double u = 1.0 - (phi + Math.PI) / (2.0 * Math.PI);
+      double v = (theta + Math.PI / 2.0) / Math.PI;
+      return new Point2D(u, v);
     }
   }
 }
