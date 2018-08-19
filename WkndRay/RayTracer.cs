@@ -15,14 +15,16 @@ namespace WkndRay
     private readonly double _imageWidth;
     private readonly RenderConfig _renderConfig;
     private readonly IHitable _world;
+    private readonly Func<Ray, ColorVector> _backgroundFunc;
 
-    public RayTracer(Camera camera, IHitable world, RenderConfig renderConfig, int imageWidth, int imageHeight)
+    public RayTracer(Camera camera, IHitable world, RenderConfig renderConfig, int imageWidth, int imageHeight, Func<Ray, ColorVector> backgroundFunc)
     {
       _camera = camera;
       _world = world;
       _renderConfig = renderConfig;
       _imageWidth = Convert.ToDouble(imageWidth);
       _imageHeight = Convert.ToDouble(imageHeight);
+      _backgroundFunc = backgroundFunc;
     }
 
     /// <inheritdoc />
@@ -59,25 +61,22 @@ namespace WkndRay
       HitRecord hr = world.Hit(ray, 0.001, double.MaxValue);
       if (hr != null)
       {
+        var emitted = hr.Material.Emitted(hr.UvCoords, hr.P);
         if (depth < _renderConfig.RayTraceDepth)
         {
           var scatterResult = hr.Material.Scatter(ray, hr);
           if (scatterResult.IsScattered)
           {
-            return scatterResult.Attenuation * GetRayColor(scatterResult.ScatteredRay, world, depth + 1);
+            return emitted + scatterResult.Attenuation * GetRayColor(scatterResult.ScatteredRay, world, depth + 1);
           }
+
+          return emitted;
         }
 
-        return ColorVector.Zero;
+        return emitted;
       }
-      else
-      {
-        // this is our background
-        // todo: abstract this out so we can configure the background coloring...
-        var unitDirection = ray.Direction.ToUnitVector();
-        double t = 0.5 * (unitDirection.Y + 1.0);
-        return (((1.0 - t) * ColorVector.One) + t * new ColorVector(0.5, 0.7, 1.0));
-      }
+
+      return _backgroundFunc(ray);
     }
   }
 }

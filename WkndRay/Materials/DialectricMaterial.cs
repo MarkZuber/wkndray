@@ -8,7 +8,7 @@ using System;
 
 namespace WkndRay.Materials
 {
-  public class DialectricMaterial : IMaterial
+  public class DialectricMaterial : AbstractMaterial
   {
     public DialectricMaterial(double refractionIndex)
     {
@@ -18,7 +18,7 @@ namespace WkndRay.Materials
     public double RefractionIndex { get; }
 
     /// <inheritdoc />
-    public ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
+    public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
     {
       var reflected = rayIn.Direction.Reflect(hitRecord.Normal);
       var attenuation = new ColorVector(1.0, 1.0, 1.0);

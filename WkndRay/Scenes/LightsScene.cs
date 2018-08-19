@@ -5,16 +5,17 @@
 // -----------------------------------------------------------------------
 
 using System;
+using WkndRay.Hitables;
 using WkndRay.Materials;
 using WkndRay.Textures;
 
 namespace WkndRay.Scenes
 {
-  public class ImageTextureScene : IScene
+  public class LightsScene : IScene
   {
     private readonly string _globeImagePath;
 
-    public ImageTextureScene(string globeImagePath)
+    public LightsScene(string globeImagePath)
     {
       _globeImagePath = globeImagePath;
     }
@@ -40,16 +41,19 @@ namespace WkndRay.Scenes
     public IHitable GetWorld()
     {
       var globe = PixelBuffer.FromFile(_globeImagePath);
+
       var list = new HitableList()
       {
         new Sphere(
           new PosVector(0.0, -1000.0, 0.0),
           1000.0,
-          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Soft, 3.0))),
+          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0))),
         new Sphere(
           new PosVector(0.0, 2.0, 0.0),
           2.0,
-          new LambertianMaterial(new ImageTexture(globe)))
+          new LambertianMaterial(new ImageTexture(globe))),
+        new Sphere(new PosVector(0.0, 7.0, 0.0), 2.0, new DiffuseLight(new ColorTexture(4.0, 4.0, 4.0))),
+        new XyRect(3.0, 5.0, 1.0, 3.0, -2.0, new DiffuseLight(new ColorTexture(4.0, 4.0, 4.0)))
       };
 
       return new BvhNode(list, 0.0, 1.0);
@@ -58,12 +62,7 @@ namespace WkndRay.Scenes
     /// <inheritdoc />
     public Func<Ray, ColorVector> GetBackgroundFunc()
     {
-      return ray =>
-      {
-        var unitDirection = ray.Direction.ToUnitVector();
-        double t = 0.5 * (unitDirection.Y + 1.0);
-        return (((1.0 - t) * ColorVector.One) + t * new ColorVector(0.5, 0.7, 1.0));
-      };
+      return ray => ColorVector.One * 0.05;
     }
   }
 }

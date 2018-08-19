@@ -15,6 +15,11 @@ namespace WkndRay.Materials
       ScatteredRay = scatteredRay;
     }
 
+    public static ScatterResult False()
+    {
+      return new ScatterResult(false, ColorVector.Zero, new Ray(PosVector.Zero, PosVector.Zero));
+    }
+
     public bool IsScattered { get; }
     public ColorVector Attenuation { get; }
     public Ray ScatteredRay { get; }

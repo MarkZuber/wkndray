@@ -6,7 +6,7 @@
 
 namespace WkndRay.Materials
 {
-  public class MetalMaterial : IMaterial
+  public class MetalMaterial : AbstractMaterial
   {
     public MetalMaterial(ColorVector albedo, double fuzz)
     {
@@ -18,7 +18,7 @@ namespace WkndRay.Materials
     public double Fuzz { get; }
 
     /// <inheritdoc />
-    public ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
+    public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
     {
       var reflected = rayIn.Direction.ToUnitVector().Reflect(hitRecord.Normal);
       var scattered = new Ray(hitRecord.P, reflected + Fuzz * PosVector.GetRandomInUnitSphere());

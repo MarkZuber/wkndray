@@ -9,7 +9,7 @@ using WkndRay.Textures;
 
 namespace WkndRay.Materials
 {
-  public class LambertianMaterial : IMaterial
+  public class LambertianMaterial : AbstractMaterial
   {
     public LambertianMaterial(ITexture albedo)
     {
@@ -19,7 +19,7 @@ namespace WkndRay.Materials
     public ITexture Albedo { get; }
 
     /// <inheritdoc />
-    public ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
+    public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
     {
       var target = hitRecord.P + hitRecord.Normal + PosVector.GetRandomInUnitSphere();
       var scatteredRay = new Ray(hitRecord.P, target - hitRecord.P);

@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using WkndRay.Scenes;
 
 namespace WkndRay
 {
@@ -16,16 +17,21 @@ namespace WkndRay
   {
     public event EventHandler<RenderProgressEventArgs> Progress;
 
-    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig)
+    public void Render(IPixelBuffer pixelArray, IScene scene, RenderConfig renderConfig)
+    {
+      Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), renderConfig, scene.GetBackgroundFunc());
+    }
+
+    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
       Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
 
-      RenderMultiThreaded(pixelArray, camera, world, renderConfig);
+      RenderMultiThreaded(pixelArray, camera, world, renderConfig, backgroundFunc);
     }
 
-    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig)
+    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
-      var rayTracer = new RayTracer(camera, world, renderConfig, pixelArray.Width, pixelArray.Height);
+      var rayTracer = new RayTracer(camera, world, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
       ThreadPool.SetMinThreads(renderConfig.NumThreads * 3, renderConfig.NumThreads * 3);
 
       var queueDataAvailableEvent = new AutoResetEvent(false);

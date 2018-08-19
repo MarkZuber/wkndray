@@ -95,5 +95,16 @@ namespace WkndRay.Scenes
 
       return new BvhNode(list, 0.0, 1.0);
     }
+
+    /// <inheritdoc />
+    public Func<Ray, ColorVector> GetBackgroundFunc()
+    {
+      return ray =>
+      {
+        var unitDirection = ray.Direction.ToUnitVector();
+        double t = 0.5 * (unitDirection.Y + 1.0);
+        return (((1.0 - t) * ColorVector.One) + t * new ColorVector(0.5, 0.7, 1.0));
+      };
+    }
   }
 }

@@ -31,9 +31,11 @@ namespace RayCon
       string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");
       // var scene = new ManySpheresScene();
       // var scene = new NoiseSpheresScene();
-      var scene = new ImageTextureScene(globeImagePath);
+      // var scene = new ImageTextureScene(globeImagePath);
+      var scene = new LightsScene(globeImagePath);
       var renderer = new Renderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
+      var backgroundFunc = scene.GetBackgroundFunc();
 
       string name = scene.GetType().Name.ToLowerInvariant();
       Console.WriteLine($"Executing {name} at resolution ({pixelBuffer.Width},{pixelBuffer.Height})");
@@ -42,11 +44,7 @@ namespace RayCon
       Console.WriteLine($"  Num Samples   = {NumSamples}");
 
       var sw = Stopwatch.StartNew();
-      renderer.Render(
-        pixelBuffer,
-        scene.GetCamera(pixelBuffer.Width, pixelBuffer.Height),
-        scene.GetWorld(),
-        renderConfig);
+      renderer.Render(pixelBuffer, scene, renderConfig);
       sw.Stop();
       Console.WriteLine();
       Console.WriteLine($"Render complete: {sw.ElapsedMilliseconds}ms");
