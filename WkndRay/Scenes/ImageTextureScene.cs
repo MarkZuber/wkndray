@@ -40,7 +40,6 @@ namespace WkndRay.Scenes
     public IHitable GetWorld()
     {
       var globe = PixelBuffer.FromFile(_globeImagePath);
-      //var perlinTexture = new NoiseTexture(true, 3.0);
       var list = new HitableList()
       {
         new Sphere(
