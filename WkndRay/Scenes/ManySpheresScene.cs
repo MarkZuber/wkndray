@@ -6,6 +6,7 @@
 
 using System;
 using WkndRay.Materials;
+using WkndRay.Textures;
 
 namespace WkndRay.Scenes
 {
@@ -30,8 +31,16 @@ namespace WkndRay.Scenes
     public IHitable GetWorld()
     {
       var list = new HitableList();
-      list.Add(
-        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new ColorVector(0.5, 0.5, 0.5))));
+
+      var checkerTexture = new CheckerTexture(
+        new ColorTexture(0.2, 0.3, 0.1),
+        new ColorTexture(0.9, 0.9, 0.9),
+        PosVector.One * 10.0);
+
+      // original color of large sphere...
+      // var colorTexture = new ColorTexture(0.5, 0.5, 0.5);
+
+      list.Add(new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(checkerTexture)));
       for (int a = -11; a < 11; a++)
       {
         for (int b = -11; b < 11; b++)
@@ -52,7 +61,7 @@ namespace WkndRay.Scenes
                   center,
                   0.2,
                   new LambertianMaterial(
-                    new ColorVector(
+                    new ColorTexture(
                       RandomService.NextDouble() * RandomService.NextDouble(),
                       RandomService.NextDouble() * RandomService.NextDouble(),
                       RandomService.NextDouble() * RandomService.NextDouble()))));
@@ -81,7 +90,7 @@ namespace WkndRay.Scenes
       }
 
       list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(1.5)));
-      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorVector(0.4, 0.2, 0.1))));
+      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorTexture(0.4, 0.2, 0.1))));
       list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(new ColorVector(0.7, 0.6, 0.5), 0.0)));
 
       return new BvhNode(list, 0.0, 1.0);

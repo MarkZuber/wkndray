@@ -4,23 +4,25 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using WkndRay.Textures;
+
 namespace WkndRay.Materials
 {
   public class LambertianMaterial : IMaterial
   {
-    public LambertianMaterial(ColorVector albedo)
+    public LambertianMaterial(ITexture albedo)
     {
       Albedo = albedo;
     }
 
-    public ColorVector Albedo { get; }
+    public ITexture Albedo { get; }
 
     /// <inheritdoc />
     public ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
     {
       var target = hitRecord.P + hitRecord.Normal + PosVector.GetRandomInUnitSphere();
       var scatteredRay = new Ray(hitRecord.P, target - hitRecord.P);
-      var attenuation = Albedo;
+      var attenuation = Albedo.GetValue(0.0, 0.0, hitRecord.P);
       return new ScatterResult(true, attenuation, scatteredRay);
     }
   }

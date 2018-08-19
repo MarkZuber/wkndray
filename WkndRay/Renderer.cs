@@ -64,16 +64,23 @@ namespace WkndRay
       ConcurrentQueue<RenderLineResult> resultQueue,
       AutoResetEvent queueDataAvailableEvent)
     {
-      while (rowQueue.TryDequeue(out int y))
+      try
       {
-        var rowPixels = new List<ColorVector>();
-        for (var x = 0; x < pixelWidth; x++)
+        while (rowQueue.TryDequeue(out int y))
         {
-          rowPixels.Add(rayTracer.GetPixelColor(x, y));
-        }
+          var rowPixels = new List<ColorVector>();
+          for (var x = 0; x < pixelWidth; x++)
+          {
+            rowPixels.Add(rayTracer.GetPixelColor(x, y));
+          }
 
-        resultQueue.Enqueue(new RenderLineResult(y, rowPixels));
-        queueDataAvailableEvent.Set();
+          resultQueue.Enqueue(new RenderLineResult(y, rowPixels));
+          queueDataAvailableEvent.Set();
+        }
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
       }
     }
 

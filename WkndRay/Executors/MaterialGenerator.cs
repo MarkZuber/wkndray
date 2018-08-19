@@ -6,6 +6,7 @@
 
 using System;
 using WkndRay.Materials;
+using WkndRay.Textures;
 
 namespace WkndRay.Executors
 {
@@ -30,8 +31,8 @@ namespace WkndRay.Executors
 
       var hitables = new HitableList
       {
-        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5, new LambertianMaterial(new ColorVector(0.8, 0.3, 0.3))),
-        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0, new LambertianMaterial(new ColorVector(0.8, 0.8, 0.0))),
+        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5, new LambertianMaterial(new ColorTexture(0.8, 0.3, 0.3))),
+        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0, new LambertianMaterial(new ColorTexture(0.8, 0.8, 0.0))),
         new Sphere(new PosVector(1.0, 0.0, -1.0), 0.5, new MetalMaterial(new ColorVector(0.8, 0.6, 0.2), 0.3)),
         new Sphere(new PosVector(-1.0, 0.0, -1.0), 0.5, new DialectricMaterial(1.5)),
         new Sphere(new PosVector(-1.0, 0.0, -1.0), -0.45, new DialectricMaterial(1.5)),

@@ -18,17 +18,18 @@ namespace RayCon
   public static class Program
   {
     private const string OutputDirectory = @"c:\repos\wkndray\images";
-    private const int Width = 200;
-    private const int Height = 100;
+    private const int Width = 400;
+    private const int Height = 300;
 
     public static void Main(string[] args)
     {
-      int numThreads = 1; // Environment.ProcessorCount;
+      int numThreads = Environment.ProcessorCount;
       const int RayTraceDepth = 50;
-      const int NumSamples = 10;
+      const int NumSamples = 100;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
-      var scene = new ManySpheresScene();
+      // var scene = new ManySpheresScene();
+      var scene = new NoiseSpheresScene();
       var renderer = new Renderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
 

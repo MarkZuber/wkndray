@@ -6,6 +6,7 @@
 
 using System;
 using WkndRay.Materials;
+using WkndRay.Textures;
 
 namespace WkndRay.Executors
 {
@@ -67,7 +68,7 @@ namespace WkndRay.Executors
     {
       var list = new HitableList();
       list.Add(
-        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new ColorVector(0.5, 0.5, 0.5))));
+        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new ColorTexture(0.5, 0.5, 0.5))));
       for (int a = -11; a < 11; a++)
       {
         for (int b = -11; b < 11; b++)
@@ -87,7 +88,7 @@ namespace WkndRay.Executors
                   center,
                   0.2,
                   new LambertianMaterial(
-                    new ColorVector(
+                    new ColorTexture(
                       RandomService.NextDouble() * RandomService.NextDouble(),
                       RandomService.NextDouble() * RandomService.NextDouble(),
                       RandomService.NextDouble() * RandomService.NextDouble()))));
@@ -116,7 +117,7 @@ namespace WkndRay.Executors
       }
 
       list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(1.5)));
-      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorVector(0.4, 0.2, 0.1))));
+      list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorTexture(0.4, 0.2, 0.1))));
       list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(new ColorVector(0.7, 0.6, 0.5), 0.0)));
 
       return list;
