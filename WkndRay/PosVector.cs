@@ -17,6 +17,18 @@ namespace WkndRay
       Z = z;
     }
 
+    public PosVector(double[] xyz)
+    {
+      if (xyz.Length != 3)
+      {
+        throw new ArgumentException("xyz array must be of length 3");
+      }
+
+      X = xyz[0];
+      Y = xyz[1];
+      Z = xyz[2];
+    }
+
     public double X { get; }
     public double Y { get; }
     public double Z { get; }

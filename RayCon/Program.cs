@@ -32,10 +32,10 @@ namespace RayCon
       // var scene = new ManySpheresScene();
       // var scene = new NoiseSpheresScene();
       // var scene = new ImageTextureScene(globeImagePath);
-      var scene = new LightsScene(globeImagePath);
+      // var scene = new LightsScene(globeImagePath);
+      var scene = new CornellBoxScene();
       var renderer = new Renderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
-      var backgroundFunc = scene.GetBackgroundFunc();
 
       string name = scene.GetType().Name.ToLowerInvariant();
       Console.WriteLine($"Executing {name} at resolution ({pixelBuffer.Width},{pixelBuffer.Height})");
