@@ -21,9 +21,9 @@ namespace WkndRay.Hitables
       _list.Add(new XyRect(p0.X, p1.X, p0.Y, p1.Y, p1.Z, material));
       _list.Add(new FlipNormals(new XyRect(p0.X, p1.X, p0.Y, p1.Y, p0.Z, material)));
       _list.Add(new XzRect(p0.X, p1.X, p0.Z, p1.Z, p1.Y, material));
-      _list.Add(new FlipNormals(new XzRect(p0.X, p1.X, p0.Z, p1.Z, p1.Y, material)));
+      _list.Add(new FlipNormals(new XzRect(p0.X, p1.X, p0.Z, p1.Z, p0.Y, material)));
       _list.Add(new YzRect(p0.Y, p1.Y, p0.Z, p1.Z, p1.X, material));
-      _list.Add(new FlipNormals(new YzRect(p0.Y, p1.Y, p0.Z, p1.Z, p1.X, material)));
+      _list.Add(new FlipNormals(new YzRect(p0.Y, p1.Y, p0.Z, p1.Z, p0.X, material)));
     }
 
     public PosVector PosMin { get; }

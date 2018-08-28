@@ -18,14 +18,14 @@ namespace RayCon
   public static class Program
   {
     private const string OutputDirectory = @"c:\repos\wkndray\images";
-    private const int Width = 400;
-    private const int Height = 300;
+    private const int Width = 800;
+    private const int Height = 600;
 
     public static void Main(string[] args)
     {
       int numThreads = Environment.ProcessorCount;
-      const int RayTraceDepth = 50;
-      const int NumSamples = 100;
+      const int RayTraceDepth = 5;
+      const int NumSamples = 50;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
       string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");
@@ -33,8 +33,9 @@ namespace RayCon
       // var scene = new NoiseSpheresScene();
       // var scene = new ImageTextureScene(globeImagePath);
       // var scene = new LightsScene(globeImagePath);
-      var scene = new CornellBoxScene();
-      var renderer = new Renderer();
+      // var scene = new CornellBoxScene();
+      var scene = new CornellBoxWithSmokeScene();
+      IRenderer renderer = new PerPixelRenderer();
       var pixelBuffer = new PixelBuffer(Width, Height);
 
       string name = scene.GetType().Name.ToLowerInvariant();

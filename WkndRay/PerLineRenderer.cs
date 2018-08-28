@@ -13,7 +13,7 @@ using WkndRay.Scenes;
 
 namespace WkndRay
 {
-  public class Renderer
+  public class PerLineRenderer : IRenderer
   {
     public event EventHandler<RenderProgressEventArgs> Progress;
 
