@@ -10,7 +10,12 @@ namespace WkndRay.Materials
   {
     public abstract ScatterResult Scatter(Ray rayIn, HitRecord hitRecord);
 
-    public ColorVector Emitted(Point2D uvCoords, PosVector p)
+    public virtual double ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
+    {
+      return 0.0;
+    }
+
+    public virtual ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
     {
       return ColorVector.Zero;
     }

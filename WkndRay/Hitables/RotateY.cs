@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WkndRay.Hitables
 {
-    public class RotateY : IHitable
+    public class RotateY : AbstractHitable
     {
       public RotateY(IHitable hitable, double angle)
       {
@@ -58,8 +58,7 @@ namespace WkndRay.Hitables
       public double CosTheta { get; }
       public AABB BoundingBox { get; }
 
-      /// <inheritdoc />
-      public HitRecord Hit(Ray ray, double tMin, double tMax)
+      public override HitRecord Hit(Ray ray, double tMin, double tMax)
       {
         var origin = ray.Origin.ToDoubleArray();
         var dir = ray.Direction.ToDoubleArray();
@@ -83,8 +82,7 @@ namespace WkndRay.Hitables
         return new HitRecord(hitRecord.T, new PosVector(p), new PosVector(normal), hitRecord.UvCoords, hitRecord.Material);
       }
 
-      /// <inheritdoc />
-      public AABB GetBoundingBox(double t0, double t1)
+      public override AABB GetBoundingBox(double t0, double t1)
       {
         return BoundingBox;
       }

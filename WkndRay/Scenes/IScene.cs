@@ -12,6 +12,7 @@ namespace WkndRay.Scenes
   {
     Camera GetCamera(int imageWidth, int imageHeight);
     IHitable GetWorld();
+    IHitable GetLightHitable();
     Func<Ray, ColorVector> GetBackgroundFunc();
   }
 }

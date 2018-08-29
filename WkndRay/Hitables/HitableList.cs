@@ -4,6 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace WkndRay
@@ -57,6 +58,23 @@ namespace WkndRay
       }
 
       return box;
+    }
+
+    public double GetPdfValue(PosVector origin, PosVector v)
+    {
+      double weight = 1.0 / Count;
+      double sum = 0.0;
+      foreach (var hitable in this)
+      {
+        sum += weight * hitable.GetPdfValue(origin, v);
+      }
+      return sum;
+    }
+
+    public PosVector Random(PosVector origin)
+    {
+      int index = Convert.ToInt32(Math.Floor(RandomService.NextDouble() * Convert.ToDouble(Count)));
+      return this[index].Random(origin);
     }
   }
 }

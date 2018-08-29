@@ -13,6 +13,14 @@ namespace WkndRay.Scenes
 {
   public class CornellBoxWithSmokeScene : IScene
   {
+    private readonly IHitable _light;
+
+    public CornellBoxWithSmokeScene()
+    {
+      var light = new DiffuseLight(new ColorTexture(7.0, 7.0, 7.0));
+      _light = new XzRect(113.0, 443.0, 127.0, 432.0, 554.0, light);
+    }
+
     /// <inheritdoc />
     public Camera GetCamera(int imageWidth, int imageHeight)
     {
@@ -36,8 +44,7 @@ namespace WkndRay.Scenes
       var red = new LambertianMaterial(new ColorTexture(0.65, 0.05, 0.05));
       var white = new LambertianMaterial(new ColorTexture(0.73, 0.73, 0.73));
       var green = new LambertianMaterial(new ColorTexture(0.12, 0.45, 0.15));
-      var light = new DiffuseLight(new ColorTexture(7.0, 7.0, 7.0));
-
+  
       var b1 = new Translate(
         new RotateY(new Box(new PosVector(0.0, 0.0, 0.0), new PosVector(165.0, 165.0, 165.0), white), -18.0),
         new PosVector(130.0, 0.0, 65.0));
@@ -49,7 +56,7 @@ namespace WkndRay.Scenes
       {
         new FlipNormals(new YzRect(0.0, 555.0, 0.0, 555.0, 555.0, green)),
         new YzRect(0.0, 555.0, 0.0, 555.0, 0.0, red),
-        new XzRect(113.0, 443.0, 127.0, 432.0, 554.0, light),
+        new FlipNormals(_light),
         new FlipNormals(new XzRect(0.0, 555.0, 0.0, 555.0, 555.0, white)),
         new XzRect(0.0, 555.0, 0.0, 555.0, 0.0, white),
         new FlipNormals(new XyRect(0.0, 555.0, 0.0, 555.0, 555.0, white)),
@@ -59,6 +66,12 @@ namespace WkndRay.Scenes
       };
 
       return new BvhNode(list, 0.0, 1.0);
+    }
+
+    /// <inheritdoc />
+    public IHitable GetLightHitable()
+    {
+      return _light;
     }
 
     /// <inheritdoc />

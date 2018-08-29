@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WkndRay.Hitables
 {
-    public class Translate : IHitable
+    public class Translate : AbstractHitable
     {
       public Translate(IHitable hitable, PosVector displacement)
       {
@@ -15,8 +15,7 @@ namespace WkndRay.Hitables
       public IHitable Hitable { get; }
       public PosVector Displacement { get; }
 
-      /// <inheritdoc />
-      public HitRecord Hit(Ray ray, double tMin, double tMax)
+      public override HitRecord Hit(Ray ray, double tMin, double tMax)
       {
         var movedRay = new Ray(ray.Origin - Displacement, ray.Direction);
         var hitRecord = Hitable.Hit(movedRay, tMin, tMax);
@@ -33,8 +32,7 @@ namespace WkndRay.Hitables
           hitRecord.Material);
       }
 
-      /// <inheritdoc />
-      public AABB GetBoundingBox(double t0, double t1)
+      public override AABB GetBoundingBox(double t0, double t1)
       {
         var box = Hitable.GetBoundingBox(t0, t1);
         if (box == null)

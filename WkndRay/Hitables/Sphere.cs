@@ -5,11 +5,12 @@
 // -----------------------------------------------------------------------
 
 using System;
+using WkndRay.Hitables;
 using WkndRay.Materials;
 
 namespace WkndRay
 {
-  public class Sphere : IHitable
+  public class Sphere : AbstractHitable
   {
     public Sphere(PosVector center, double radius, IMaterial material = null)
     {
@@ -22,7 +23,7 @@ namespace WkndRay
     public double Radius { get; }
     public IMaterial Material { get; }
 
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       var oc = ray.Origin - Center;
       double a = ray.Direction.Dot(ray.Direction);
@@ -49,10 +50,30 @@ namespace WkndRay
       return null;
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return new AABB(Center - new PosVector(Radius, Radius, Radius), Center + new PosVector(Radius, Radius, Radius));
+    }
+
+    public override double GetPdfValue(PosVector origin, PosVector v)
+    {
+      HitRecord hr = Hit(new Ray(origin, v), 0.001, double.MaxValue);
+      if (hr == null)
+      {
+        return 0.0;
+      }
+
+      double cosThetaMax = Math.Sqrt(1.0 - Radius * Radius / (Center - origin).MagnitudeSquared());
+      double solidAngle = 2.0 * Math.PI * (1.0 - cosThetaMax);
+      return 1.0 / solidAngle;
+    }
+
+    public override PosVector Random(PosVector origin)
+    {
+      PosVector direction = Center - origin;
+      double distanceSquared = direction.MagnitudeSquared();
+      OrthoNormalBase uvw = OrthoNormalBase.FromW(direction);
+      return uvw.Local(RandomService.RandomToSphere(Radius, distanceSquared));
     }
 
     private Point2D GetSphereUv(PosVector p)

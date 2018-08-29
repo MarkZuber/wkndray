@@ -9,7 +9,7 @@ using WkndRay.Materials;
 
 namespace WkndRay.Hitables
 {
-  public class XyRect : IHitable
+  public class XyRect : AbstractHitable
   {
     public XyRect(double x0, double x1, double y0, double y1, double k, IMaterial material)
     {
@@ -28,8 +28,7 @@ namespace WkndRay.Hitables
     public double K { get; }
     public IMaterial Material { get; }
 
-    /// <inheritdoc />
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       double t = (K - ray.Origin.Z) / ray.Direction.Z;
       if (t < tMin || t > tMax)
@@ -52,8 +51,7 @@ namespace WkndRay.Hitables
         Material);
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return new AABB(new PosVector(X0, Y0, K - 0.001), new PosVector(X1, Y1, K + 0.0001));
     }

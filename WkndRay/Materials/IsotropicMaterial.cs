@@ -22,7 +22,7 @@ namespace WkndRay.Materials
     {
       var scattered = new Ray(hitRecord.P, PosVector.GetRandomInUnitSphere());
       var attenuation = Albedo.GetValue(hitRecord.UvCoords, hitRecord.P);
-      return new ScatterResult(true, attenuation, scattered);
+      return new ScatterResult(true, attenuation, scattered, null);
     }
   }
 }

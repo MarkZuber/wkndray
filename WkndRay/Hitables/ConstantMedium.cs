@@ -10,7 +10,7 @@ using WkndRay.Textures;
 
 namespace WkndRay.Hitables
 {
-  public class ConstantMedium : IHitable
+  public class ConstantMedium : AbstractHitable
   {
     public ConstantMedium(IHitable boundary, double density, ITexture a)
     {
@@ -23,8 +23,7 @@ namespace WkndRay.Hitables
     public double Density { get; }
     public IMaterial PhaseFunction { get; }
 
-    /// <inheritdoc />
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       HitRecord hitRecord1 = Boundary.Hit(ray, -double.MaxValue, double.MaxValue);
       if (hitRecord1 == null)
@@ -78,8 +77,7 @@ namespace WkndRay.Hitables
       return null;
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return Boundary.GetBoundingBox(t0, t1);
     }

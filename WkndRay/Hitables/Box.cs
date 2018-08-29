@@ -9,7 +9,7 @@ using WkndRay.Materials;
 
 namespace WkndRay.Hitables
 {
-  public class Box : IHitable
+  public class Box : AbstractHitable
   {
     private readonly HitableList _list = new HitableList();
 
@@ -29,14 +29,12 @@ namespace WkndRay.Hitables
     public PosVector PosMin { get; }
     public PosVector PosMax { get; }
 
-    /// <inheritdoc />
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       return _list.Hit(ray, tMin, tMax);
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return new AABB(PosMin, PosMax);
     }

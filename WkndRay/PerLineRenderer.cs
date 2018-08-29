@@ -16,22 +16,22 @@ namespace WkndRay
   public class PerLineRenderer : IRenderer
   {
     public event EventHandler<RenderProgressEventArgs> Progress;
-
+      
     public void Render(IPixelBuffer pixelArray, IScene scene, RenderConfig renderConfig)
     {
-      Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), renderConfig, scene.GetBackgroundFunc());
+      Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), scene.GetLightHitable(), renderConfig, scene.GetBackgroundFunc());
     }
 
-    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
       Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
 
-      RenderMultiThreaded(pixelArray, camera, world, renderConfig, backgroundFunc);
+      RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
     }
 
-    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
-      var rayTracer = new RayTracer(camera, world, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
+      var rayTracer = new RayTracer(camera, world, lightHitable, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
       ThreadPool.SetMinThreads(renderConfig.NumThreads * 3, renderConfig.NumThreads * 3);
 
       var queueDataAvailableEvent = new AutoResetEvent(false);

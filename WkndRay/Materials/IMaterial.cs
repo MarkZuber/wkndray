@@ -9,6 +9,7 @@ namespace WkndRay.Materials
   public interface IMaterial
   {
     ScatterResult Scatter(Ray rayIn, HitRecord hitRecord);
-    ColorVector Emitted(Point2D uvCoords, PosVector p);
+    double ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered);
+    ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p);
   }
 }

@@ -56,6 +56,12 @@ namespace WkndRay.Scenes
     }
 
     /// <inheritdoc />
+    public IHitable GetLightHitable()
+    {
+      return new HitableList();
+    }
+
+    /// <inheritdoc />
     public Func<Ray, ColorVector> GetBackgroundFunc()
     {
       return ray =>

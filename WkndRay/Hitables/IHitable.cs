@@ -10,5 +10,8 @@ namespace WkndRay
   {
     HitRecord Hit(Ray ray, double tMin, double tMax);
     AABB GetBoundingBox(double t0, double t1);
+
+    double GetPdfValue(PosVector origin, PosVector v);
+    PosVector Random(PosVector origin);
   }
 }

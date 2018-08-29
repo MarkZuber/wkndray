@@ -6,7 +6,7 @@
 
 namespace WkndRay.Hitables
 {
-  public class FlipNormals : IHitable
+  public class FlipNormals : AbstractHitable
   {
     public FlipNormals(IHitable hitable)
     {
@@ -15,8 +15,7 @@ namespace WkndRay.Hitables
 
     public IHitable Hitable { get; }
 
-    /// <inheritdoc />
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       var hitrec = Hitable.Hit(ray, tMin, tMax);
       if (hitrec != null)
@@ -31,8 +30,7 @@ namespace WkndRay.Hitables
       }
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return Hitable.GetBoundingBox(t0, t1);
     }

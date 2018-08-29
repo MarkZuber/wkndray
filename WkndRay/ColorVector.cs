@@ -19,9 +19,9 @@ namespace WkndRay
     /// <inheritdoc />
     public ColorVector(double r, double g, double b)
     {
-      R = r;
-      G = g;
-      B = b;
+      R = double.IsNaN(r) ? 0.0 : r;
+      G = double.IsNaN(g) ? 0.0 : g;
+      B = double.IsNaN(b) ? 0.0 : b;
     }
 
     public double R { get; }
@@ -44,7 +44,15 @@ namespace WkndRay
 
     private static byte ColorToByte(double c)
     {
-      return Convert.ToByte(c * 255.0);
+      try
+      {
+        return Convert.ToByte(c * 255.0);
+      }
+      catch (OverflowException ex)
+      {
+        Console.WriteLine(ex);
+        throw;
+      }
     }
 
     public override string ToString()

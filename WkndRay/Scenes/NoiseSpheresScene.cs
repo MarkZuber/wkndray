@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+// <copyright file="NoiseSpheresScene.cs" company="ZubeNET">
+//   Copyright...
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 using WkndRay.Materials;
 using WkndRay.Textures;
 
@@ -31,11 +35,23 @@ namespace WkndRay.Scenes
       //var perlinTexture = new NoiseTexture(true, 3.0);
       var list = new HitableList()
       {
-        new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Soft, 3.0))),
-        new Sphere(new PosVector(0.0, 2.0, 0.0), 2.0, new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0)))
+        new Sphere(
+          new PosVector(0.0, -1000.0, 0.0),
+          1000.0,
+          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Soft, 3.0))),
+        new Sphere(
+          new PosVector(0.0, 2.0, 0.0),
+          2.0,
+          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0)))
       };
 
       return new BvhNode(list, 0.0, 1.0);
+    }
+
+    /// <inheritdoc />
+    public IHitable GetLightHitable()
+    {
+      return new HitableList();
     }
 
     /// <inheritdoc />

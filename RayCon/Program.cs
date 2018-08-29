@@ -18,14 +18,14 @@ namespace RayCon
   public static class Program
   {
     private const string OutputDirectory = @"c:\repos\wkndray\images";
-    private const int Width = 800;
-    private const int Height = 600;
+    private const int Width = 500;
+    private const int Height = 500;
 
     public static void Main(string[] args)
     {
       int numThreads = Environment.ProcessorCount;
-      const int RayTraceDepth = 5;
-      const int NumSamples = 50;
+      const int RayTraceDepth = 50;
+      const int NumSamples = 100;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
       string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");

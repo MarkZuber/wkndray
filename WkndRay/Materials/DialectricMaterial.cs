@@ -60,7 +60,7 @@ namespace WkndRay.Materials
         scattered = new Ray(hitRecord.P, refracted);
       }
 
-      return new ScatterResult(true, attenuation, scattered);
+      return new ScatterResult(true, attenuation, scattered, null);
     }
 
     private double CalculateSchlickApproximation(double cosine, double refractionIndex)

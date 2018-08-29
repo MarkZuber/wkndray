@@ -9,7 +9,7 @@ using WkndRay.Materials;
 
 namespace WkndRay.Hitables
 {
-  public class XzRect : IHitable
+  public class XzRect : AbstractHitable
   {
     public XzRect(double x0, double x1, double z0, double z1, double k, IMaterial material)
     {
@@ -28,8 +28,7 @@ namespace WkndRay.Hitables
     public double K { get; }
     public IMaterial Material { get; }
 
-    /// <inheritdoc />
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       double t = (K - ray.Origin.Y) / ray.Direction.Y;
       if (t < tMin || t > tMax)
@@ -52,10 +51,29 @@ namespace WkndRay.Hitables
         Material);
     }
 
-    /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return new AABB(new PosVector(X0, K - 0.001, Z0), new PosVector(X1, K + 0.0001, Z1));
+    }
+
+    public override double GetPdfValue(PosVector origin, PosVector v)
+    {
+      HitRecord hr = Hit(new Ray(origin, v), 0.001, double.MaxValue);
+      if (hr == null)
+      {
+        return 0.0;
+      }
+
+      double area = (X1 - X0) * (Z1 - Z0);
+      double distanceSquared = hr.T * hr.T * v.MagnitudeSquared();
+      double cosine = Math.Abs(v.Dot(hr.Normal) / v.Magnitude());
+      return distanceSquared / (cosine * area);
+    }
+
+    public override PosVector Random(PosVector origin)
+    {
+      var randomPoint = new PosVector(X0 + RandomService.NextDouble() * (X1-X0), K, Z0 + RandomService.NextDouble() * (Z1-Z0));
+      return randomPoint - origin;
     }
   }
 }

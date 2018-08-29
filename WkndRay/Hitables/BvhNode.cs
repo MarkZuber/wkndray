@@ -7,10 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WkndRay.Hitables;
 
 namespace WkndRay
 {
-  public class BvhNode : IHitable
+  public class BvhNode : AbstractHitable
   {
     public BvhNode(IEnumerable<IHitable> hitables, double time0, double time1)
     {
@@ -60,7 +61,7 @@ namespace WkndRay
     public IHitable Right { get; }
     public AABB Box { get; }
 
-    public HitRecord Hit(Ray ray, double tMin, double tMax)
+    public override HitRecord Hit(Ray ray, double tMin, double tMax)
     {
       if (!Box.Hit(ray, tMin, tMax))
       {
@@ -86,7 +87,7 @@ namespace WkndRay
     }
 
     /// <inheritdoc />
-    public AABB GetBoundingBox(double t0, double t1)
+    public override AABB GetBoundingBox(double t0, double t1)
     {
       return Box;
     }

@@ -4,24 +4,29 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using WkndRay.Pdfs;
+
 namespace WkndRay.Materials
 {
   public class ScatterResult
   {
-    public ScatterResult(bool isScattered, ColorVector attenuation, Ray scatteredRay)
+    public ScatterResult(bool isScattered, ColorVector attenuation, Ray specularRay, IPdf pdf)
     {
       IsScattered = isScattered;
       Attenuation = attenuation;
-      ScatteredRay = scatteredRay;
+      SpecularRay = specularRay;
+      Pdf = pdf;
     }
 
     public static ScatterResult False()
     {
-      return new ScatterResult(false, ColorVector.Zero, new Ray(PosVector.Zero, PosVector.Zero));
+      return new ScatterResult(false, ColorVector.Zero, null, null);
     }
 
     public bool IsScattered { get; }
+    public Ray SpecularRay { get; }
+    public bool IsSpecular => SpecularRay != null;
     public ColorVector Attenuation { get; }
-    public Ray ScatteredRay { get; }
+    public IPdf Pdf { get; }  // probability distribution function
   }
 }

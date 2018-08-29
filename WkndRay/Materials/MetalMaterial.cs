@@ -21,10 +21,9 @@ namespace WkndRay.Materials
     public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
     {
       var reflected = rayIn.Direction.ToUnitVector().Reflect(hitRecord.Normal);
-      var scattered = new Ray(hitRecord.P, reflected + Fuzz * PosVector.GetRandomInUnitSphere());
+      var specularRay = new Ray(hitRecord.P, reflected + Fuzz * PosVector.GetRandomInUnitSphere());
       var attenuation = Albedo;
-      bool isScattered = scattered.Direction.Dot(hitRecord.Normal) > 0.0;
-      return new ScatterResult(isScattered, attenuation, scattered);
+      return new ScatterResult(true, attenuation, specularRay, null);
     }
   }
 }

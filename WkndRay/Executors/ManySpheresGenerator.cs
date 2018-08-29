@@ -139,7 +139,7 @@ namespace WkndRay.Executors
           var scatterResult = hr.Material.Scatter(ray, hr);
           if (scatterResult.IsScattered)
           {
-            return scatterResult.Attenuation * GetRayColor(scatterResult.ScatteredRay, world, depth + 1);
+            return scatterResult.Attenuation * GetRayColor(scatterResult.SpecularRay, world, depth + 1);
           }
         }
 

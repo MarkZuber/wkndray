@@ -19,19 +19,19 @@ namespace WkndRay
 
     public void Render(IPixelBuffer pixelArray, IScene scene, RenderConfig renderConfig)
     {
-      Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), renderConfig, scene.GetBackgroundFunc());
+      Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), scene.GetLightHitable(), renderConfig, scene.GetBackgroundFunc());
     }
 
-    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+    public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
       Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
 
-      RenderMultiThreaded(pixelArray, camera, world, renderConfig, backgroundFunc);
+      RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
     }
 
-    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+    private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
     {
-      var rayTracer = new RayTracer(camera, world, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
+      var rayTracer = new RayTracer(camera, world, lightHitable, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
       ThreadPool.SetMinThreads(renderConfig.NumThreads * 3, renderConfig.NumThreads * 3);
 
       var queueDataAvailableEvent = new AutoResetEvent(false);
@@ -92,38 +92,46 @@ namespace WkndRay
       ConcurrentQueue<RenderResult> resultQueue,
       AutoResetEvent queueDataAvailableEvent)
     {
-      var incompletePixels = new HashSet<Tuple<int, int>>();
-      for (var y = 0; y < pixelBuffer.Height; y++)
+      try
       {
-        for (int x = 0; x < pixelBuffer.Width; x++)
+        var incompletePixels = new HashSet<Tuple<int, int>>();
+        for (var y = 0; y < pixelBuffer.Height; y++)
         {
-          incompletePixels.Add(Tuple.Create(x, y));
-        }
-      }
-      var totalPixels = Convert.ToDouble(pixelBuffer.Height * pixelBuffer.Width);
-
-      int previousPercent = 0;
-
-      while (incompletePixels.Count > 0)
-      {
-        queueDataAvailableEvent.WaitOne(TimeSpan.FromMilliseconds(1000));
-
-        while (resultQueue.TryDequeue(out var renderResult))
-        {
-          // assert pixelArray.Width == renderLineResult.Count
-          pixelBuffer.SetPixelColor(renderResult.X, renderResult.Y, renderResult.Color);
-          incompletePixels.Remove(Tuple.Create(renderResult.X, renderResult.Y));
-
-          var completePixels = Convert.ToDouble(totalPixels - incompletePixels.Count);
-          var percentComplete = (completePixels / totalPixels) * 100.0;
-          int intPercent = Convert.ToInt32(percentComplete);
-          if (intPercent > previousPercent)
+          for (int x = 0; x < pixelBuffer.Width; x++)
           {
-            previousPercent = intPercent;
-            Console.WriteLine($"Percent Complete: {percentComplete:F}%");
-            Progress?.Invoke(this, new RenderProgressEventArgs(percentComplete));
+            incompletePixels.Add(Tuple.Create(x, y));
           }
         }
+
+        var totalPixels = Convert.ToDouble(pixelBuffer.Height * pixelBuffer.Width);
+
+        int previousPercent = 0;
+
+        while (incompletePixels.Count > 0)
+        {
+          queueDataAvailableEvent.WaitOne(TimeSpan.FromMilliseconds(1000));
+
+          while (resultQueue.TryDequeue(out var renderResult))
+          {
+            // assert pixelArray.Width == renderLineResult.Count
+            pixelBuffer.SetPixelColor(renderResult.X, renderResult.Y, renderResult.Color);
+            incompletePixels.Remove(Tuple.Create(renderResult.X, renderResult.Y));
+
+            var completePixels = Convert.ToDouble(totalPixels - incompletePixels.Count);
+            var percentComplete = (completePixels / totalPixels) * 100.0;
+            int intPercent = Convert.ToInt32(percentComplete);
+            if (intPercent > previousPercent)
+            {
+              previousPercent = intPercent;
+              Console.WriteLine($"Percent Complete: {percentComplete:F}%");
+              Progress?.Invoke(this, new RenderProgressEventArgs(percentComplete));
+            }
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
       }
     }
 
