@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace WkndRay
 {

@@ -26,6 +26,18 @@ namespace WkndRay
     {
       Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
 
+      if (renderConfig.TwoPhase)
+      {
+        // do a much lighter weight first pass first.
+        RenderMultiThreaded(
+          pixelArray,
+          camera,
+          world,
+          lightHitable,
+          new RenderConfig(renderConfig.NumThreads, 5, 1),
+          backgroundFunc);
+      }
+
       RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
     }
 

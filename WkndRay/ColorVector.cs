@@ -31,6 +31,11 @@ namespace WkndRay
     public static ColorVector Zero => new ColorVector(0.0, 0.0, 0.0);
     public static ColorVector One => new ColorVector(1.0, 1.0, 1.0);
 
+    public static ColorVector FromBytes(byte r, byte g, byte b)
+    {
+      return new ColorVector(ByteToColor(r), ByteToColor(g), ByteToColor(b));
+    }
+
     public ColorVector ClampColor()
     {
       return Clamp(ColorVector.Zero, ColorVector.One);
@@ -53,6 +58,11 @@ namespace WkndRay
         Console.WriteLine(ex);
         throw;
       }
+    }
+
+    private static double ByteToColor(byte c)
+    {
+      return Convert.ToDouble(c) / 255.0;
     }
 
     public override string ToString()

@@ -18,5 +18,7 @@ namespace WkndRay
     public int NumThreads { get; }
     public int RayTraceDepth { get; }
     public int NumSamples { get; }
+
+    public bool TwoPhase { get; set; }
   }
 }
