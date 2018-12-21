@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using WkndRay;
@@ -18,6 +19,7 @@ namespace RayWpf
   public partial class MainWindow : Window
   {
     private const string OutputDirectory = @"c:\repos\wkndray\images";
+    private const string NffDirectory = @"c:\repos\wkndray\nff";
 
     public MainWindow()
     {
@@ -27,16 +29,17 @@ namespace RayWpf
     private void RenderButton_OnClick(object sender, RoutedEventArgs e)
     {
       int numThreads = Environment.ProcessorCount;
-      const int ImageWidth = 500;
-      const int ImageHeight = 500;
+      const int ImageWidth = 100;
+      const int ImageHeight = 100;
       const int RayTraceDepth = 50;
       const int NumSamples = 100;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples)
       {
-        TwoPhase = true
+        TwoPhase = false
       };
 
-      var scene = new CornellBoxScene();
+      // var scene = new CornellBoxScene();
+      var scene = NffParser.ParseFile(Path.Combine(NffDirectory, "mountain.nff"), ImageWidth, ImageHeight);
 
       var pixelBuffer = new WpfPixelBuffer(Dispatcher, ImageWidth, ImageHeight);
       RenderImage.Source = pixelBuffer.WriteableBitmap;
