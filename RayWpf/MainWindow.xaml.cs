@@ -29,17 +29,17 @@ namespace RayWpf
     private void RenderButton_OnClick(object sender, RoutedEventArgs e)
     {
       int numThreads = Environment.ProcessorCount;
-      const int ImageWidth = 100;
-      const int ImageHeight = 100;
+      const int ImageWidth = 500;
+      const int ImageHeight = 500;
       const int RayTraceDepth = 50;
-      const int NumSamples = 100;
+      const int NumSamples = 1000;
       var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples)
       {
         TwoPhase = false
       };
 
-      // var scene = new CornellBoxScene();
-      var scene = NffParser.ParseFile(Path.Combine(NffDirectory, "mountain.nff"), ImageWidth, ImageHeight);
+      var scene = new CornellBoxScene();
+      // var scene = NffParser.ParseFile(Path.Combine(NffDirectory, "balls5.nff"), ImageWidth, ImageHeight);
 
       var pixelBuffer = new WpfPixelBuffer(Dispatcher, ImageWidth, ImageHeight);
       RenderImage.Source = pixelBuffer.WriteableBitmap;
