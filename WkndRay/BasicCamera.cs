@@ -6,24 +6,24 @@
 
 namespace WkndRay
 {
-  public class BasicCamera
-  {
-    public BasicCamera(PosVector origin, PosVector lowerLeftCorner, PosVector horizontal, PosVector vertical)
+    public class BasicCamera
     {
-      Origin = origin;
-      LowerLeftCorner = lowerLeftCorner;
-      Horizontal = horizontal;
-      Vertical = vertical;
-    }
+        public BasicCamera(PosVector origin, PosVector lowerLeftCorner, PosVector horizontal, PosVector vertical)
+        {
+            Origin = origin;
+            LowerLeftCorner = lowerLeftCorner;
+            Horizontal = horizontal;
+            Vertical = vertical;
+        }
 
-    public PosVector Origin { get; }
-    public PosVector LowerLeftCorner { get; }
-    public PosVector Horizontal { get; }
-    public PosVector Vertical { get; }
+        public PosVector Origin { get; }
+        public PosVector LowerLeftCorner { get; }
+        public PosVector Horizontal { get; }
+        public PosVector Vertical { get; }
 
-    public Ray GetRay(double u, double v)
-    {
-      return new Ray(Origin, LowerLeftCorner + (u * Horizontal) + (v * Vertical) - Origin);
+        public Ray GetRay(double u, double v)
+        {
+            return new Ray(Origin, LowerLeftCorner + (u * Horizontal) + (v * Vertical) - Origin);
+        }
     }
-  }
 }

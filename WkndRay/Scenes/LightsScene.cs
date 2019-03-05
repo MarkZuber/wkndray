@@ -11,38 +11,38 @@ using WkndRay.Textures;
 
 namespace WkndRay.Scenes
 {
-  public class LightsScene : IScene
-  {
-    private readonly string _globeImagePath;
-
-    public LightsScene(string globeImagePath)
+    public class LightsScene : IScene
     {
-      _globeImagePath = globeImagePath;
-    }
+        private readonly string _globeImagePath;
 
-    /// <inheritdoc />
-    public Camera GetCamera(int imageWidth, int imageHeight)
-    {
-      var lookFrom = new PosVector(13.0, 2.0, 3.0);
-      var lookAt = PosVector.Zero;
-      double distToFocus = 10.0;
-      double aperture = 0.0;
-      return new Camera(
-        lookFrom,
-        lookAt,
-        PosVector.UnitY,
-        40.0,
-        Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
-        aperture,
-        distToFocus);
-    }
+        public LightsScene(string globeImagePath)
+        {
+            _globeImagePath = globeImagePath;
+        }
 
-    /// <inheritdoc />
-    public IHitable GetWorld()
-    {
-      var globe = PixelBuffer.FromFile(_globeImagePath);
+        /// <inheritdoc />
+        public Camera GetCamera(int imageWidth, int imageHeight)
+        {
+            var lookFrom = new PosVector(13.0, 2.0, 3.0);
+            var lookAt = PosVector.Zero;
+            double distToFocus = 10.0;
+            double aperture = 0.0;
+            return new Camera(
+              lookFrom,
+              lookAt,
+              PosVector.UnitY,
+              40.0,
+              Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
+              aperture,
+              distToFocus);
+        }
 
-      var list = new HitableList()
+        /// <inheritdoc />
+        public IHitable GetWorld()
+        {
+            var globe = PixelBuffer.FromFile(_globeImagePath);
+
+            var list = new HitableList()
       {
         new Sphere(
           new PosVector(0.0, -1000.0, 0.0),
@@ -56,19 +56,19 @@ namespace WkndRay.Scenes
         new XyRect(3.0, 5.0, 1.0, 3.0, -2.0, new DiffuseLight(new ColorTexture(4.0, 4.0, 4.0)))
       };
 
-      return new BvhNode(list, 0.0, 1.0);
-    }
+            return new BvhNode(list, 0.0, 1.0);
+        }
 
-    /// <inheritdoc />
-    public IHitable GetLightHitable()
-    {
-      return new HitableList();
-    }
+        /// <inheritdoc />
+        public IHitable GetLightHitable()
+        {
+            return new HitableList();
+        }
 
-    /// <inheritdoc />
-    public Func<Ray, ColorVector> GetBackgroundFunc()
-    {
-      return ray => ColorVector.One * 0.05;
+        /// <inheritdoc />
+        public Func<Ray, ColorVector> GetBackgroundFunc()
+        {
+            return ray => ColorVector.One * 0.05;
+        }
     }
-  }
 }

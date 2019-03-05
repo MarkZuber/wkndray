@@ -6,20 +6,20 @@
 
 namespace WkndRay
 {
-  public class Ray
-  {
-    public Ray(PosVector origin, PosVector direction)
+    public class Ray
     {
-      Origin = origin;
-      Direction = direction;
-    }
+        public Ray(PosVector origin, PosVector direction)
+        {
+            Origin = origin;
+            Direction = direction;
+        }
 
-    public PosVector Origin { get; }
-    public PosVector Direction { get; }
+        public PosVector Origin { get; }
+        public PosVector Direction { get; }
 
-    public PosVector GetPointAtParameter(double t)
-    {
-      return Origin + (t * Direction);
+        public PosVector GetPointAtParameter(double t)
+        {
+            return Origin + (t * Direction);
+        }
     }
-  }
 }

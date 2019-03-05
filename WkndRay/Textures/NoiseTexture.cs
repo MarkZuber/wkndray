@@ -6,22 +6,22 @@
 
 namespace WkndRay.Textures
 {
-  public class NoiseTexture : ITexture
-  {
-    private readonly Perlin _noise = new Perlin();
-
-    public NoiseTexture(bool interpolate, double scale)
+    public class NoiseTexture : ITexture
     {
-      Interpolate = interpolate;
-      Scale = scale;
-    }
+        private readonly Perlin _noise = new Perlin();
 
-    public bool Interpolate { get; }
-    public double Scale { get; }
+        public NoiseTexture(bool interpolate, double scale)
+        {
+            Interpolate = interpolate;
+            Scale = scale;
+        }
 
-    public ColorVector GetValue(Point2D uvCoords, PosVector p)
-    {
-      return ColorVector.One * _noise.Noise(Scale * p, Interpolate);
+        public bool Interpolate { get; }
+        public double Scale { get; }
+
+        public ColorVector GetValue(Point2D uvCoords, PosVector p)
+        {
+            return ColorVector.One * _noise.Noise(Scale * p, Interpolate);
+        }
     }
-  }
 }

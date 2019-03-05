@@ -8,11 +8,11 @@ using System;
 
 namespace WkndRay.Scenes
 {
-  public interface IScene
-  {
-    Camera GetCamera(int imageWidth, int imageHeight);
-    IHitable GetWorld();
-    IHitable GetLightHitable();
-    Func<Ray, ColorVector> GetBackgroundFunc();
-  }
+    public interface IScene
+    {
+        Camera GetCamera(int imageWidth, int imageHeight);
+        IHitable GetWorld();
+        IHitable GetLightHitable();
+        Func<Ray, ColorVector> GetBackgroundFunc();
+    }
 }

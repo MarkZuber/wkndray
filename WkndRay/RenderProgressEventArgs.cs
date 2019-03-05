@@ -8,13 +8,13 @@ using System;
 
 namespace WkndRay
 {
-  public class RenderProgressEventArgs : EventArgs
-  {
-    public RenderProgressEventArgs(double percentComplete)
+    public class RenderProgressEventArgs : EventArgs
     {
-      PercentComplete = percentComplete;
-    }
+        public RenderProgressEventArgs(double percentComplete)
+        {
+            PercentComplete = percentComplete;
+        }
 
-    public double PercentComplete { get; }
-  }
+        public double PercentComplete { get; }
+    }
 }

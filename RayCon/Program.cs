@@ -15,52 +15,52 @@ using WkndRay.Scenes;
 
 namespace RayCon
 {
-  public static class Program
-  {
-    private const string OutputDirectory = @"c:\repos\wkndray\images";
-    private const int Width = 500;
-    private const int Height = 500;
-
-    public static void Main(string[] args)
+    public static class Program
     {
-      int numThreads = Environment.ProcessorCount;
-      const int RayTraceDepth = 50;
-      const int NumSamples = 100;
-      var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
+        private const string OutputDirectory = @"c:\repos\wkndray\images";
+        private const int Width = 500;
+        private const int Height = 500;
 
-      string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");
-      // var scene = new ManySpheresScene();
-      // var scene = new NoiseSpheresScene();
-      // var scene = new ImageTextureScene(globeImagePath);
-      // var scene = new LightsScene(globeImagePath);
-      // var scene = new CornellBoxScene();
-      var scene = new CornellBoxWithSmokeScene();
-      IRenderer renderer = new PerPixelRenderer();
-      var pixelBuffer = new PixelBuffer(Width, Height);
+        public static void Main(string[] args)
+        {
+            int numThreads = Environment.ProcessorCount;
+            const int RayTraceDepth = 50;
+            const int NumSamples = 100;
+            var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);
 
-      string name = scene.GetType().Name.ToLowerInvariant();
-      Console.WriteLine($"Executing {name} at resolution ({pixelBuffer.Width},{pixelBuffer.Height})");
-      Console.WriteLine($"  Num Threads   = {numThreads}");
-      Console.WriteLine($"  RayTraceDepth = {RayTraceDepth}");
-      Console.WriteLine($"  Num Samples   = {NumSamples}");
+            string globeImagePath = Path.Combine(OutputDirectory, "globetex.jpg");
+            // var scene = new ManySpheresScene();
+            // var scene = new NoiseSpheresScene();
+            // var scene = new ImageTextureScene(globeImagePath);
+            // var scene = new LightsScene(globeImagePath);
+            // var scene = new CornellBoxScene();
+            var scene = new CornellBoxWithSmokeScene();
+            IRenderer renderer = new PerPixelRenderer();
+            var pixelBuffer = new PixelBuffer(Width, Height);
 
-      var sw = Stopwatch.StartNew();
-      renderer.Render(pixelBuffer, scene, renderConfig);
-      sw.Stop();
-      Console.WriteLine();
-      Console.WriteLine($"Render complete: {sw.ElapsedMilliseconds}ms");
+            string name = scene.GetType().Name.ToLowerInvariant();
+            Console.WriteLine($"Executing {name} at resolution ({pixelBuffer.Width},{pixelBuffer.Height})");
+            Console.WriteLine($"  Num Threads   = {numThreads}");
+            Console.WriteLine($"  RayTraceDepth = {RayTraceDepth}");
+            Console.WriteLine($"  Num Samples   = {NumSamples}");
 
-      string outputPath = Path.Combine(OutputDirectory, $"{name}.png");
-      Console.WriteLine($"Saving image to {outputPath}");
-      pixelBuffer.SaveAsFile(outputPath);
+            var sw = Stopwatch.StartNew();
+            renderer.Render(pixelBuffer, scene, renderConfig);
+            sw.Stop();
+            Console.WriteLine();
+            Console.WriteLine($"Render complete: {sw.ElapsedMilliseconds}ms");
 
-      // RunExecutors();
-    }
+            string outputPath = Path.Combine(OutputDirectory, $"{name}.png");
+            Console.WriteLine($"Saving image to {outputPath}");
+            pixelBuffer.SaveAsFile(outputPath);
 
-    public static void RunExecutors()
-    {
-      const int NumSamples = 100;
-      var executors = new List<IExecutor>
+            // RunExecutors();
+        }
+
+        public static void RunExecutors()
+        {
+            const int NumSamples = 100;
+            var executors = new List<IExecutor>
       {
         new ManySpheresGenerator(NumSamples),
         //new BetterCameraGenerator(NumSamples),
@@ -74,13 +74,13 @@ namespace RayCon
         //new SimplePatternGenerator(),
       };
 
-      foreach (var executor in executors)
-      {
-        string name = executor.GetType().Name.ToLowerInvariant();
-        Console.WriteLine($"Executing {name}");
-        var pixelBuffer = executor.Execute(Width, Height);
-        pixelBuffer.SaveAsFile(Path.Combine(OutputDirectory, $"{name}.png"));
-      }
+            foreach (var executor in executors)
+            {
+                string name = executor.GetType().Name.ToLowerInvariant();
+                Console.WriteLine($"Executing {name}");
+                var pixelBuffer = executor.Execute(Width, Height);
+                pixelBuffer.SaveAsFile(Path.Combine(OutputDirectory, $"{name}.png"));
+            }
+        }
     }
-  }
 }

@@ -6,15 +6,15 @@
 
 namespace WkndRay
 {
-  public class Point2D
-  {
-    public Point2D(double u, double v)
+    public class Point2D
     {
-      U = u;
-      V = v;
-    }
+        public Point2D(double u, double v)
+        {
+            U = u;
+            V = v;
+        }
 
-    public double U { get; }
-    public double V { get; }
-  }
+        public double U { get; }
+        public double V { get; }
+    }
 }

@@ -6,19 +6,19 @@
 
 namespace WkndRay
 {
-  public class RenderConfig
-  {
-    public RenderConfig(int numThreads, int rayTraceDepth, int numSamples)
+    public class RenderConfig
     {
-      NumThreads = numThreads;
-      RayTraceDepth = rayTraceDepth;
-      NumSamples = numSamples;
+        public RenderConfig(int numThreads, int rayTraceDepth, int numSamples)
+        {
+            NumThreads = numThreads;
+            RayTraceDepth = rayTraceDepth;
+            NumSamples = numSamples;
+        }
+
+        public int NumThreads { get; }
+        public int RayTraceDepth { get; }
+        public int NumSamples { get; }
+
+        public bool TwoPhase { get; set; }
     }
-
-    public int NumThreads { get; }
-    public int RayTraceDepth { get; }
-    public int NumSamples { get; }
-
-    public bool TwoPhase { get; set; }
-  }
 }

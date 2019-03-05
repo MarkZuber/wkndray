@@ -6,12 +6,12 @@
 
 namespace WkndRay.Pdfs
 {
-  /// <summary>
-  ///   Probability Distribution Function
-  /// </summary>
-  public interface IPdf
-  {
-    double GetValue(PosVector direction);
-    PosVector Generate();
-  }
+    /// <summary>
+    ///   Probability Distribution Function
+    /// </summary>
+    public interface IPdf
+    {
+        double GetValue(PosVector direction);
+        PosVector Generate();
+    }
 }

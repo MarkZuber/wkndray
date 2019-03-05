@@ -8,25 +8,25 @@ using WkndRay.Pdfs;
 
 namespace WkndRay.Materials
 {
-  public class ScatterResult
-  {
-    public ScatterResult(bool isScattered, ColorVector attenuation, Ray specularRay, IPdf pdf)
+    public class ScatterResult
     {
-      IsScattered = isScattered;
-      Attenuation = attenuation;
-      SpecularRay = specularRay;
-      Pdf = pdf;
-    }
+        public ScatterResult(bool isScattered, ColorVector attenuation, Ray specularRay, IPdf pdf)
+        {
+            IsScattered = isScattered;
+            Attenuation = attenuation;
+            SpecularRay = specularRay;
+            Pdf = pdf;
+        }
 
-    public static ScatterResult False()
-    {
-      return new ScatterResult(false, ColorVector.Zero, null, null);
-    }
+        public static ScatterResult False()
+        {
+            return new ScatterResult(false, ColorVector.Zero, null, null);
+        }
 
-    public bool IsScattered { get; }
-    public Ray SpecularRay { get; }
-    public bool IsSpecular => SpecularRay != null;
-    public ColorVector Attenuation { get; }
-    public IPdf Pdf { get; }  // probability distribution function
-  }
+        public bool IsScattered { get; }
+        public Ray SpecularRay { get; }
+        public bool IsSpecular => SpecularRay != null;
+        public ColorVector Attenuation { get; }
+        public IPdf Pdf { get; }  // probability distribution function
+    }
 }

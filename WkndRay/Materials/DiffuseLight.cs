@@ -8,23 +8,23 @@ using WkndRay.Textures;
 
 namespace WkndRay.Materials
 {
-  public class DiffuseLight : AbstractMaterial
-  {
-    public DiffuseLight(ITexture texture)
+    public class DiffuseLight : AbstractMaterial
     {
-      Texture = texture;
-    }
+        public DiffuseLight(ITexture texture)
+        {
+            Texture = texture;
+        }
 
-    public ITexture Texture { get; }
+        public ITexture Texture { get; }
 
-    public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
-    {
-      return ScatterResult.False();
-    }
+        public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
+        {
+            return ScatterResult.False();
+        }
 
-    public override ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
-    {
-      return hitRecord.Normal.Dot(rayIn.Direction) < 0.0 ? Texture.GetValue(uvCoords, p) : ColorVector.Zero;
+        public override ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
+        {
+            return hitRecord.Normal.Dot(rayIn.Direction) < 0.0 ? Texture.GetValue(uvCoords, p) : ColorVector.Zero;
+        }
     }
-  }
 }

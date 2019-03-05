@@ -6,18 +6,18 @@
 
 namespace WkndRay.Materials
 {
-  public abstract class AbstractMaterial : IMaterial
-  {
-    public abstract ScatterResult Scatter(Ray rayIn, HitRecord hitRecord);
-
-    public virtual double ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
+    public abstract class AbstractMaterial : IMaterial
     {
-      return 0.0;
-    }
+        public abstract ScatterResult Scatter(Ray rayIn, HitRecord hitRecord);
 
-    public virtual ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
-    {
-      return ColorVector.Zero;
+        public virtual double ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
+        {
+            return 0.0;
+        }
+
+        public virtual ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
+        {
+            return ColorVector.Zero;
+        }
     }
-  }
 }

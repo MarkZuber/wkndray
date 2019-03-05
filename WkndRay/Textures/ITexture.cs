@@ -4,8 +4,8 @@ using System.Text;
 
 namespace WkndRay.Textures
 {
-  public interface ITexture
-  {
-    ColorVector GetValue(Point2D uvCoords, PosVector p);
-  }
+    public interface ITexture
+    {
+        ColorVector GetValue(Point2D uvCoords, PosVector p);
+    }
 }
