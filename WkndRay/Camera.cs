@@ -34,7 +34,7 @@ namespace WkndRay
       W = (lookFrom - lookAt).ToUnitVector();
       U = up.Cross(W).ToUnitVector();
       V = W.Cross(U);
-      LowerLeftCorner = Origin - halfWidth * focusDistance * U - halfHeight * focusDistance * V - focusDistance * W;
+      LowerLeftCorner = Origin - (halfWidth * focusDistance * U) - (halfHeight * focusDistance * V) - (focusDistance * W);
       Horizontal = 2.0 * halfWidth * focusDistance * U;
       Vertical = 2.0 * halfHeight * focusDistance * V;
     }
@@ -51,8 +51,8 @@ namespace WkndRay
     public Ray GetRay(double s, double t)
     {
       var rd = LensRadius * PosVector.GetRandomInUnitSphere();
-      var offset = U * rd.X + V * rd.Y;
-      return new Ray(Origin + offset, LowerLeftCorner + s * Horizontal + t * Vertical - Origin - offset);
+      var offset = (U * rd.X) + (V * rd.Y);
+      return new Ray(Origin + offset, LowerLeftCorner + (s * Horizontal) + (t * Vertical) - Origin - offset);
     }
   }
 }

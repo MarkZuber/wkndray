@@ -64,7 +64,7 @@ namespace WkndRay.Hitables
       double hitDistance = -(1.0 / Density) * Math.Log(RandomService.NextDouble());
       if (hitDistance < distanceInsideBoundary)
       {
-        double recT = rec1T + hitDistance / ray.Direction.Magnitude();
+        double recT = rec1T + (hitDistance / ray.Direction.Magnitude());
 
         return new HitRecord(
           recT,

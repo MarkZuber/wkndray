@@ -36,9 +36,9 @@ namespace WkndRay
         int k = Convert.ToInt32(Math.Floor(p.Z));
         // Hermite cubic to round off the interpolation
         // to reduce Mach bands.
-        u = u * u * (3.0 - 2.0 * u);
-        v = v * v * (3.0 - 2.0 * v);
-        w = w * w * (3.0 - 2.0 * w);
+        u = u * u * (3.0 - (2.0 * u));
+        v = v * v * (3.0 - (2.0 * v));
+        w = w * w * (3.0 - (2.0 * w));
 
         var o = new double[2, 2, 2];
         for (int di = 0; di < 2; di++)
@@ -75,9 +75,9 @@ namespace WkndRay
           for (int k = 0; k < 2; k++)
           {
             double dubk = Convert.ToDouble(k);
-            accum += (dubi * u + (1.0 - dubi) * (1.0 - u)) *
-                     (dubj * v + (1.0 - dubj) * (1.0 - v)) *
-                     (dubk * w + (1.0 - dubk) * (1.0 - w)) * o[i, j, k];
+            accum += ((dubi * u) + ((1.0 - dubi) * (1.0 - u))) *
+                     ((dubj * v) + ((1.0 - dubj) * (1.0 - v))) *
+                     ((dubk * w) + ((1.0 - dubk) * (1.0 - w))) * o[i, j, k];
           }
         }
       }

@@ -36,8 +36,8 @@ namespace WkndRay.Hitables
         return null;
       }
 
-      double y = ray.Origin.Y + t * ray.Direction.Y;
-      double z = ray.Origin.Z + t * ray.Direction.Z;
+      double y = ray.Origin.Y + (t * ray.Direction.Y);
+      double z = ray.Origin.Z + (t * ray.Direction.Z);
       if (y < Y0 || y > Y1 || z < Z0 || z > Z1)
       {
         return null;

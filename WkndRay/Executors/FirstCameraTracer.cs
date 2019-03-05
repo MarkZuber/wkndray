@@ -81,7 +81,7 @@ namespace WkndRay.Executors
       {
         var unitDirection = ray.Direction.ToUnitVector();
         double t = 0.5 * (unitDirection.Y + 1.0);
-        return (((1.0 - t) * PosVector.One) + t * new PosVector(0.5, 0.7, 1.0)).ToColorVector();
+        return (((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0))).ToColorVector();
       }
     }
   }

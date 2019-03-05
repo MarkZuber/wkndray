@@ -17,12 +17,12 @@ namespace WkndRay
 
     public PosVector Local(double a, double b, double c)
     {
-      return a * U + b * V + c * W;
+      return (a * U) + (b * V) + (c * W);
     }
 
     public PosVector Local(PosVector a)
     {
-      return a.X * U + a.Y * V + a.Z * W;
+      return (a.X * U) + (a.Y * V) + (a.Z * W);
     }
 
     private OrthoNormalBase(PosVector u, PosVector v, PosVector w)

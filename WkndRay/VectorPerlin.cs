@@ -63,9 +63,9 @@ namespace WkndRay
 
     private double PerlinInterpolate(PosVector[,,] c, double u, double v, double w)
     {
-      double uu = u * u * (3.0 - 2.0 * u);
-      double vv = v * v * (3.0 - 2.0 * v);
-      double ww = w * w * (3.0 - 2.0 * w);
+      double uu = u * u * (3.0 - (2.0 * u));
+      double vv = v * v * (3.0 - (2.0 * v));
+      double ww = w * w * (3.0 - (2.0 * w));
       double accum = 0.0;
       for (int i = 0; i < 2; i++)
       {
@@ -77,10 +77,10 @@ namespace WkndRay
           {
             double dubk = Convert.ToDouble(k);
             PosVector weightVec = new PosVector(u - dubi, v - dubj, w - dubk);
-            accum += (dubi * uu + (1.0 - dubi) * (1.0 - uu)) * 
-                     (dubj * vv + (1.0 - dubj) * (1.0 - vv)) *
-                     (dubk * ww + (1.0 - dubk) * (1.0 - ww)) * 
-                     (c[i, j, k].Dot(weightVec));
+            accum += ((dubi * uu) + ((1.0 - dubi) * (1.0 - uu))) * 
+                     ((dubj * vv) + ((1.0 - dubj) * (1.0 - vv))) *
+                     ((dubk * ww) + ((1.0 - dubk) * (1.0 - ww))) * 
+                     c[i, j, k].Dot(weightVec);
           }
         }
       }
@@ -94,9 +94,9 @@ namespace WkndRay
       for (int i = 0; i < 256; i++)
       {
         p[i] = new PosVector(
-          -1.0 + 2.0 * RandomService.NextDouble(),
-          -1.0 + 2.0 * RandomService.NextDouble(),
-          -1.0 + 2.0 * RandomService.NextDouble()).ToUnitVector();
+          -1.0 + (2.0 * RandomService.NextDouble()),
+          -1.0 + (2.0 * RandomService.NextDouble()),
+          -1.0 + (2.0 * RandomService.NextDouble())).ToUnitVector();
       }
 
       return p;

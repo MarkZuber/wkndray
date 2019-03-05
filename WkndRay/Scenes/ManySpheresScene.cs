@@ -49,7 +49,7 @@ namespace WkndRay.Scenes
           var center = new PosVector(
             Convert.ToDouble(a) * RandomService.NextDouble(),
             0.2,
-            Convert.ToDouble(b) + 0.9 * RandomService.NextDouble());
+            Convert.ToDouble(b) + (0.9 * RandomService.NextDouble()));
 
           if ((center - new PosVector(4.0, 0.2, 0.0)).Magnitude() > 0.9)
           {
@@ -109,7 +109,7 @@ namespace WkndRay.Scenes
       {
         var unitDirection = ray.Direction.ToUnitVector();
         double t = 0.5 * (unitDirection.Y + 1.0);
-        return (((1.0 - t) * ColorVector.One) + t * new ColorVector(0.5, 0.7, 1.0));
+        return ((1.0 - t) * ColorVector.One) + (t * new ColorVector(0.5, 0.7, 1.0));
       };
     }
   }

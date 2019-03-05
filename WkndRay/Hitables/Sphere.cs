@@ -28,18 +28,18 @@ namespace WkndRay
       var oc = ray.Origin - Center;
       double a = ray.Direction.Dot(ray.Direction);
       double b = oc.Dot(ray.Direction);
-      double c = oc.Dot(oc) - Radius * Radius;
-      double discriminant = b * b - a * c;
+      double c = oc.Dot(oc) - (Radius * Radius);
+      double discriminant = (b * b) - (a * c);
       if (discriminant > 0.0)
       {
-        double temp = (-b - Math.Sqrt(b * b - a * c)) / a;
+        double temp = (-b - Math.Sqrt((b * b) - (a * c))) / a;
         if (temp < tMax & temp > tMin)
         {
           var p = ray.GetPointAtParameter(temp);
           return new HitRecord(temp, p, (p - Center) / Radius, GetSphereUv(p), Material);
         }
 
-        temp = (-b + Math.Sqrt(b * b - a * c)) / a;
+        temp = (-b + Math.Sqrt((b * b) - (a * c))) / a;
         if (temp < tMax && temp > tMin)
         {
           var p = ray.GetPointAtParameter(temp);
@@ -63,7 +63,7 @@ namespace WkndRay
         return 0.0;
       }
 
-      double cosThetaMax = Math.Sqrt(1.0 - Radius * Radius / (Center - origin).MagnitudeSquared());
+      double cosThetaMax = Math.Sqrt(1.0 - (Radius * Radius / (Center - origin).MagnitudeSquared()));
       double solidAngle = 2.0 * Math.PI * (1.0 - cosThetaMax);
       return 1.0 / solidAngle;
     }
@@ -81,8 +81,8 @@ namespace WkndRay
       var punit = p.ToUnitVector();
       double phi = Math.Atan2(punit.Z, punit.X);
       double theta = Math.Asin(punit.Y);
-      double u = 1.0 - (phi + Math.PI) / (2.0 * Math.PI);
-      double v = (theta + Math.PI / 2.0) / Math.PI;
+      double u = 1.0 - ((phi + Math.PI) / (2.0 * Math.PI));
+      double v = (theta + (Math.PI / 2.0)) / Math.PI;
       return new Point2D(u, v);
     }
   }

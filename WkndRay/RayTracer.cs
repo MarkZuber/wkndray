@@ -87,8 +87,8 @@ namespace WkndRay
               var p = new MixturePdf(p0, scatterResult.Pdf);
               var scattered = new Ray(hr.P, p.Generate());
               double pdfValue = p.GetValue(scattered.Direction);
-              return emitted + scatterResult.Attenuation * hr.Material.ScatteringPdf(ray, hr, scattered) *
-                     GetRayColor(scattered, world, depth + 1) / pdfValue;
+              return emitted + (scatterResult.Attenuation * hr.Material.ScatteringPdf(ray, hr, scattered) *
+                     GetRayColor(scattered, world, depth + 1) / pdfValue);
             }
           }
         }

@@ -117,7 +117,7 @@ namespace RayWpf
       unsafe
       {
         // Get a pointer to the back buffer.
-        int pBackBuffer = (int)WriteableBitmap.BackBuffer;
+        long pBackBuffer = (long)WriteableBitmap.BackBuffer;
 
         // Find the address of the pixel to draw.
         pBackBuffer += y * WriteableBitmap.BackBufferStride;
@@ -130,7 +130,7 @@ namespace RayWpf
         colorData |= ColorToInt(clamped.B) << 0; // B
 
         // Assign the color data to the pixel.
-        *((int*)pBackBuffer) = colorData;
+        *(long*)pBackBuffer = colorData;
       }
     }
   }

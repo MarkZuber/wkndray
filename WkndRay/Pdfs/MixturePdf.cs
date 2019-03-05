@@ -19,7 +19,7 @@ namespace WkndRay.Pdfs
 
     public double GetValue(PosVector direction)
     {
-      return 0.5 * P0.GetValue(direction) + 0.5 * P1.GetValue(direction);
+      return (0.5 * P0.GetValue(direction)) + (0.5 * P1.GetValue(direction));
     }
 
     public PosVector Generate()

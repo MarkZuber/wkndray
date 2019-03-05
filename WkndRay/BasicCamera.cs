@@ -23,7 +23,7 @@ namespace WkndRay
 
     public Ray GetRay(double u, double v)
     {
-      return new Ray(Origin, LowerLeftCorner + u * Horizontal + v * Vertical - Origin);
+      return new Ray(Origin, LowerLeftCorner + (u * Horizontal) + (v * Vertical) - Origin);
     }
   }
 }

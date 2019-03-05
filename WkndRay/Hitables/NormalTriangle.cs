@@ -70,7 +70,7 @@ namespace WkndRay.Hitables
       var t = e2.Dot(qvec) * invDet;
       if (t > 0.00001 && t < tMax && t > tMin)
       {
-        var normal = u * Normals[1] + v * Normals[2] + (1.0 - u - v) * Normals[0];
+        var normal = (u * Normals[1]) + (v * Normals[2]) + ((1.0 - u - v) * Normals[0]);
         return new HitRecord(t, ray.GetPointAtParameter(t), normal, new Point2D(u, v), Material);
       }
 

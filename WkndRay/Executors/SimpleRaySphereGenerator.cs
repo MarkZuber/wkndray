@@ -24,7 +24,7 @@ namespace WkndRay.Executors
         {
           double u = Convert.ToDouble(i) / Convert.ToDouble(width);
           double v = Convert.ToDouble(j) / Convert.ToDouble(height);
-          var r = new Ray(origin, lowerLeftCorner + u * horizontal + v * vertical);
+          var r = new Ray(origin, lowerLeftCorner + (u * horizontal) + (v * vertical));
           var color = GetRayColor(r);
           pixelBuffer.SetPixelColor(i, j, color);
         }
@@ -42,7 +42,7 @@ namespace WkndRay.Executors
 
       PosVector unitDirection = ray.Direction.ToUnitVector();
       double t = 0.5 * (unitDirection.Y + 1.0);
-      var pv = (1.0 - t) * PosVector.One + t * new PosVector(0.5, 0.7, 1.0);
+      var pv = ((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0));
       return new ColorVector(pv.X, pv.Y, pv.Z);
     }
 
@@ -51,8 +51,8 @@ namespace WkndRay.Executors
       var oc = ray.Origin - center;
       double a = ray.Direction.Dot(ray.Direction);
       double b = 2.0 * oc.Dot(ray.Direction);
-      double c = oc.Dot(oc) - radius * radius;
-      double discriminant = b * b - 4 * a * c;
+      double c = oc.Dot(oc) - (radius * radius);
+      double discriminant = (b * b) - (4 * a * c);
       return discriminant > 0;
     }
   }

@@ -130,7 +130,7 @@ namespace WkndRay
             incompletePixels.Remove(Tuple.Create(renderResult.X, renderResult.Y));
 
             var completePixels = Convert.ToDouble(totalPixels - incompletePixels.Count);
-            var percentComplete = (completePixels / totalPixels) * 100.0;
+            var percentComplete = completePixels / totalPixels * 100.0;
             int intPercent = Convert.ToInt32(percentComplete);
             if (intPercent > previousPercent)
             {

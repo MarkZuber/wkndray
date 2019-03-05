@@ -23,7 +23,7 @@ namespace WkndRay.Textures
     public ColorVector GetValue(Point2D uvCoords, PosVector p)
     {
       int i = Convert.ToInt32(uvCoords.U * Convert.ToDouble(Width));
-      int j = Convert.ToInt32((1.0 - uvCoords.V) * Convert.ToDouble(Height) - 0.001);
+      int j = Convert.ToInt32(((1.0 - uvCoords.V) * Convert.ToDouble(Height)) - 0.001);
       if (i < 0)
       {
         i = 0;

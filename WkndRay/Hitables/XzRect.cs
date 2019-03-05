@@ -36,8 +36,8 @@ namespace WkndRay.Hitables
         return null;
       }
 
-      double x = ray.Origin.X + t * ray.Direction.X;
-      double z = ray.Origin.Z + t * ray.Direction.Z;
+      double x = ray.Origin.X + (t * ray.Direction.X);
+      double z = ray.Origin.Z + (t * ray.Direction.Z);
       if (x < X0 || x > X1 || z < Z0 || z > Z1)
       {
         return null;
@@ -72,7 +72,7 @@ namespace WkndRay.Hitables
 
     public override PosVector Random(PosVector origin)
     {
-      var randomPoint = new PosVector(X0 + RandomService.NextDouble() * (X1-X0), K, Z0 + RandomService.NextDouble() * (Z1-Z0));
+      var randomPoint = new PosVector(X0 + (RandomService.NextDouble() * (X1-X0)), K, Z0 + (RandomService.NextDouble() * (Z1-Z0)));
       return randomPoint - origin;
     }
   }

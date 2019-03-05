@@ -36,10 +36,10 @@ namespace WkndRay
     {
       double r1 = NextDouble();
       double r2 = NextDouble();
-      double z = 1.0 + r2 * (Math.Sqrt(1.0 - radius * radius / distanceSquared) - 1.0);
+      double z = 1.0 + (r2 * (Math.Sqrt(1.0 - (radius * radius / distanceSquared)) - 1.0));
       double phi = 2.0 * Math.PI * r1;
-      double x = Math.Cos(phi) * Math.Sqrt(1.0 - z * z);
-      double y = Math.Sin(phi) * Math.Sqrt(1.0 - z * z);
+      double x = Math.Cos(phi) * Math.Sqrt(1.0 - (z * z));
+      double y = Math.Sin(phi) * Math.Sqrt(1.0 - (z * z));
       return new PosVector(x, y, z);
     }
   }

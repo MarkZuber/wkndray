@@ -40,7 +40,7 @@ namespace WkndRay.Textures
         case VectorNoiseMode.DarkTurbulence:
           return ColorVector.One * _noise.Turbulence(Scale * p); // 4
         case VectorNoiseMode.Marble:
-          return ColorVector.One * 0.5 * (1.0 + Math.Sin(Scale * p.Z + 10.0 * _noise.Turbulence(p))); // 3
+          return ColorVector.One * 0.5 * (1.0 + Math.Sin((Scale * p.Z) + (10.0 * _noise.Turbulence(p)))); // 3
         default:
           throw new InvalidOperationException("unknown VectorNoiseMode");
       }

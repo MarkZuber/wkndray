@@ -22,7 +22,7 @@ namespace WkndRay.Hitables
       }
 
       Vertices = verts;
-      SurfaceNormal = ((Vertices[2] - Vertices[0]).Cross(Vertices[1] - Vertices[0])).ToUnitVector();
+      SurfaceNormal = (Vertices[2] - Vertices[0]).Cross(Vertices[1] - Vertices[0]).ToUnitVector();
       Material = material;
     }
 

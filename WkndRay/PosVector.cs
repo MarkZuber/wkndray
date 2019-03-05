@@ -71,7 +71,7 @@ namespace WkndRay
 
     public double MagnitudeSquared()
     {
-      return this.Dot(this);
+      return Dot(this);
     }
 
     public double Magnitude()
@@ -127,17 +127,17 @@ namespace WkndRay
 
     public PosVector AddScaled(PosVector b, double scale)
     {
-      return new PosVector(X + scale * b.X, Y + scale * b.Y, Z + scale * b.Z);
+      return new PosVector(X + (scale * b.X), Y + (scale * b.Y), Z + (scale * b.Z));
     }
 
     public PosVector Cross(PosVector b)
     {
-      return new PosVector(Y * b.Z - Z * b.Y, Z * b.X - X * b.Z, X * b.Y - Y * b.X);
+      return new PosVector((Y * b.Z) - (Z * b.Y), (Z * b.X) - (X * b.Z), (X * b.Y) - (Y * b.X));
     }
 
     public double Dot(PosVector b)
     {
-      return X * b.X + Y * b.Y + Z * b.Z;
+      return (X * b.X) + (Y * b.Y) + (Z * b.Z);
     }
 
     public static PosVector GetRandomInUnitSphere()
@@ -145,7 +145,7 @@ namespace WkndRay
       PosVector pv;
       do
       {
-        pv = 2.0 * new PosVector(RandomService.NextDouble(), RandomService.NextDouble(), RandomService.NextDouble()) -
+        pv = (2.0 * new PosVector(RandomService.NextDouble(), RandomService.NextDouble(), RandomService.NextDouble())) -
              PosVector.One;
       }
       while (pv.MagnitudeSquared() >= 1.0);
@@ -155,17 +155,17 @@ namespace WkndRay
 
     public PosVector Reflect(PosVector other)
     {
-      return this - 2 * Dot(other) * other;
+      return this - (2 * Dot(other) * other);
     }
 
     public PosVector Refract(PosVector normal, double niOverNt)
     {
       var unitVector = ToUnitVector();
       double dt = unitVector.Dot(normal);
-      double discriminant = 1.0 - niOverNt * niOverNt * (1.0 - dt * dt);
+      double discriminant = 1.0 - (niOverNt * niOverNt * (1.0 - (dt * dt)));
       if (discriminant > 0.0)
       {
-        return niOverNt * (unitVector - normal * dt) - normal * Math.Sqrt(discriminant);
+        return (niOverNt * (unitVector - (normal * dt))) - (normal * Math.Sqrt(discriminant));
       }
 
       return null;

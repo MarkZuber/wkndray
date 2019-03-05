@@ -24,7 +24,7 @@ namespace WkndRay.Executors
         {
           double u = Convert.ToDouble(i) / Convert.ToDouble(width);
           double v = Convert.ToDouble(j) / Convert.ToDouble(height);
-          var r = new Ray(origin, lowerLeftCorner + u * horizontal + v * vertical);
+          var r = new Ray(origin, lowerLeftCorner + (u * horizontal) + (v * vertical));
           var color = GetRayColor(r);
           pixelBuffer.SetPixelColor(i, j, color);
         }
@@ -37,7 +37,7 @@ namespace WkndRay.Executors
     {
       PosVector unitDirection = ray.Direction.ToUnitVector();
       double t = 0.5 * (unitDirection.Y + 1.0);
-      return (1.0 - t) * ColorVector.One + t * new ColorVector(0.5, 0.7, 1.0);
+      return ((1.0 - t) * ColorVector.One) + (t * new ColorVector(0.5, 0.7, 1.0));
     }
   }
 }

@@ -72,13 +72,13 @@ namespace WkndRay.Executors
       if (hr != null)
       {
         var target = hr.P + hr.Normal + PosVector.GetRandomInUnitSphere();
-        return (0.5 * GetRayColor(new Ray(hr.P, target - hr.P), world));
+        return 0.5 * GetRayColor(new Ray(hr.P, target - hr.P), world);
       }
       else
       {
         var unitDirection = ray.Direction.ToUnitVector();
         double t = 0.5 * (unitDirection.Y + 1.0);
-        return (((1.0 - t) * PosVector.One) + t * new PosVector(0.5, 0.7, 1.0)).ToColorVector();
+        return (((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0))).ToColorVector();
       }
     }
   }

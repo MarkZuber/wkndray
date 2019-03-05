@@ -127,7 +127,7 @@ namespace WkndRay
 
     public ColorVector AddScaled(ColorVector b, double scale)
     {
-      return new ColorVector(R + scale * b.R, G + scale * b.G, B + scale * b.B);
+      return new ColorVector(R + (scale * b.R), G + (scale * b.G), B + (scale * b.B));
     }
 
     public ColorVector ApplyGamma2()
