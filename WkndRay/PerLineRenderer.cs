@@ -24,7 +24,7 @@ namespace WkndRay
 
         public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
         {
-            Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
+            Progress?.Invoke(this, new RenderProgressEventArgs(0.0f));
 
             RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
         }
@@ -111,9 +111,9 @@ namespace WkndRay
                     pixelBuffer.SetPixelRowColors(renderLineResult.Y, renderLineResult.RowPixels);
                     incompleteRows.Remove(renderLineResult.Y);
 
-                    var totalRows = Convert.ToDouble(pixelBuffer.Height);
-                    var completeRows = Convert.ToDouble(pixelBuffer.Height - incompleteRows.Count);
-                    var percentComplete = completeRows / totalRows * 100.0;
+                    var totalRows = Convert.ToSingle(pixelBuffer.Height);
+                    var completeRows = Convert.ToSingle(pixelBuffer.Height - incompleteRows.Count);
+                    var percentComplete = completeRows / totalRows * 100.0f;
                     Console.WriteLine($"Percent Complete: {percentComplete:F}%");
                     Progress?.Invoke(this, new RenderProgressEventArgs(percentComplete));
                 }

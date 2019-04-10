@@ -24,7 +24,7 @@ namespace WkndRay
 
         public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
         {
-            Progress?.Invoke(this, new RenderProgressEventArgs(0.0));
+            Progress?.Invoke(this, new RenderProgressEventArgs(0.0f));
 
             if (renderConfig.TwoPhase)
             {
@@ -115,7 +115,7 @@ namespace WkndRay
                     }
                 }
 
-                var totalPixels = Convert.ToDouble(pixelBuffer.Height * pixelBuffer.Width);
+                var totalPixels = Convert.ToSingle(pixelBuffer.Height * pixelBuffer.Width);
 
                 int previousPercent = 0;
 
@@ -129,8 +129,8 @@ namespace WkndRay
                         pixelBuffer.SetPixelColor(renderResult.X, renderResult.Y, renderResult.Color);
                         incompletePixels.Remove(Tuple.Create(renderResult.X, renderResult.Y));
 
-                        var completePixels = Convert.ToDouble(totalPixels - incompletePixels.Count);
-                        var percentComplete = completePixels / totalPixels * 100.0;
+                        var completePixels = Convert.ToSingle(totalPixels - incompletePixels.Count);
+                        var percentComplete = completePixels / totalPixels * 100.0f;
                         int intPercent = Convert.ToInt32(percentComplete);
                         if (intPercent > previousPercent)
                         {

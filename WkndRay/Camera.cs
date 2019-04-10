@@ -21,22 +21,22 @@ namespace WkndRay
           PosVector lookFrom,
           PosVector lookAt,
           PosVector up,
-          double verticalFov,
-          double aspect,
-          double aperture,
-          double focusDistance)
+          float verticalFov,
+          float aspect,
+          float aperture,
+          float focusDistance)
         {
-            LensRadius = aperture / 2.0;
-            double theta = verticalFov * Math.PI / 180.0;
-            double halfHeight = Math.Tan(theta / 2.0);
-            double halfWidth = aspect * halfHeight;
+            LensRadius = aperture / 2.0f;
+            float theta = verticalFov * MathF.PI / 180.0f;
+            float halfHeight = MathF.Tan(theta / 2.0f);
+            float halfWidth = aspect * halfHeight;
             Origin = lookFrom;
             W = (lookFrom - lookAt).ToUnitVector();
             U = up.Cross(W).ToUnitVector();
             V = W.Cross(U);
             LowerLeftCorner = Origin - (halfWidth * focusDistance * U) - (halfHeight * focusDistance * V) - (focusDistance * W);
-            Horizontal = 2.0 * halfWidth * focusDistance * U;
-            Vertical = 2.0 * halfHeight * focusDistance * V;
+            Horizontal = 2.0f * halfWidth * focusDistance * U;
+            Vertical = 2.0f * halfHeight * focusDistance * V;
         }
 
         public PosVector Origin { get; }
@@ -46,9 +46,9 @@ namespace WkndRay
         public PosVector U { get; }
         public PosVector V { get; }
         public PosVector W { get; }
-        public double LensRadius { get; }
+        public float LensRadius { get; }
 
-        public Ray GetRay(double s, double t)
+        public Ray GetRay(float s, float t)
         {
             var rd = LensRadius * PosVector.GetRandomInUnitSphere();
             var offset = (U * rd.X) + (V * rd.Y);

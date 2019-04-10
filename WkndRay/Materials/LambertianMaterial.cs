@@ -27,19 +27,19 @@ namespace WkndRay.Materials
 
             //var scatteredRay = new Ray(hitRecord.P, direction.ToUnitVector());
             var attenuation = Albedo.GetValue(hitRecord.UvCoords, hitRecord.P);
-            //var pdf = uvw.W.Dot(scatteredRay.Direction) / Math.PI;
+            //var pdf = uvw.W.Dot(scatteredRay.Direction) / MathF.PI;
             return new ScatterResult(true, attenuation, null, new CosinePdf(hitRecord.Normal));
         }
 
-        public override double ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
+        public override float ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
         {
-            double cosine = hitRecord.Normal.Dot(scattered.Direction.ToUnitVector());
-            if (cosine < 0.0)
+            float cosine = hitRecord.Normal.Dot(scattered.Direction.ToUnitVector());
+            if (cosine < 0.0f)
             {
-                cosine = 0.0;
+                cosine = 0.0f;
             }
 
-            return cosine / Math.PI;
+            return cosine / MathF.PI;
         }
     }
 }

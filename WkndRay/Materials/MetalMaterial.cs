@@ -8,14 +8,14 @@ namespace WkndRay.Materials
 {
     public class MetalMaterial : AbstractMaterial
     {
-        public MetalMaterial(ColorVector albedo, double fuzz)
+        public MetalMaterial(ColorVector albedo, float fuzz)
         {
             Albedo = albedo;
             Fuzz = fuzz;
         }
 
         public ColorVector Albedo { get; }
-        public double Fuzz { get; }
+        public float Fuzz { get; }
 
         /// <inheritdoc />
         public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)

@@ -10,16 +10,16 @@ namespace WkndRay
 {
     public class HitRecord
     {
-        public HitRecord(double t, PosVector p, PosVector normal, Point2D uvCoords, IMaterial material)
+        public HitRecord(float t, PosVector p, PosVector normal, Point2D uvCoords, IMaterial material)
         {
             T = t;
             P = p;
             Normal = normal;
             Material = material;
-            UvCoords = uvCoords ?? new Point2D(0.0, 0.0);
+            UvCoords = uvCoords ?? new Point2D(0.0f, 0.0f);
         }
 
-        public double T { get; }
+        public float T { get; }
         public PosVector P { get; }
         public PosVector Normal { get; }
         public IMaterial Material { get; }

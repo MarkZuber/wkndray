@@ -19,9 +19,9 @@ namespace WkndRay.Executors
                 for (int i = 0; i < width; i++)
                 {
                     var color = new ColorVector(
-                      Convert.ToDouble(i) / Convert.ToDouble(width),
-                      Convert.ToDouble(j) / Convert.ToDouble(height),
-                      0.2);
+                      Convert.ToSingle(i) / Convert.ToSingle(width),
+                      Convert.ToSingle(j) / Convert.ToSingle(height),
+                      0.2f);
                     pixelBuffer.SetPixelColor(i, j, color);
                 }
             }

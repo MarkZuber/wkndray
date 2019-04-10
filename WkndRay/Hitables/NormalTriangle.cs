@@ -36,7 +36,7 @@ namespace WkndRay.Hitables
         public List<PosVector> Normals { get; }
         public IMaterial Material { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             var e1 = Vertices[1] - Vertices[0];
             var e2 = Vertices[2] - Vertices[0];
@@ -50,11 +50,11 @@ namespace WkndRay.Hitables
                 return null;
             }
 
-            var invDet = 1.0 / det;
+            var invDet = 1.0f / det;
             var tvec = ray.Origin - Vertices[0];
             var u = tvec.Dot(pvec) * invDet;
 
-            if (u < 0.0 || u > 1.0)
+            if (u < 0.0f || u > 1.0f)
             {
                 return null;
             }
@@ -62,7 +62,7 @@ namespace WkndRay.Hitables
             var qvec = tvec.Cross(e1);
             var v = dir.Dot(qvec) * invDet;
 
-            if (v < 0.0 || (u + v) > 1.0)
+            if (v < 0.0f || (u + v) > 1.0f)
             {
                 return null;
             }
@@ -70,32 +70,32 @@ namespace WkndRay.Hitables
             var t = e2.Dot(qvec) * invDet;
             if (t > 0.00001 && t < tMax && t > tMin)
             {
-                var normal = (u * Normals[1]) + (v * Normals[2]) + ((1.0 - u - v) * Normals[0]);
+                var normal = (u * Normals[1]) + (v * Normals[2]) + ((1.0f - u - v) * Normals[0]);
                 return new HitRecord(t, ray.GetPointAtParameter(t), normal, new Point2D(u, v), Material);
             }
 
             return null;
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
             var min = new PosVector(
-              Math.Min(Vertices[0].X, Vertices[1].X),
-              Math.Min(Vertices[0].Y, Vertices[1].Y),
-              Math.Min(Vertices[0].Z, Vertices[1].Z));
+              MathF.Min(Vertices[0].X, Vertices[1].X),
+              MathF.Min(Vertices[0].Y, Vertices[1].Y),
+              MathF.Min(Vertices[0].Z, Vertices[1].Z));
             min = new PosVector(
-              Math.Min(min.X, Vertices[2].X),
-              Math.Min(min.Y, Vertices[2].Y),
-              Math.Min(min.Z, Vertices[2].Z));
+              MathF.Min(min.X, Vertices[2].X),
+              MathF.Min(min.Y, Vertices[2].Y),
+              MathF.Min(min.Z, Vertices[2].Z));
 
             var max = new PosVector(
-              Math.Max(Vertices[0].X, Vertices[1].X),
-              Math.Max(Vertices[0].Y, Vertices[1].Y),
-              Math.Max(Vertices[0].Z, Vertices[1].Z));
+              MathF.Max(Vertices[0].X, Vertices[1].X),
+              MathF.Max(Vertices[0].Y, Vertices[1].Y),
+              MathF.Max(Vertices[0].Z, Vertices[1].Z));
             max = new PosVector(
-              Math.Max(max.X, Vertices[2].X),
-              Math.Max(max.Y, Vertices[2].Y),
-              Math.Max(max.Z, Vertices[2].Z));
+              MathF.Max(max.X, Vertices[2].X),
+              MathF.Max(max.Y, Vertices[2].Y),
+              MathF.Max(max.Z, Vertices[2].Z));
 
             return new AABB(min, max);
         }

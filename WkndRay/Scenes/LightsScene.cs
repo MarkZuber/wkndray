@@ -23,16 +23,16 @@ namespace WkndRay.Scenes
         /// <inheritdoc />
         public Camera GetCamera(int imageWidth, int imageHeight)
         {
-            var lookFrom = new PosVector(13.0, 2.0, 3.0);
+            var lookFrom = new PosVector(13.0f, 2.0f, 3.0f);
             var lookAt = PosVector.Zero;
-            double distToFocus = 10.0;
-            double aperture = 0.0;
+            float distToFocus = 10.0f;
+            float aperture = 0.0f;
             return new Camera(
               lookFrom,
               lookAt,
               PosVector.UnitY,
-              40.0,
-              Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
+              40.0f,
+              Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
               aperture,
               distToFocus);
         }
@@ -45,18 +45,18 @@ namespace WkndRay.Scenes
             var list = new HitableList()
       {
         new Sphere(
-          new PosVector(0.0, -1000.0, 0.0),
-          1000.0,
-          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0))),
+          new PosVector(0.0f, -1000.0f, 0.0f),
+          1000.0f,
+          new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0f))),
         new Sphere(
-          new PosVector(0.0, 2.0, 0.0),
-          2.0,
+          new PosVector(0.0f, 2.0f, 0.0f),
+          2.0f,
           new LambertianMaterial(new ImageTexture(globe))),
-        new Sphere(new PosVector(0.0, 7.0, 0.0), 2.0, new DiffuseLight(new ColorTexture(4.0, 4.0, 4.0))),
-        new XyRect(3.0, 5.0, 1.0, 3.0, -2.0, new DiffuseLight(new ColorTexture(4.0, 4.0, 4.0)))
+        new Sphere(new PosVector(0.0f, 7.0f, 0.0f), 2.0f, new DiffuseLight(new ColorTexture(4.0f, 4.0f, 4.0f))),
+        new XyRect(3.0f, 5.0f, 1.0f, 3.0f, -2.0f, new DiffuseLight(new ColorTexture(4.0f, 4.0f, 4.0f)))
       };
 
-            return new BvhNode(list, 0.0, 1.0);
+            return new BvhNode(list, 0.0f, 1.0f);
         }
 
         /// <inheritdoc />
@@ -68,7 +68,7 @@ namespace WkndRay.Scenes
         /// <inheritdoc />
         public Func<Ray, ColorVector> GetBackgroundFunc()
         {
-            return ray => ColorVector.One * 0.05;
+            return ray => ColorVector.One * 0.05f;
         }
     }
 }

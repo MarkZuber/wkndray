@@ -10,14 +10,14 @@ namespace WkndRay
 {
     public class PosVector
     {
-        public PosVector(double x, double y, double z)
+        public PosVector(float x, float y, float z)
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        public PosVector(double[] xyz)
+        public PosVector(float[] xyz)
         {
             if (xyz.Length != 3)
             {
@@ -29,19 +29,19 @@ namespace WkndRay
             Z = xyz[2];
         }
 
-        public double X { get; }
-        public double Y { get; }
-        public double Z { get; }
+        public float X { get; }
+        public float Y { get; }
+        public float Z { get; }
 
-        public static PosVector Zero => new PosVector(0.0, 0.0, 0.0);
-        public static PosVector One => new PosVector(1.0, 1.0, 1.0);
-        public static PosVector UnitX => new PosVector(1.0, 0.0, 0.0);
-        public static PosVector UnitY => new PosVector(0.0, 1.0, 0.0);
-        public static PosVector UnitZ => new PosVector(0.0, 0.0, 1.0);
+        public static PosVector Zero => new PosVector(0.0f, 0.0f, 0.0f);
+        public static PosVector One => new PosVector(1.0f, 1.0f, 1.0f);
+        public static PosVector UnitX => new PosVector(1.0f, 0.0f, 0.0f);
+        public static PosVector UnitY => new PosVector(0.0f, 1.0f, 0.0f);
+        public static PosVector UnitZ => new PosVector(0.0f, 0.0f, 1.0f);
 
-        public double[] ToDoubleArray()
+        public float[] ToSingleArray()
         {
-            return new double[] { X, Y, Z };
+            return new float[] { X, Y, Z };
         }
 
         public override string ToString()
@@ -49,7 +49,7 @@ namespace WkndRay
             return string.Format($"({X},{Y},{Z})");
         }
 
-        private static double ClampValue(double val, double min, double max)
+        private static float ClampValue(float val, float min, float max)
         {
             if (val < min)
             {
@@ -64,19 +64,19 @@ namespace WkndRay
             return new PosVector(ClampValue(X, min.X, max.X), ClampValue(Y, min.Y, max.Y), ClampValue(Z, min.Z, max.Z));
         }
 
-        public static double CosVectors(PosVector v1, PosVector v2)
+        public static float CosVectors(PosVector v1, PosVector v2)
         {
-            return v1.Dot(v2) / Math.Sqrt(v1.MagnitudeSquared() * v2.MagnitudeSquared());
+            return v1.Dot(v2) / MathF.Sqrt(v1.MagnitudeSquared() * v2.MagnitudeSquared());
         }
 
-        public double MagnitudeSquared()
+        public float MagnitudeSquared()
         {
             return Dot(this);
         }
 
-        public double Magnitude()
+        public float Magnitude()
         {
-            return Math.Sqrt(MagnitudeSquared());
+            return MathF.Sqrt(MagnitudeSquared());
         }
 
         public PosVector Normalize()
@@ -91,7 +91,7 @@ namespace WkndRay
 
         public PosVector ToUnitVector()
         {
-            double k = 1.0 / Magnitude();
+            float k = 1.0f / Magnitude();
             return new PosVector(X * k, Y * k, Z * k);
         }
 
@@ -110,22 +110,22 @@ namespace WkndRay
             return new PosVector(-a.X, -a.Y, -a.Z);
         }
 
-        public static PosVector operator *(PosVector a, double scalar)
+        public static PosVector operator *(PosVector a, float scalar)
         {
             return new PosVector(a.X * scalar, a.Y * scalar, a.Z * scalar);
         }
 
-        public static PosVector operator *(double scalar, PosVector a)
+        public static PosVector operator *(float scalar, PosVector a)
         {
             return new PosVector(a.X * scalar, a.Y * scalar, a.Z * scalar);
         }
 
-        public static PosVector operator /(PosVector a, double scalar)
+        public static PosVector operator /(PosVector a, float scalar)
         {
             return new PosVector(a.X / scalar, a.Y / scalar, a.Z / scalar);
         }
 
-        public PosVector AddScaled(PosVector b, double scale)
+        public PosVector AddScaled(PosVector b, float scale)
         {
             return new PosVector(X + (scale * b.X), Y + (scale * b.Y), Z + (scale * b.Z));
         }
@@ -135,7 +135,7 @@ namespace WkndRay
             return new PosVector((Y * b.Z) - (Z * b.Y), (Z * b.X) - (X * b.Z), (X * b.Y) - (Y * b.X));
         }
 
-        public double Dot(PosVector b)
+        public float Dot(PosVector b)
         {
             return (X * b.X) + (Y * b.Y) + (Z * b.Z);
         }
@@ -145,10 +145,10 @@ namespace WkndRay
             PosVector pv;
             do
             {
-                pv = (2.0 * new PosVector(RandomService.NextDouble(), RandomService.NextDouble(), RandomService.NextDouble())) -
+                pv = (2.0f * new PosVector(RandomService.Nextfloat(), RandomService.Nextfloat(), RandomService.Nextfloat())) -
                      PosVector.One;
             }
-            while (pv.MagnitudeSquared() >= 1.0);
+            while (pv.MagnitudeSquared() >= 1.0f);
 
             return pv;
         }
@@ -158,14 +158,14 @@ namespace WkndRay
             return this - (2 * Dot(other) * other);
         }
 
-        public PosVector Refract(PosVector normal, double niOverNt)
+        public PosVector Refract(PosVector normal, float niOverNt)
         {
             var unitVector = ToUnitVector();
-            double dt = unitVector.Dot(normal);
-            double discriminant = 1.0 - (niOverNt * niOverNt * (1.0 - (dt * dt)));
-            if (discriminant > 0.0)
+            float dt = unitVector.Dot(normal);
+            float discriminant = 1.0f - (niOverNt * niOverNt * (1.0f - (dt * dt)));
+            if (discriminant > 0.0f)
             {
-                return (niOverNt * (unitVector - (normal * dt))) - (normal * Math.Sqrt(discriminant));
+                return (niOverNt * (unitVector - (normal * dt))) - (normal * MathF.Sqrt(discriminant));
             }
 
             return null;

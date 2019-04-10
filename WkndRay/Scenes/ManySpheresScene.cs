@@ -14,16 +14,16 @@ namespace WkndRay.Scenes
     {
         public Camera GetCamera(int imageWidth, int imageHeight)
         {
-            double aperture = 0.01;
-            var lookFrom = new PosVector(24.0, 2.0, 6.0);
+            float aperture = 0.01f;
+            var lookFrom = new PosVector(24.0f, 2.0f, 6.0f);
             var lookAt = PosVector.UnitY;
-            double distanceToFocus = (lookFrom - lookAt).Magnitude();
+            float distanceToFocus = (lookFrom - lookAt).Magnitude();
             return new Camera(
               lookFrom,
               lookAt,
               PosVector.UnitY,
-              15.0,
-              Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
+              15.0f,
+              Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
               aperture,
               distanceToFocus);
         }
@@ -33,25 +33,25 @@ namespace WkndRay.Scenes
             var list = new HitableList();
 
             var checkerTexture = new CheckerTexture(
-              new ColorTexture(0.2, 0.3, 0.1),
-              new ColorTexture(0.9, 0.9, 0.9),
-              PosVector.One * 10.0);
+              new ColorTexture(0.2f, 0.3f, 0.1f),
+              new ColorTexture(0.9f, 0.9f, 0.9f),
+              PosVector.One * 10.0f);
 
             // original color of large sphere...
-            // var colorTexture = new ColorTexture(0.5, 0.5, 0.5);
+            // var colorTexture = new ColorTexture(0.5f, 0.5f, 0.5f);
 
-            list.Add(new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(checkerTexture)));
+            list.Add(new Sphere(new PosVector(0.0f, -1000.0f, 0.0f), 1000.0f, new LambertianMaterial(checkerTexture)));
             for (int a = -11; a < 11; a++)
             {
                 for (int b = -11; b < 11; b++)
                 {
-                    double chooseMat = RandomService.NextDouble();
+                    float chooseMat = RandomService.Nextfloat();
                     var center = new PosVector(
-                      Convert.ToDouble(a) * RandomService.NextDouble(),
-                      0.2,
-                      Convert.ToDouble(b) + (0.9 * RandomService.NextDouble()));
+                      Convert.ToSingle(a) * RandomService.Nextfloat(),
+                      0.2f,
+                      Convert.ToSingle(b) + (0.9f * RandomService.Nextfloat()));
 
-                    if ((center - new PosVector(4.0, 0.2, 0.0)).Magnitude() > 0.9)
+                    if ((center - new PosVector(4.0f, 0.2f, 0.0f)).Magnitude() > 0.9)
                     {
                         if (chooseMat < 0.8)
                         {
@@ -59,12 +59,12 @@ namespace WkndRay.Scenes
                             list.Add(
                               new Sphere(
                                 center,
-                                0.2,
+                                0.2f,
                                 new LambertianMaterial(
                                   new ColorTexture(
-                                    RandomService.NextDouble() * RandomService.NextDouble(),
-                                    RandomService.NextDouble() * RandomService.NextDouble(),
-                                    RandomService.NextDouble() * RandomService.NextDouble()))));
+                                    RandomService.Nextfloat() * RandomService.Nextfloat(),
+                                    RandomService.Nextfloat() * RandomService.Nextfloat(),
+                                    RandomService.Nextfloat() * RandomService.Nextfloat()))));
                         }
                         else if (chooseMat < 0.95)
                         {
@@ -72,28 +72,28 @@ namespace WkndRay.Scenes
                             list.Add(
                               new Sphere(
                                 center,
-                                0.2,
+                                0.2f,
                                 new MetalMaterial(
                                   new ColorVector(
-                                    0.5 * (1.0 + RandomService.NextDouble()),
-                                    0.5 * (1.0 + RandomService.NextDouble()),
-                                    0.5 * (1.0 + RandomService.NextDouble())),
-                                  0.5 * RandomService.NextDouble())));
+                                    0.5f * (1.0f + RandomService.Nextfloat()),
+                                    0.5f * (1.0f + RandomService.Nextfloat()),
+                                    0.5f * (1.0f + RandomService.Nextfloat())),
+                                  0.5f * RandomService.Nextfloat())));
                         }
                         else
                         {
                             // glass
-                            list.Add(new Sphere(center, 0.2, new DialectricMaterial(1.5)));
+                            list.Add(new Sphere(center, 0.2f, new DialectricMaterial(1.5f)));
                         }
                     }
                 }
             }
 
-            list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(1.5)));
-            list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorTexture(0.4, 0.2, 0.1))));
-            list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(new ColorVector(0.7, 0.6, 0.5), 0.0)));
+            list.Add(new Sphere(new PosVector(0.0f, 1.0f, 0.0f), 1.0f, new DialectricMaterial(1.5f)));
+            list.Add(new Sphere(new PosVector(-4.0f, 1.0f, 0.0f), 1.0f, new LambertianMaterial(new ColorTexture(0.4f, 0.2f, 0.1f))));
+            list.Add(new Sphere(new PosVector(4.0f, 1.0f, 0.0f), 1.0f, new MetalMaterial(new ColorVector(0.7f, 0.6f, 0.5f), 0.0f)));
 
-            return new BvhNode(list, 0.0, 1.0);
+            return new BvhNode(list, 0.0f, 1.0f);
         }
 
         /// <inheritdoc />
@@ -108,8 +108,8 @@ namespace WkndRay.Scenes
             return ray =>
             {
                 var unitDirection = ray.Direction.ToUnitVector();
-                double t = 0.5 * (unitDirection.Y + 1.0);
-                return ((1.0 - t) * ColorVector.One) + (t * new ColorVector(0.5, 0.7, 1.0));
+                float t = 0.5f * (unitDirection.Y + 1.0f);
+                return ((1.0f - t) * ColorVector.One) + (t * new ColorVector(0.5f, 0.7f, 1.0f));
             };
         }
     }

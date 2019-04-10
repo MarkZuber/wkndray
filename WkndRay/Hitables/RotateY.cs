@@ -6,33 +6,33 @@ namespace WkndRay.Hitables
 {
     public class RotateY : AbstractHitable
     {
-        public RotateY(IHitable hitable, double angle)
+        public RotateY(IHitable hitable, float angle)
         {
             Hitable = hitable;
             Angle = angle;
 
-            double radians = Math.PI / 180.0 * angle;
-            SinTheta = Math.Sin(radians);
-            CosTheta = Math.Cos(radians);
-            var box = Hitable.GetBoundingBox(0.0, 1.0);
-            var min = new PosVector(double.MaxValue, double.MaxValue, double.MaxValue).ToDoubleArray();
-            var max = new PosVector(-double.MaxValue, -double.MaxValue, -double.MaxValue).ToDoubleArray();
+            float radians = MathF.PI / 180.0f * angle;
+            SinTheta = MathF.Sin(radians);
+            CosTheta = MathF.Cos(radians);
+            var box = Hitable.GetBoundingBox(0.0f, 1.0f);
+            var min = new PosVector(float.MaxValue, float.MaxValue, float.MaxValue).ToSingleArray();
+            var max = new PosVector(-float.MaxValue, -float.MaxValue, -float.MaxValue).ToSingleArray();
 
             for (int i = 0; i < 2; i++)
             {
-                double dubi = Convert.ToDouble(i);
+                float dubi = Convert.ToSingle(i);
                 for (int j = 0; j < 2; j++)
                 {
-                    double dubj = Convert.ToDouble(j);
+                    float dubj = Convert.ToSingle(j);
                     for (int k = 0; k < 2; k++)
                     {
-                        double dubk = Convert.ToDouble(k);
-                        double x = (dubi * box.Max.X) + ((1.0 - dubi) * box.Min.X);
-                        double y = (dubj * box.Max.Y) + ((1.0 - dubj) * box.Min.Y);
-                        double z = (dubk * box.Max.Z) + ((1.0 - dubk) * box.Min.Z);
-                        double newx = (CosTheta * x) + (SinTheta * z);
-                        double newz = (-SinTheta * x) + (CosTheta * z);
-                        var tester = new PosVector(newx, y, newz).ToDoubleArray();
+                        float dubk = Convert.ToSingle(k);
+                        float x = (dubi * box.Max.X) + ((1.0f - dubi) * box.Min.X);
+                        float y = (dubj * box.Max.Y) + ((1.0f - dubj) * box.Min.Y);
+                        float z = (dubk * box.Max.Z) + ((1.0f - dubk) * box.Min.Z);
+                        float newx = (CosTheta * x) + (SinTheta * z);
+                        float newz = (-SinTheta * x) + (CosTheta * z);
+                        var tester = new PosVector(newx, y, newz).ToSingleArray();
                         for (int c = 0; c < 3; c++)
                         {
                             if (tester[c] > max[c])
@@ -53,15 +53,15 @@ namespace WkndRay.Hitables
         }
 
         public IHitable Hitable { get; }
-        public double Angle { get; }
-        public double SinTheta { get; }
-        public double CosTheta { get; }
+        public float Angle { get; }
+        public float SinTheta { get; }
+        public float CosTheta { get; }
         public AABB BoundingBox { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
-            var origin = ray.Origin.ToDoubleArray();
-            var dir = ray.Direction.ToDoubleArray();
+            var origin = ray.Origin.ToSingleArray();
+            var dir = ray.Direction.ToSingleArray();
             origin[0] = (CosTheta * ray.Origin.X) - (SinTheta * ray.Origin.Z);
             origin[2] = (SinTheta * ray.Origin.X) + (CosTheta * ray.Origin.Z);
             dir[0] = (CosTheta * ray.Direction.X) - (SinTheta * ray.Direction.Z);
@@ -73,8 +73,8 @@ namespace WkndRay.Hitables
                 return null;
             }
 
-            var p = hitRecord.P.ToDoubleArray();
-            var normal = hitRecord.Normal.ToDoubleArray();
+            var p = hitRecord.P.ToSingleArray();
+            var normal = hitRecord.Normal.ToSingleArray();
             p[0] = (CosTheta * hitRecord.P.X) + (SinTheta * hitRecord.P.Z);
             p[2] = (-SinTheta * hitRecord.P.X) + (CosTheta * hitRecord.P.Z);
             normal[0] = (CosTheta * hitRecord.Normal.X) + (SinTheta * hitRecord.Normal.Z);
@@ -82,7 +82,7 @@ namespace WkndRay.Hitables
             return new HitRecord(hitRecord.T, new PosVector(p), new PosVector(normal), hitRecord.UvCoords, hitRecord.Material);
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
             return BoundingBox;
         }

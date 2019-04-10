@@ -8,13 +8,13 @@ namespace WkndRay
 {
     public class Point2D
     {
-        public Point2D(double u, double v)
+        public Point2D(float u, float v)
         {
             U = u;
             V = v;
         }
 
-        public double U { get; }
-        public double V { get; }
+        public float U { get; }
+        public float V { get; }
     }
 }

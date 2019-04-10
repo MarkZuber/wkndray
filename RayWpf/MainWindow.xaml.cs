@@ -29,10 +29,10 @@ namespace RayWpf
         private void RenderButton_OnClick(object sender, RoutedEventArgs e)
         {
             int numThreads = Environment.ProcessorCount;
-            const int ImageWidth = 500;
-            const int ImageHeight = 500;
+            const int ImageWidth = 1920;
+            const int ImageHeight = 1920;
             const int RayTraceDepth = 50;
-            const int NumSamples = 1000;
+            const int NumSamples = 2000;
             var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples)
             {
                 TwoPhase = false

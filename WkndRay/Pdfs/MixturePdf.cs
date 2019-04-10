@@ -17,14 +17,14 @@ namespace WkndRay.Pdfs
         public IPdf P0 { get; }
         public IPdf P1 { get; }
 
-        public double GetValue(PosVector direction)
+        public float GetValue(PosVector direction)
         {
-            return (0.5 * P0.GetValue(direction)) + (0.5 * P1.GetValue(direction));
+            return (0.5f * P0.GetValue(direction)) + (0.5f * P1.GetValue(direction));
         }
 
         public PosVector Generate()
         {
-            return RandomService.NextDouble() < 0.5 ? P0.Generate() : P1.Generate();
+            return RandomService.Nextfloat() < 0.5f ? P0.Generate() : P1.Generate();
         }
     }
 }

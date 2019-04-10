@@ -4,7 +4,7 @@ namespace WkndRay.Textures
 {
     public class ColorTexture : ITexture
     {
-        public ColorTexture(double r, double g, double b) : this(new ColorVector(r, g, b))
+        public ColorTexture(float r, float g, float b) : this(new ColorVector(r, g, b))
         {
         }
 

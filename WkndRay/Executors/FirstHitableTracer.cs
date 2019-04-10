@@ -13,15 +13,15 @@ namespace WkndRay.Executors
         public PixelBuffer Execute(int width, int height)
         {
             var pixelBuffer = new PixelBuffer(width, height);
-            var lowerLeftCorner = new PosVector(-2.0, -1.0, -1.0);
-            var horizontal = new PosVector(4.0, 0.0, 0.0);
-            var vertical = new PosVector(0.0, 2.0, 0.0);
+            var lowerLeftCorner = new PosVector(-2.0f, -1.0f, -1.0f);
+            var horizontal = new PosVector(4.0f, 0.0f, 0.0f);
+            var vertical = new PosVector(0.0f, 2.0f, 0.0f);
             var origin = PosVector.Zero;
 
             var hitables = new HitableList
       {
-        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5),
-        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0)
+        new Sphere(new PosVector(0.0f, 0.0f, -1.0f), 0.5f),
+        new Sphere(new PosVector(0.0f, -100.5f, -1.0f), 100.0f)
       };
 
             var world = new HitableList
@@ -33,8 +33,8 @@ namespace WkndRay.Executors
             {
                 for (int i = 0; i < width; i++)
                 {
-                    double u = Convert.ToDouble(i) / Convert.ToDouble(width);
-                    double v = Convert.ToDouble(j) / Convert.ToDouble(height);
+                    float u = Convert.ToSingle(i) / Convert.ToSingle(width);
+                    float v = Convert.ToSingle(j) / Convert.ToSingle(height);
                     var r = new Ray(origin, lowerLeftCorner + (u * horizontal) + (v * vertical));
 
                     var color = GetRayColor(r, world);
@@ -47,16 +47,16 @@ namespace WkndRay.Executors
 
         private ColorVector GetRayColor(Ray ray, IHitable world)
         {
-            HitRecord hr = world.Hit(ray, 0.0, double.MaxValue);
+            HitRecord hr = world.Hit(ray, 0.0f, float.MaxValue);
             if (hr != null)
             {
-                return (0.5 * new PosVector(hr.Normal.X + 1.0, hr.Normal.Y + 1.0, hr.Normal.Z + 1.0)).ToColorVector();
+                return (0.5f * new PosVector(hr.Normal.X + 1.0f, hr.Normal.Y + 1.0f, hr.Normal.Z + 1.0f)).ToColorVector();
             }
             else
             {
                 var unitDirection = ray.Direction.ToUnitVector();
-                double t = 0.5 * (unitDirection.Y + 1.0);
-                return (((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0))).ToColorVector();
+                float t = 0.5f * (unitDirection.Y + 1.0f);
+                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

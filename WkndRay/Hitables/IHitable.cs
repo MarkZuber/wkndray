@@ -8,10 +8,10 @@ namespace WkndRay
 {
     public interface IHitable
     {
-        HitRecord Hit(Ray ray, double tMin, double tMax);
-        AABB GetBoundingBox(double t0, double t1);
+        HitRecord Hit(Ray ray, float tMin, float tMax);
+        AABB GetBoundingBox(float t0, float t1);
 
-        double GetPdfValue(PosVector origin, PosVector v);
+        float GetPdfValue(PosVector origin, PosVector v);
         PosVector Random(PosVector origin);
     }
 }

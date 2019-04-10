@@ -15,7 +15,7 @@ namespace WkndRay.Hitables
         public IHitable Hitable { get; }
         public PosVector Displacement { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             var movedRay = new Ray(ray.Origin - Displacement, ray.Direction);
             var hitRecord = Hitable.Hit(movedRay, tMin, tMax);
@@ -32,7 +32,7 @@ namespace WkndRay.Hitables
               hitRecord.Material);
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
             var box = Hitable.GetBoundingBox(t0, t1);
             if (box == null)

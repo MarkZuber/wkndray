@@ -15,7 +15,7 @@ namespace WkndRay.Hitables
 
         public IHitable Hitable { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             var hitrec = Hitable.Hit(ray, tMin, tMax);
             if (hitrec != null)
@@ -30,7 +30,7 @@ namespace WkndRay.Hitables
             }
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
             return Hitable.GetBoundingBox(t0, t1);
         }

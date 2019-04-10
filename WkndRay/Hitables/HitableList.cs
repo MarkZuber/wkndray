@@ -12,11 +12,11 @@ namespace WkndRay
     public class HitableList : List<IHitable>,
                                IHitable
     {
-        public HitRecord Hit(Ray ray, double tMin, double tMax)
+        public HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             HitRecord hitRecord = null;
 
-            double closestSoFar = tMax;
+            float closestSoFar = tMax;
             foreach (IHitable item in this)
             {
                 var hr = item.Hit(ray, tMin, closestSoFar);
@@ -33,7 +33,7 @@ namespace WkndRay
         }
 
         /// <inheritdoc />
-        public AABB GetBoundingBox(double t0, double t1)
+        public AABB GetBoundingBox(float t0, float t1)
         {
             if (Count < 1)
             {
@@ -60,10 +60,10 @@ namespace WkndRay
             return box;
         }
 
-        public double GetPdfValue(PosVector origin, PosVector v)
+        public float GetPdfValue(PosVector origin, PosVector v)
         {
-            double weight = 1.0 / Count;
-            double sum = 0.0;
+            float weight = 1.0f / Count;
+            float sum = 0.0f;
             foreach (var hitable in this)
             {
                 sum += weight * hitable.GetPdfValue(origin, v);
@@ -73,7 +73,7 @@ namespace WkndRay
 
         public PosVector Random(PosVector origin)
         {
-            int index = Convert.ToInt32(Math.Floor(RandomService.NextDouble() * Convert.ToDouble(Count)));
+            int index = Convert.ToInt32(MathF.Floor(RandomService.Nextfloat() * Convert.ToSingle(Count)));
             return this[index].Random(origin);
         }
     }

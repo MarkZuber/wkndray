@@ -10,22 +10,22 @@ namespace WkndRay.Materials
 {
     public class DialectricMaterial : AbstractMaterial
     {
-        public DialectricMaterial(double refractionIndex)
+        public DialectricMaterial(float refractionIndex)
         {
             RefractionIndex = refractionIndex;
         }
 
-        public double RefractionIndex { get; }
+        public float RefractionIndex { get; }
 
         /// <inheritdoc />
         public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
         {
             var reflected = rayIn.Direction.Reflect(hitRecord.Normal);
-            var attenuation = new ColorVector(1.0, 1.0, 1.0);
-            double niOverNt;
+            var attenuation = new ColorVector(1.0f, 1.0f, 1.0f);
+            float niOverNt;
             PosVector outwardNormal;
-            double cosine;
-            if (rayIn.Direction.Dot(hitRecord.Normal) > 0.0)
+            float cosine;
+            if (rayIn.Direction.Dot(hitRecord.Normal) > 0.0f)
             {
                 outwardNormal = -hitRecord.Normal;
                 niOverNt = RefractionIndex;
@@ -34,11 +34,11 @@ namespace WkndRay.Materials
             else
             {
                 outwardNormal = hitRecord.Normal;
-                niOverNt = 1.0 / RefractionIndex;
+                niOverNt = 1.0f / RefractionIndex;
                 cosine = -rayIn.Direction.Dot(hitRecord.Normal) / rayIn.Direction.Magnitude();
             }
 
-            double reflectProbability;
+            float reflectProbability;
             Ray scattered;
             var refracted = rayIn.Direction.Refract(outwardNormal, niOverNt);
             if (refracted != null)
@@ -48,10 +48,10 @@ namespace WkndRay.Materials
             else
             {
                 scattered = new Ray(hitRecord.P, reflected);
-                reflectProbability = 1.0;
+                reflectProbability = 1.0f;
             }
 
-            if (RandomService.NextDouble() < reflectProbability)
+            if (RandomService.Nextfloat() < reflectProbability)
             {
                 scattered = new Ray(hitRecord.P, reflected);
             }
@@ -63,11 +63,11 @@ namespace WkndRay.Materials
             return new ScatterResult(true, attenuation, scattered, null);
         }
 
-        private double CalculateSchlickApproximation(double cosine, double refractionIndex)
+        private float CalculateSchlickApproximation(float cosine, float refractionIndex)
         {
-            double r0 = (1.0 - refractionIndex) / (1.0 + refractionIndex);
+            float r0 = (1.0f - refractionIndex) / (1.0f + refractionIndex);
             r0 = r0 * r0;
-            return r0 + ((1.0 - r0) * Math.Pow(1.0 - cosine, 5.0));
+            return r0 + ((1.0f - r0) * MathF.Pow(1.0f - cosine, 5.0f));
         }
     }
 }

@@ -10,27 +10,27 @@ namespace WkndRay
 {
     public class VectorPerlin
     {
-        private static readonly PosVector[] RanVector;
-        private static readonly int[] PermX;
-        private static readonly int[] PermY;
-        private static readonly int[] PermZ;
+        private static readonly PosVector[] s_ranVector;
+        private static readonly int[] s_permX;
+        private static readonly int[] s_permY;
+        private static readonly int[] s_permZ;
 
         static VectorPerlin()
         {
-            RanVector = PerlinGenerate();
-            PermX = PerlinGenratePerm();
-            PermY = PerlinGenratePerm();
-            PermZ = PerlinGenratePerm();
+            s_ranVector = PerlinGenerate();
+            s_permX = PerlinGenratePerm();
+            s_permY = PerlinGenratePerm();
+            s_permZ = PerlinGenratePerm();
         }
 
-        public double Noise(PosVector p)
+        public float Noise(PosVector p)
         {
-            double u = p.X - Math.Floor(p.X);
-            double v = p.Y - Math.Floor(p.Y);
-            double w = p.Z - Math.Floor(p.Z);
-            int i = Convert.ToInt32(Math.Floor(p.X));
-            int j = Convert.ToInt32(Math.Floor(p.Y));
-            int k = Convert.ToInt32(Math.Floor(p.Z));
+            float u = p.X - MathF.Floor(p.X);
+            float v = p.Y - MathF.Floor(p.Y);
+            float w = p.Z - MathF.Floor(p.Z);
+            int i = Convert.ToInt32(MathF.Floor(p.X));
+            int j = Convert.ToInt32(MathF.Floor(p.Y));
+            int k = Convert.ToInt32(MathF.Floor(p.Z));
             var c = new PosVector[2, 2, 2];
             for (int di = 0; di < 2; di++)
             {
@@ -38,7 +38,7 @@ namespace WkndRay
                 {
                     for (int dk = 0; dk < 2; dk++)
                     {
-                        c[di, dj, dk] = RanVector[PermX[(i + di) & 255] ^ PermY[(j + dj) & 255] ^ PermZ[(k + dk) & 255]];
+                        c[di, dj, dk] = s_ranVector[s_permX[(i + di) & 255] ^ s_permY[(j + dj) & 255] ^ s_permZ[(k + dk) & 255]];
                     }
                 }
             }
@@ -46,40 +46,40 @@ namespace WkndRay
             return PerlinInterpolate(c, u, v, w);
         }
 
-        public double Turbulence(PosVector p, int depth = 7)
+        public float Turbulence(PosVector p, int depth = 7)
         {
-            double accum = 0.0;
+            float accum = 0.0f;
             PosVector tempP = p;
-            double weight = 1.0;
+            float weight = 1.0f;
             for (int i = 0; i < depth; i++)
             {
                 accum += weight * Noise(tempP);
-                weight *= 0.5;
-                tempP *= 2.0;
+                weight *= 0.5f;
+                tempP *= 2.0f;
             }
 
-            return Math.Abs(accum);
+            return MathF.Abs(accum);
         }
 
-        private double PerlinInterpolate(PosVector[,,] c, double u, double v, double w)
+        private float PerlinInterpolate(PosVector[,,] c, float u, float v, float w)
         {
-            double uu = u * u * (3.0 - (2.0 * u));
-            double vv = v * v * (3.0 - (2.0 * v));
-            double ww = w * w * (3.0 - (2.0 * w));
-            double accum = 0.0;
+            float uu = u * u * (3.0f - (2.0f * u));
+            float vv = v * v * (3.0f - (2.0f * v));
+            float ww = w * w * (3.0f - (2.0f * w));
+            float accum = 0.0f;
             for (int i = 0; i < 2; i++)
             {
-                double dubi = Convert.ToDouble(i);
+                float dubi = Convert.ToSingle(i);
                 for (int j = 0; j < 2; j++)
                 {
-                    double dubj = Convert.ToDouble(j);
+                    float dubj = Convert.ToSingle(j);
                     for (int k = 0; k < 2; k++)
                     {
-                        double dubk = Convert.ToDouble(k);
+                        float dubk = Convert.ToSingle(k);
                         PosVector weightVec = new PosVector(u - dubi, v - dubj, w - dubk);
-                        accum += ((dubi * uu) + ((1.0 - dubi) * (1.0 - uu))) *
-                                 ((dubj * vv) + ((1.0 - dubj) * (1.0 - vv))) *
-                                 ((dubk * ww) + ((1.0 - dubk) * (1.0 - ww))) *
+                        accum += ((dubi * uu) + ((1.0f - dubi) * (1.0f - uu))) *
+                                 ((dubj * vv) + ((1.0f - dubj) * (1.0f - vv))) *
+                                 ((dubk * ww) + ((1.0f - dubk) * (1.0f - ww))) *
                                  c[i, j, k].Dot(weightVec);
                     }
                 }
@@ -94,9 +94,9 @@ namespace WkndRay
             for (int i = 0; i < 256; i++)
             {
                 p[i] = new PosVector(
-                  -1.0 + (2.0 * RandomService.NextDouble()),
-                  -1.0 + (2.0 * RandomService.NextDouble()),
-                  -1.0 + (2.0 * RandomService.NextDouble())).ToUnitVector();
+                  -1.0f + (2.0f * RandomService.Nextfloat()),
+                  -1.0f + (2.0f * RandomService.Nextfloat()),
+                  -1.0f + (2.0f * RandomService.Nextfloat())).ToUnitVector();
             }
 
             return p;
@@ -118,7 +118,7 @@ namespace WkndRay
         {
             for (int i = p.Length - 1; i > 0; i--)
             {
-                int target = Convert.ToInt32(RandomService.NextDouble() * Convert.ToDouble(i + 1));
+                int target = Convert.ToInt32(RandomService.Nextfloat() * Convert.ToSingle(i + 1));
                 int tmp = p[i];
                 p[i] = p[target];
                 p[target] = tmp;

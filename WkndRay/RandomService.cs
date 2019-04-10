@@ -10,36 +10,36 @@ namespace WkndRay
 {
     public class RandomService
     {
-        private static readonly Random Random = new Random();
-        private static readonly object Lock = new object();
+        private static readonly Random s_random = new Random();
+        private static readonly object s_lock = new object();
 
-        public static double NextDouble()
+        public static float Nextfloat()
         {
-            lock (Lock)
+            lock (s_lock)
             {
-                return Random.NextDouble();
+                return Convert.ToSingle(s_random.NextDouble());
             }
         }
 
         public static PosVector GetRandomCosineDirection()
         {
-            double r1 = NextDouble();
-            double r2 = NextDouble();
-            double z = Math.Sqrt(1.0 - r2);
-            double phi = 2.0 * Math.PI * r1;
-            double x = Math.Cos(phi) * 2.0 * Math.Sqrt(r2);
-            double y = Math.Sin(phi) * 2.0 * Math.Sqrt(r2);
+            float r1 = Nextfloat();
+            float r2 = Nextfloat();
+            float z = MathF.Sqrt(1.0f - r2);
+            float phi = 2.0f * MathF.PI * r1;
+            float x = MathF.Cos(phi) * 2.0f * MathF.Sqrt(r2);
+            float y = MathF.Sin(phi) * 2.0f * MathF.Sqrt(r2);
             return new PosVector(x, y, z);
         }
 
-        public static PosVector RandomToSphere(double radius, double distanceSquared)
+        public static PosVector RandomToSphere(float radius, float distanceSquared)
         {
-            double r1 = NextDouble();
-            double r2 = NextDouble();
-            double z = 1.0 + (r2 * (Math.Sqrt(1.0 - (radius * radius / distanceSquared)) - 1.0));
-            double phi = 2.0 * Math.PI * r1;
-            double x = Math.Cos(phi) * Math.Sqrt(1.0 - (z * z));
-            double y = Math.Sin(phi) * Math.Sqrt(1.0 - (z * z));
+            float r1 = Nextfloat();
+            float r2 = Nextfloat();
+            float z = 1.0f + (r2 * (MathF.Sqrt(1.0f - (radius * radius / distanceSquared)) - 1.0f));
+            float phi = 2.0f * MathF.PI * r1;
+            float x = MathF.Cos(phi) * MathF.Sqrt(1.0f - (z * z));
+            float y = MathF.Sin(phi) * MathF.Sqrt(1.0f - (z * z));
             return new PosVector(x, y, z);
         }
     }

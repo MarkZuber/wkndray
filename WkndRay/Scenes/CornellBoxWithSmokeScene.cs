@@ -17,23 +17,23 @@ namespace WkndRay.Scenes
 
         public CornellBoxWithSmokeScene()
         {
-            var light = new DiffuseLight(new ColorTexture(7.0, 7.0, 7.0));
-            _light = new XzRect(113.0, 443.0, 127.0, 432.0, 554.0, light);
+            var light = new DiffuseLight(new ColorTexture(7.0f, 7.0f, 7.0f));
+            _light = new XzRect(113.0f, 443.0f, 127.0f, 432.0f, 554.0f, light);
         }
 
         /// <inheritdoc />
         public Camera GetCamera(int imageWidth, int imageHeight)
         {
-            var lookFrom = new PosVector(278.0, 278.0, -800.0);
-            var lookAt = new PosVector(278.0, 278.0, 0.0);
-            double distToFocus = 10.0;
-            double aperture = 0.0;
+            var lookFrom = new PosVector(278.0f, 278.0f, -800.0f);
+            var lookAt = new PosVector(278.0f, 278.0f, 0.0f);
+            float distToFocus = 10.0f;
+            float aperture = 0.0f;
             return new Camera(
               lookFrom,
               lookAt,
               PosVector.UnitY,
-              40.0,
-              Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
+              40.0f,
+              Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
               aperture,
               distToFocus);
         }
@@ -41,31 +41,31 @@ namespace WkndRay.Scenes
         /// <inheritdoc />
         public IHitable GetWorld()
         {
-            var red = new LambertianMaterial(new ColorTexture(0.65, 0.05, 0.05));
-            var white = new LambertianMaterial(new ColorTexture(0.73, 0.73, 0.73));
-            var green = new LambertianMaterial(new ColorTexture(0.12, 0.45, 0.15));
+            var red = new LambertianMaterial(new ColorTexture(0.65f, 0.05f, 0.05f));
+            var white = new LambertianMaterial(new ColorTexture(0.73f, 0.73f, 0.73f));
+            var green = new LambertianMaterial(new ColorTexture(0.12f, 0.45f, 0.15f));
 
             var b1 = new Translate(
-              new RotateY(new Box(new PosVector(0.0, 0.0, 0.0), new PosVector(165.0, 165.0, 165.0), white), -18.0),
-              new PosVector(130.0, 0.0, 65.0));
+              new RotateY(new Box(new PosVector(0.0f, 0.0f, 0.0f), new PosVector(165.0f, 165.0f, 165.0f), white), -18.0f),
+              new PosVector(130.0f, 0.0f, 65.0f));
             var b2 = new Translate(
-              new RotateY(new Box(new PosVector(0.0, 0.0, 0.0), new PosVector(165.0, 330.0, 165.0), white), 15.0),
-              new PosVector(265.0, 0.0, 295.0));
+              new RotateY(new Box(new PosVector(0.0f, 0.0f, 0.0f), new PosVector(165.0f, 330.0f, 165.0f), white), 15.0f),
+              new PosVector(265.0f, 0.0f, 295.0f));
 
             var list = new HitableList()
       {
-        new FlipNormals(new YzRect(0.0, 555.0, 0.0, 555.0, 555.0, green)),
-        new YzRect(0.0, 555.0, 0.0, 555.0, 0.0, red),
+        new FlipNormals(new YzRect(0.0f, 555.0f, 0.0f, 555.0f, 555.0f, green)),
+        new YzRect(0.0f, 555.0f, 0.0f, 555.0f, 0.0f, red),
         new FlipNormals(_light),
-        new FlipNormals(new XzRect(0.0, 555.0, 0.0, 555.0, 555.0, white)),
-        new XzRect(0.0, 555.0, 0.0, 555.0, 0.0, white),
-        new FlipNormals(new XyRect(0.0, 555.0, 0.0, 555.0, 555.0, white)),
+        new FlipNormals(new XzRect(0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white)),
+        new XzRect(0.0f, 555.0f, 0.0f, 555.0f, 0.0f, white),
+        new FlipNormals(new XyRect(0.0f, 555.0f, 0.0f, 555.0f, 555.0f, white)),
 
-        new ConstantMedium(b1, 0.01, new ColorTexture(1.0, 1.0, 1.0)),
-        new ConstantMedium(b2, 0.01, new ColorTexture(0.0, 0.0, 0.0))
+        new ConstantMedium(b1, 0.01f, new ColorTexture(1.0f, 1.0f, 1.0f)),
+        new ConstantMedium(b2, 0.01f, new ColorTexture(0.0f, 0.0f, 0.0f))
       };
 
-            return new BvhNode(list, 0.0, 1.0);
+            return new BvhNode(list, 0.0f, 1.0f);
         }
 
         /// <inheritdoc />

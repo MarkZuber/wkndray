@@ -8,13 +8,13 @@ namespace WkndRay.Hitables
 {
     public abstract class AbstractHitable : IHitable
     {
-        public abstract HitRecord Hit(Ray ray, double tMin, double tMax);
+        public abstract HitRecord Hit(Ray ray, float tMin, float tMax);
 
-        public abstract AABB GetBoundingBox(double t0, double t1);
+        public abstract AABB GetBoundingBox(float t0, float t1);
 
-        public virtual double GetPdfValue(PosVector origin, PosVector v)
+        public virtual float GetPdfValue(PosVector origin, PosVector v)
         {
-            return 1.0;
+            return 1.0f;
         }
 
         public virtual PosVector Random(PosVector origin)

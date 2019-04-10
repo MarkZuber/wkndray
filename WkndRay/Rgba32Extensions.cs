@@ -16,9 +16,9 @@ namespace WkndRay
             return new ColorVector(ByteToColor(rgba32.R), ByteToColor(rgba32.G), ByteToColor(rgba32.B));
         }
 
-        private static double ByteToColor(byte c)
+        private static float ByteToColor(byte c)
         {
-            return Convert.ToDouble(c) / 255.0;
+            return Convert.ToSingle(c) / 255.0f;
         }
     }
 }

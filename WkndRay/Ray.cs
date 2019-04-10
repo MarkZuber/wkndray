@@ -17,7 +17,7 @@ namespace WkndRay
         public PosVector Origin { get; }
         public PosVector Direction { get; }
 
-        public PosVector GetPointAtParameter(double t)
+        public PosVector GetPointAtParameter(float t)
         {
             return Origin + (t * Direction);
         }

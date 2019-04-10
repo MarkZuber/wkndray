@@ -17,16 +17,16 @@ namespace WkndRay.Scenes
     {
         public static IScene ParseFile(string filePath, int imageWidth, int imageHeight)
         {
-            var background = new Func<Ray, ColorVector>(ray => new ColorVector(0.0, 0.0, 0.0));
+            var background = new Func<Ray, ColorVector>(ray => new ColorVector(0.0f, 0.0f, 0.0f));
             var lights = new HitableList();
             var world = new HitableList();
-            var cameraAt = new PosVector(0.0, 0.0, 0.0);
-            var cameraFrom = new PosVector(0.0, 0.0, 0.0);
-            var cameraUp = new PosVector(0.0, 0.0, 0.0);
+            var cameraAt = new PosVector(0.0f, 0.0f, 0.0f);
+            var cameraFrom = new PosVector(0.0f, 0.0f, 0.0f);
+            var cameraUp = new PosVector(0.0f, 0.0f, 0.0f);
 
             var lookingFor = LookingFor.Instruction;
 
-            IMaterial currentMaterial = new LambertianMaterial(new ColorTexture(0.0, 0.0, 0.0));
+            IMaterial currentMaterial = new LambertianMaterial(new ColorTexture(0.0f, 0.0f, 0.0f));
 
             var polyVectors = new List<PosVector>();
             var currentItemCounter = 0;
@@ -46,7 +46,7 @@ namespace WkndRay.Scenes
                         if (instruction == "b")
                         {
                             // background color
-                            background = ray => new ColorVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                            background = ray => new ColorVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         }
                         else if (instruction == "v")
                         {
@@ -58,14 +58,14 @@ namespace WkndRay.Scenes
                             // positional light
                             //var colorVector = split.Length == 7
                             //                    ? new ColorVector(
-                            //                      double.Parse(split[4]),
-                            //                      double.Parse(split[5]),
-                            //                      double.Parse(split[6]))
-                            //                    : new ColorVector(7.0, 7.0, 7.0);
-                            var colorVector = new ColorVector(7.0, 7.0, 7.0);
+                            //                      float.Parse(split[4]),
+                            //                      float.Parse(split[5]),
+                            //                      float.Parse(split[6]))
+                            //                    : new ColorVector(7.0f, 7.0f, 7.0f);
+                            var colorVector = new ColorVector(7.0f, 7.0f, 7.0f);
                             var sphere = new Sphere(
-                              new PosVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])),
-                              1.5,
+                              new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
+                              1.5f,
                               new DiffuseLight(new ColorTexture(colorVector)));
                             lights.Add(sphere);
                             world.Add(sphere);
@@ -82,30 +82,30 @@ namespace WkndRay.Scenes
                             // Usually, 0 <= Kd <= 1 and 0 <= Ks <= 1, though it is not required that Kd + Ks = 1. Note that transmitting objects (T > 0) are considered to have two sides for algorithms that need these (normally, objects have one side).
                             // todo: i don't think i'm assigning the correct values into my solidmaterial yet
                             //currentMaterial = new SolidMaterial(
-                            //  0.0, // kAmbient
-                            //  double.Parse(split[4]),  // kDiffuse
-                            //  double.Parse(split[5]),  // kSpecular
-                            //  double.Parse(split[7]),  // kReflection
-                            //  double.Parse(split[8]),  // kTransparent
-                            //  double.Parse(split[8]),  // refraction    -- todo: which is which here?
-                            //  double.Parse(split[6]),  // gloss
-                            //  new ColorVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]))
+                            //  0.0f, // kAmbient
+                            //  float.Parse(split[4]),  // kDiffuse
+                            //  float.Parse(split[5]),  // kSpecular
+                            //  float.Parse(split[7]),  // kReflection
+                            //  float.Parse(split[8]),  // kTransparent
+                            //  float.Parse(split[8]),  // refraction    -- todo: which is which here?
+                            //  float.Parse(split[6]),  // gloss
+                            //  new ColorVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]))
                             //);
                             // todo: need to look at diffuse/specular/reflection/transparent and pick an appropriate material for it...
                             //currentMaterial = new LambertianMaterial(
                             //  new ColorTexture(
-                            //    new ColorVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]))));
-                            if (double.Parse(split[5]) > 0.01)
+                            //    new ColorVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]))));
+                            if (float.Parse(split[5]) > 0.01)
                             {
                                 currentMaterial = new MetalMaterial(
-                                  new ColorVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])),
-                                  1.5);
+                                  new ColorVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
+                                  1.5f);
                             }
                             else
                             {
                                 currentMaterial = new LambertianMaterial(
                                   new ColorTexture(
-                                    new ColorVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]))));
+                                    new ColorVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]))));
                             }
                         }
                         else if (instruction == "c")
@@ -117,8 +117,8 @@ namespace WkndRay.Scenes
                             // sphere
                             world.Add(
                               new Sphere(
-                                new PosVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])),
-                                double.Parse(split[4]),
+                                new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
+                                float.Parse(split[4]),
                                 currentMaterial));
                         }
                         else if (instruction == "p")
@@ -143,7 +143,7 @@ namespace WkndRay.Scenes
                         if (currentItemCounter > 0)
                         {
                             currentItemCounter--;
-                            polyVectors.Add(new PosVector(double.Parse(split[0]), double.Parse(split[1]), double.Parse(split[2])));
+                            polyVectors.Add(new PosVector(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2])));
                         }
 
                         if (currentItemCounter == 0)
@@ -185,19 +185,19 @@ namespace WkndRay.Scenes
                     break;
                 case LookingFor.ViewpointFrom:
                     {
-                        cameraFrom = new PosVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                        cameraFrom = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointAt;
                     }
                     break;
                 case LookingFor.ViewpointAt:
                     {
-                        cameraAt = new PosVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                        cameraAt = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointUp;
                     }
                     break;
                 case LookingFor.ViewpointUp:
                     {
-                        cameraUp = new PosVector(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                        cameraUp = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointAngle;
                     }
                     break;
@@ -229,11 +229,11 @@ namespace WkndRay.Scenes
                 cameraFrom,
                 cameraAt,
                 cameraUp,
-                50.0,
-                Convert.ToDouble(imageWidth) / Convert.ToDouble(imageHeight),
-                0.0,
-                10.0),
-              new BvhNode(world, 0.0, 1.0),
+                50.0f,
+                Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
+                0.0f,
+                10.0f),
+              new BvhNode(world, 0.0f, 1.0f),
               lights,
               background);
         }

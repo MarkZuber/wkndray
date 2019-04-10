@@ -19,28 +19,28 @@ namespace WkndRay
         public PosVector Min { get; }
         public PosVector Max { get; }
 
-        private double DMin(double a, double b)
+        private float DMin(float a, float b)
         {
             return a < b ? a : b;
         }
 
-        private double DMax(double a, double b)
+        private float DMax(float a, float b)
         {
             return a > b ? a : b;
         }
 
-        public bool Hit(Ray ray, double tMin, double tMax)
+        public bool Hit(Ray ray, float tMin, float tMax)
         {
-            var minvec = Min.ToDoubleArray();
-            var maxvec = Max.ToDoubleArray();
-            var originvec = ray.Origin.ToDoubleArray();
-            var dirvec = ray.Direction.ToDoubleArray();
+            var minvec = Min.ToSingleArray();
+            var maxvec = Max.ToSingleArray();
+            var originvec = ray.Origin.ToSingleArray();
+            var dirvec = ray.Direction.ToSingleArray();
 
             // alternative, slower implementation;
             //for (int a = 0; a < 3; a++)
             //{
-            //  double t0 = DMin((minvec[a] - originvec[a]) / dirvec[a], (maxvec[a] - originvec[a]) / dirvec[a]);
-            //  double t1 = DMax((minvec[a] - originvec[a]) / dirvec[a], (maxvec[a] - originvec[a]) / dirvec[a]);
+            //  float t0 = DMin((minvec[a] - originvec[a]) / dirvec[a], (maxvec[a] - originvec[a]) / dirvec[a]);
+            //  float t1 = DMax((minvec[a] - originvec[a]) / dirvec[a], (maxvec[a] - originvec[a]) / dirvec[a]);
             //  tMin = DMax(t0, tMin);
             //  tMax = DMin(t1, tMax);
             //  if (tMax <= tMin)
@@ -53,12 +53,12 @@ namespace WkndRay
 
             for (int a = 0; a < 3; a++)
             {
-                double invD = 1.0 / dirvec[a];
-                double t0 = (minvec[a] - originvec[a]) * invD;
-                double t1 = (maxvec[a] - originvec[a]) * invD;
-                if (invD < 0.0)
+                float invD = 1.0f / dirvec[a];
+                float t0 = (minvec[a] - originvec[a]) * invD;
+                float t1 = (maxvec[a] - originvec[a]) * invD;
+                if (invD < 0.0f)
                 {
-                    double temp = t0;
+                    float temp = t0;
                     t0 = t1;
                     t1 = temp;
                 }
@@ -77,10 +77,10 @@ namespace WkndRay
         public AABB GetSurroundingBox(AABB other)
         {
             var small = new PosVector(
-              Math.Min(Min.X, other.Min.X),
-              Math.Min(Min.Y, other.Min.Y),
-              Math.Min(Min.Z, other.Min.Z));
-            var big = new PosVector(Math.Max(Max.X, other.Max.X), Math.Max(Max.Y, other.Max.Y), Math.Max(Max.Z, other.Max.Z));
+              MathF.Min(Min.X, other.Min.X),
+              MathF.Min(Min.Y, other.Min.Y),
+              MathF.Min(Min.Z, other.Min.Z));
+            var big = new PosVector(MathF.Max(Max.X, other.Max.X), MathF.Max(Max.Y, other.Max.Y), MathF.Max(Max.Z, other.Max.Z));
             return new AABB(small, big);
         }
     }

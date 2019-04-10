@@ -29,12 +29,12 @@ namespace WkndRay.Hitables
         public PosVector PosMin { get; }
         public PosVector PosMax { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             return _list.Hit(ray, tMin, tMax);
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
             return new AABB(PosMin, PosMax);
         }

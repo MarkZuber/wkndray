@@ -10,14 +10,14 @@ namespace WkndRay.Textures
     {
         private readonly Perlin _noise = new Perlin();
 
-        public NoiseTexture(bool interpolate, double scale)
+        public NoiseTexture(bool interpolate, float scale)
         {
             Interpolate = interpolate;
             Scale = scale;
         }
 
         public bool Interpolate { get; }
-        public double Scale { get; }
+        public float Scale { get; }
 
         public ColorVector GetValue(Point2D uvCoords, PosVector p)
         {

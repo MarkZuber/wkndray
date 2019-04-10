@@ -22,16 +22,16 @@ namespace WkndRay.Executors
         public PixelBuffer Execute(int width, int height)
         {
             var pixelBuffer = new PixelBuffer(width, height);
-            double aperture = 0.01;
-            var lookFrom = new PosVector(24.0, 2.0, 6.0);
+            float aperture = 0.01f;
+            var lookFrom = new PosVector(24.0f, 2.0f, 6.0f);
             var lookAt = PosVector.UnitY;
-            double distanceToFocus = (lookFrom - lookAt).Magnitude();
+            float distanceToFocus = (lookFrom - lookAt).Magnitude();
             var camera = new Camera(
               lookFrom,
               lookAt,
               PosVector.UnitY,
-              15.0,
-              Convert.ToDouble(width) / Convert.ToDouble(height),
+              15.0f,
+              Convert.ToSingle(width) / Convert.ToSingle(height),
               aperture,
               distanceToFocus);
 
@@ -41,17 +41,17 @@ namespace WkndRay.Executors
             {
                 for (int i = 0; i < width; i++)
                 {
-                    ColorVector color = new ColorVector(0.0, 0.0, 0.0);
+                    ColorVector color = new ColorVector(0.0f, 0.0f, 0.0f);
                     for (int sample = 0; sample < _numSamples; sample++)
                     {
-                        double u = Convert.ToDouble(i + GetRandom()) / Convert.ToDouble(width);
-                        double v = Convert.ToDouble(j + GetRandom()) / Convert.ToDouble(height);
+                        float u = Convert.ToSingle(i + GetRandom()) / Convert.ToSingle(width);
+                        float v = Convert.ToSingle(j + GetRandom()) / Convert.ToSingle(height);
                         var r = camera.GetRay(u, v);
 
                         color += GetRayColor(r, world, 0);
                     }
 
-                    color /= Convert.ToDouble(_numSamples);
+                    color /= Convert.ToSingle(_numSamples);
                     color = color.ApplyGamma2();
 
                     pixelBuffer.SetPixelColor(i, j, color);
@@ -68,18 +68,18 @@ namespace WkndRay.Executors
         {
             var list = new HitableList
             {
-                new Sphere(new PosVector(0.0, -1000.0, 0.0), 1000.0, new LambertianMaterial(new ColorTexture(0.5, 0.5, 0.5)))
+                new Sphere(new PosVector(0.0f, -1000.0f, 0.0f), 1000.0f, new LambertianMaterial(new ColorTexture(0.5f, 0.5f, 0.5f)))
             };
             for (int a = -11; a < 11; a++)
             {
                 for (int b = -11; b < 11; b++)
                 {
-                    double chooseMat = RandomService.NextDouble();
+                    float chooseMat = RandomService.Nextfloat();
                     var center = new PosVector(
-                      Convert.ToDouble(a) * RandomService.NextDouble(),
-                      0.2,
-                      Convert.ToDouble(b) + (0.9 * RandomService.NextDouble()));
-                    if ((center - new PosVector(4.0, 0.2, 0.0)).Magnitude() > 0.9)
+                      Convert.ToSingle(a) * RandomService.Nextfloat(),
+                      0.2f,
+                      Convert.ToSingle(b) + (0.9f * RandomService.Nextfloat()));
+                    if ((center - new PosVector(4.0f, 0.2f, 0.0f)).Magnitude() > 0.9)
                     {
                         if (chooseMat < 0.8)
                         {
@@ -87,12 +87,12 @@ namespace WkndRay.Executors
                             list.Add(
                               new Sphere(
                                 center,
-                                0.2,
+                                0.2f,
                                 new LambertianMaterial(
                                   new ColorTexture(
-                                    RandomService.NextDouble() * RandomService.NextDouble(),
-                                    RandomService.NextDouble() * RandomService.NextDouble(),
-                                    RandomService.NextDouble() * RandomService.NextDouble()))));
+                                    RandomService.Nextfloat() * RandomService.Nextfloat(),
+                                    RandomService.Nextfloat() * RandomService.Nextfloat(),
+                                    RandomService.Nextfloat() * RandomService.Nextfloat()))));
                         }
                         else if (chooseMat < 0.95)
                         {
@@ -100,39 +100,39 @@ namespace WkndRay.Executors
                             list.Add(
                               new Sphere(
                                 center,
-                                0.2,
+                                0.2f,
                                 new MetalMaterial(
                                   new ColorVector(
-                                    0.5 * (1.0 + RandomService.NextDouble()),
-                                    0.5 * (1.0 + RandomService.NextDouble()),
-                                    0.5 * (1.0 + RandomService.NextDouble())),
-                                  0.5 * RandomService.NextDouble())));
+                                    0.5f * (1.0f + RandomService.Nextfloat()),
+                                    0.5f * (1.0f + RandomService.Nextfloat()),
+                                    0.5f * (1.0f + RandomService.Nextfloat())),
+                                  0.5f * RandomService.Nextfloat())));
                         }
                         else
                         {
                             // glass
-                            list.Add(new Sphere(center, 0.2, new DialectricMaterial(1.5)));
+                            list.Add(new Sphere(center, 0.2f, new DialectricMaterial(1.5f)));
                         }
                     }
                 }
             }
 
-            list.Add(new Sphere(new PosVector(0.0, 1.0, 0.0), 1.0, new DialectricMaterial(1.5)));
-            list.Add(new Sphere(new PosVector(-4.0, 1.0, 0.0), 1.0, new LambertianMaterial(new ColorTexture(0.4, 0.2, 0.1))));
-            list.Add(new Sphere(new PosVector(4.0, 1.0, 0.0), 1.0, new MetalMaterial(new ColorVector(0.7, 0.6, 0.5), 0.0)));
+            list.Add(new Sphere(new PosVector(0.0f, 1.0f, 0.0f), 1.0f, new DialectricMaterial(1.5f)));
+            list.Add(new Sphere(new PosVector(-4.0f, 1.0f, 0.0f), 1.0f, new LambertianMaterial(new ColorTexture(0.4f, 0.2f, 0.1f))));
+            list.Add(new Sphere(new PosVector(4.0f, 1.0f, 0.0f), 1.0f, new MetalMaterial(new ColorVector(0.7f, 0.6f, 0.5f), 0.0f)));
 
             return list;
         }
 
-        private double GetRandom()
+        private float GetRandom()
         {
-            return RandomService.NextDouble();
+            return RandomService.Nextfloat();
         }
 
         private ColorVector GetRayColor(Ray ray, IHitable world, int depth)
         {
             // the 0.001 corrects for the "shadow acne"
-            HitRecord hr = world.Hit(ray, 0.001, double.MaxValue);
+            HitRecord hr = world.Hit(ray, 0.001f, float.MaxValue);
             if (hr != null)
             {
                 if (depth < 50)
@@ -149,8 +149,8 @@ namespace WkndRay.Executors
             else
             {
                 var unitDirection = ray.Direction.ToUnitVector();
-                double t = 0.5 * (unitDirection.Y + 1.0);
-                return (((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0))).ToColorVector();
+                float t = 0.5f * (unitDirection.Y + 1.0f);
+                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

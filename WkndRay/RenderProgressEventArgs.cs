@@ -10,11 +10,11 @@ namespace WkndRay
 {
     public class RenderProgressEventArgs : EventArgs
     {
-        public RenderProgressEventArgs(double percentComplete)
+        public RenderProgressEventArgs(float percentComplete)
         {
             PercentComplete = percentComplete;
         }
 
-        public double PercentComplete { get; }
+        public float PercentComplete { get; }
     }
 }

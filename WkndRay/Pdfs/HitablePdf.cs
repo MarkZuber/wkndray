@@ -11,7 +11,7 @@
         public IHitable Hitable { get; }
         public PosVector Origin { get; }
 
-        public double GetValue(PosVector direction)
+        public float GetValue(PosVector direction)
         {
             return Hitable.GetPdfValue(Origin, direction);
         }

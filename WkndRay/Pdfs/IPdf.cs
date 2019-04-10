@@ -11,7 +11,7 @@ namespace WkndRay.Pdfs
     /// </summary>
     public interface IPdf
     {
-        double GetValue(PosVector direction);
+        float GetValue(PosVector direction);
         PosVector Generate();
     }
 }

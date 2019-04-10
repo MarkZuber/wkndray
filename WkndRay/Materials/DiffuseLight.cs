@@ -24,7 +24,7 @@ namespace WkndRay.Materials
 
         public override ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
         {
-            return hitRecord.Normal.Dot(rayIn.Direction) < 0.0 ? Texture.GetValue(uvCoords, p) : ColorVector.Zero;
+            return hitRecord.Normal.Dot(rayIn.Direction) < 0.0f ? Texture.GetValue(uvCoords, p) : Texture.GetValue(uvCoords, p);
         }
     }
 }

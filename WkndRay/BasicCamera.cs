@@ -21,7 +21,7 @@ namespace WkndRay
         public PosVector Horizontal { get; }
         public PosVector Vertical { get; }
 
-        public Ray GetRay(double u, double v)
+        public Ray GetRay(float u, float v)
         {
             return new Ray(Origin, LowerLeftCorner + (u * Horizontal) + (v * Vertical) - Origin);
         }

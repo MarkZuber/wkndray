@@ -22,42 +22,42 @@ namespace WkndRay.Executors
         public PixelBuffer Execute(int width, int height)
         {
             var pixelBuffer = new PixelBuffer(width, height);
-            var lowerLeftCorner = new PosVector(-2.0, -1.0, -1.0);
-            var horizontal = new PosVector(4.0, 0.0, 0.0);
-            var vertical = new PosVector(0.0, 2.0, 0.0);
+            var lowerLeftCorner = new PosVector(-2.0f, -1.0f, -1.0f);
+            var horizontal = new PosVector(4.0f, 0.0f, 0.0f);
+            var vertical = new PosVector(0.0f, 2.0f, 0.0f);
             var origin = PosVector.Zero;
 
             var camera = new BasicCamera(origin, lowerLeftCorner, horizontal, vertical);
 
             var hitables = new HitableList
-      {
-        new Sphere(new PosVector(0.0, 0.0, -1.0), 0.5, new LambertianMaterial(new ColorTexture(0.8, 0.3, 0.3))),
-        new Sphere(new PosVector(0.0, -100.5, -1.0), 100.0, new LambertianMaterial(new ColorTexture(0.8, 0.8, 0.0))),
-        new Sphere(new PosVector(1.0, 0.0, -1.0), 0.5, new MetalMaterial(new ColorVector(0.8, 0.6, 0.2), 0.3)),
-        new Sphere(new PosVector(-1.0, 0.0, -1.0), 0.5, new DialectricMaterial(1.5)),
-        new Sphere(new PosVector(-1.0, 0.0, -1.0), -0.45, new DialectricMaterial(1.5)),
-      };
+            {
+                new Sphere(new PosVector(0.0f, 0.0f, -1.0f), 0.5f, new LambertianMaterial(new ColorTexture(0.8f, 0.3f, 0.3f))),
+                new Sphere(new PosVector(0.0f, -100.5f, -1.0f), 100.0f, new LambertianMaterial(new ColorTexture(0.8f, 0.8f, 0.0f))),
+                new Sphere(new PosVector(1.0f, 0.0f, -1.0f), 0.5f, new MetalMaterial(new ColorVector(0.8f, 0.6f, 0.2f), 0.3f)),
+                new Sphere(new PosVector(-1.0f, 0.0f, -1.0f), 0.5f, new DialectricMaterial(1.5f)),
+                new Sphere(new PosVector(-1.0f, 0.0f, -1.0f), -0.45f, new DialectricMaterial(1.5f)),
+            };
 
             var world = new HitableList
-      {
-        hitables
-      };
+            {
+                hitables
+            };
 
             for (int j = height - 1; j >= 0; j--)
             {
                 for (int i = 0; i < width; i++)
                 {
-                    ColorVector color = new ColorVector(0.0, 0.0, 0.0);
+                    ColorVector color = new ColorVector(0.0f, 0.0f, 0.0f);
                     for (int sample = 0; sample < _numSamples; sample++)
                     {
-                        double u = Convert.ToDouble(i + RandomService.NextDouble()) / Convert.ToDouble(width);
-                        double v = Convert.ToDouble(j + RandomService.NextDouble()) / Convert.ToDouble(height);
+                        float u = Convert.ToSingle(i + RandomService.Nextfloat()) / Convert.ToSingle(width);
+                        float v = Convert.ToSingle(j + RandomService.Nextfloat()) / Convert.ToSingle(height);
                         var r = camera.GetRay(u, v);
 
                         color += GetRayColor(r, world, 0);
                     }
 
-                    color /= Convert.ToDouble(_numSamples);
+                    color /= Convert.ToSingle(_numSamples);
                     color = color.ApplyGamma2();
 
                     pixelBuffer.SetPixelColor(i, j, color);
@@ -73,7 +73,7 @@ namespace WkndRay.Executors
         private ColorVector GetRayColor(Ray ray, IHitable world, int depth)
         {
             // the 0.001 corrects for the "shadow acne"
-            HitRecord hr = world.Hit(ray, 0.001, double.MaxValue);
+            HitRecord hr = world.Hit(ray, 0.001f, float.MaxValue);
             if (hr != null)
             {
                 if (depth < 50)
@@ -90,8 +90,8 @@ namespace WkndRay.Executors
             else
             {
                 var unitDirection = ray.Direction.ToUnitVector();
-                double t = 0.5 * (unitDirection.Y + 1.0);
-                return (((1.0 - t) * PosVector.One) + (t * new PosVector(0.5, 0.7, 1.0))).ToColorVector();
+                float t = 0.5f * (unitDirection.Y + 1.0f);
+                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

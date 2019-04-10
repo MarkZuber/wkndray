@@ -107,9 +107,9 @@ namespace RayWpf
             _dispatcher.Invoke(() => { WriteableBitmap.Unlock(); });
         }
 
-        private int ColorToInt(double c)
+        private int ColorToInt(float c)
         {
-            return Convert.ToInt32(c * 255.0);
+            return Convert.ToInt32(c * 255.0f);
         }
 
         private void UnsafeSetPixelColor(int x, int y, ColorVector color)

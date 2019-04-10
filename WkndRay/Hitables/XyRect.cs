@@ -11,7 +11,7 @@ namespace WkndRay.Hitables
 {
     public class XyRect : AbstractHitable
     {
-        public XyRect(double x0, double x1, double y0, double y1, double k, IMaterial material)
+        public XyRect(float x0, float x1, float y0, float y1, float k, IMaterial material)
         {
             X0 = x0;
             X1 = x1;
@@ -21,23 +21,23 @@ namespace WkndRay.Hitables
             Material = material;
         }
 
-        public double X0 { get; }
-        public double X1 { get; }
-        public double Y0 { get; }
-        public double Y1 { get; }
-        public double K { get; }
+        public float X0 { get; }
+        public float X1 { get; }
+        public float Y0 { get; }
+        public float Y1 { get; }
+        public float K { get; }
         public IMaterial Material { get; }
 
-        public override HitRecord Hit(Ray ray, double tMin, double tMax)
+        public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
-            double t = (K - ray.Origin.Z) / ray.Direction.Z;
+            float t = (K - ray.Origin.Z) / ray.Direction.Z;
             if (t < tMin || t > tMax)
             {
                 return null;
             }
 
-            double x = ray.Origin.X + (t * ray.Direction.X);
-            double y = ray.Origin.Y + (t * ray.Direction.Y);
+            float x = ray.Origin.X + (t * ray.Direction.X);
+            float y = ray.Origin.Y + (t * ray.Direction.Y);
             if (x < X0 || x > X1 || y < Y0 || y > Y1)
             {
                 return null;
@@ -51,9 +51,9 @@ namespace WkndRay.Hitables
               Material);
         }
 
-        public override AABB GetBoundingBox(double t0, double t1)
+        public override AABB GetBoundingBox(float t0, float t1)
         {
-            return new AABB(new PosVector(X0, Y0, K - 0.001), new PosVector(X1, Y1, K + 0.0001));
+            return new AABB(new PosVector(X0, Y0, K - 0.001f), new PosVector(X1, Y1, K + 0.0001f));
         }
     }
 }
