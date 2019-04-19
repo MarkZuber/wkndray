@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -18,13 +19,13 @@ namespace RayWpf
     public class WpfPixelBuffer : IPixelBuffer
     {
         private readonly Dispatcher _dispatcher;
-
-        // private readonly PixelBuffer _pixelBuffer;
+        private const int BitmapDpi = 96;
+        private readonly PixelBuffer _pixelBuffer;
 
         public WpfPixelBuffer(Dispatcher dispatcher, int width, int height, bool isYUp = true)
         {
-            // _pixelBuffer = new PixelBuffer(width, height, isYUp);
-            WriteableBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr32, null);
+            _pixelBuffer = new PixelBuffer(width, height, isYUp);
+            WriteableBitmap = new WriteableBitmap(width, height, BitmapDpi, BitmapDpi, PixelFormats.Bgr32, null);
             _dispatcher = dispatcher;
             Width = width;
             Height = height;
@@ -43,16 +44,18 @@ namespace RayWpf
 
         public void SetPixelColor(int x, int y, ColorVector color)
         {
-            // _pixelBuffer.SetPixelColor(x, y, color);
             _dispatcher.Invoke(
               () =>
               {
+                  Debug.WriteLine($"SetPixelColor ({x}, {y}) --> {color}");
+                  _pixelBuffer.SetPixelColor(x, y, color);
+
                   int yToSet = IsYUp ? (Height - 1 - y) : y;
                   Lock();
                   try
                   {
                       UnsafeSetPixelColor(x, yToSet, color);
-                      WriteableBitmap.AddDirtyRect(new Int32Rect(x, yToSet, 1, 1));
+                      WriteableBitmap.AddDirtyRect(new Int32Rect(0, 0, Width, Height)); //  AddDirtyRect(new Int32Rect(x, yToSet, 1, 1));
                   }
                   finally
                   {
@@ -68,19 +71,19 @@ namespace RayWpf
 
         public ColorVector GetPixelColor(int x, int y)
         {
-            throw new NotImplementedException();
-            // return _pixelBuffer.GetPixelColor(x, y);
+            // throw new NotImplementedException();
+            return _pixelBuffer.GetPixelColor(x, y);
         }
 
         public void SaveAsFile(string outputFilePath)
         {
-            // _pixelBuffer.SaveAsFile(outputFilePath);
+            _pixelBuffer.SaveAsFile(outputFilePath);
         }
 
         public void SetPixelRowColors(int y, IEnumerable<ColorVector> rowPixels)
         {
             var xPixels = rowPixels.ToList();
-            // _pixelBuffer.SetPixelRowColors(y, xPixels);
+            _pixelBuffer.SetPixelRowColors(y, xPixels);
             _dispatcher.Invoke(
               () =>
               {

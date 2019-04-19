@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Hitables;
 using WkndRay.Materials;
 
@@ -12,14 +13,14 @@ namespace WkndRay
 {
     public class Sphere : AbstractHitable
     {
-        public Sphere(PosVector center, float radius, IMaterial material = null)
+        public Sphere(Vector3 center, float radius, IMaterial material = null)
         {
             Center = center;
             Radius = radius;
             Material = material;
         }
 
-        public PosVector Center { get; }
+        public Vector3 Center { get; }
         public float Radius { get; }
         public IMaterial Material { get; }
 
@@ -52,10 +53,10 @@ namespace WkndRay
 
         public override AABB GetBoundingBox(float t0, float t1)
         {
-            return new AABB(Center - new PosVector(Radius, Radius, Radius), Center + new PosVector(Radius, Radius, Radius));
+            return new AABB(Center - new Vector3(Radius, Radius, Radius), Center + new Vector3(Radius, Radius, Radius));
         }
 
-        public override float GetPdfValue(PosVector origin, PosVector v)
+        public override float GetPdfValue(Vector3 origin, Vector3 v)
         {
             HitRecord hr = Hit(new Ray(origin, v), 0.001f, float.MaxValue);
             if (hr == null)
@@ -68,15 +69,15 @@ namespace WkndRay
             return 1.0f / solidAngle;
         }
 
-        public override PosVector Random(PosVector origin)
+        public override Vector3 Random(Vector3 origin)
         {
-            PosVector direction = Center - origin;
+            Vector3 direction = Center - origin;
             float distanceSquared = direction.MagnitudeSquared();
             OrthoNormalBase uvw = OrthoNormalBase.FromW(direction);
             return uvw.Local(RandomService.RandomToSphere(Radius, distanceSquared));
         }
 
-        private Point2D GetSphereUv(PosVector p)
+        private Point2D GetSphereUv(Vector3 p)
         {
             var punit = p.ToUnitVector();
             float phi = MathF.Atan2(punit.Z, punit.X);

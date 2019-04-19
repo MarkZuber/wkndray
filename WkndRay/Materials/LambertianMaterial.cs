@@ -23,7 +23,7 @@ namespace WkndRay.Materials
         public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
         {
             //var uvw = OrthoNormalBase.FromW(hitRecord.Normal);
-            //PosVector direction = uvw.Local(RandomService.GetRandomCosineDirection());
+            //Vector3 direction = uvw.Local(RandomService.GetRandomCosineDirection());
 
             //var scatteredRay = new Ray(hitRecord.P, direction.ToUnitVector());
             var attenuation = Albedo.GetValue(hitRecord.UvCoords, hitRecord.P);

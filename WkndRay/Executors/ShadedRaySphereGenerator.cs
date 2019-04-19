@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay.Executors
 {
@@ -13,10 +14,10 @@ namespace WkndRay.Executors
         public PixelBuffer Execute(int width, int height)
         {
             var pixelBuffer = new PixelBuffer(width, height);
-            var lowerLeftCorner = new PosVector(-2.0f, -1.0f, -1.0f);
-            var horizontal = new PosVector(4.0f, 0.0f, 0.0f);
-            var vertical = new PosVector(0.0f, 2.0f, 0.0f);
-            var origin = PosVector.Zero;
+            var lowerLeftCorner = new Vector3(-2.0f, -1.0f, -1.0f);
+            var horizontal = new Vector3(4.0f, 0.0f, 0.0f);
+            var vertical = new Vector3(0.0f, 2.0f, 0.0f);
+            var origin = Vector3.Zero;
 
             for (int j = height - 1; j >= 0; j--)
             {
@@ -35,19 +36,19 @@ namespace WkndRay.Executors
 
         private ColorVector GetRayColor(Ray ray)
         {
-            float t = HitSphere(new PosVector(0.0f, 0.0f, -1.0f), 0.5f, ray);
+            float t = HitSphere(new Vector3(0.0f, 0.0f, -1.0f), 0.5f, ray);
             if (t > 0.0f)
             {
-                var n = (ray.GetPointAtParameter(t) - new PosVector(0.0f, 0.0f, -1.0f)).ToUnitVector();
-                return (0.5f * new PosVector(n.X + 1.0f, n.Y + 1.0f, n.Z + 1.0f)).ToColorVector();
+                var n = (ray.GetPointAtParameter(t) - new Vector3(0.0f, 0.0f, -1.0f)).ToUnitVector();
+                return (0.5f * new Vector3(n.X + 1.0f, n.Y + 1.0f, n.Z + 1.0f)).ToColorVector();
             }
 
-            PosVector unitDirection = ray.Direction.ToUnitVector();
+            Vector3 unitDirection = ray.Direction.ToUnitVector();
             t = 0.5f * (unitDirection.Y + 1.0f);
-            return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
+            return (((1.0f - t) * Vector3.One) + (t * new Vector3(0.5f, 0.7f, 1.0f))).ToColorVector();
         }
 
-        private float HitSphere(PosVector center, float radius, Ray ray)
+        private float HitSphere(Vector3 center, float radius, Ray ray)
         {
             var oc = ray.Origin - center;
             float a = ray.Direction.Dot(ray.Direction);

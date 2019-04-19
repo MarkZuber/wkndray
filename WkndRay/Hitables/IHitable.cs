@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay
 {
     public interface IHitable
@@ -11,7 +13,7 @@ namespace WkndRay
         HitRecord Hit(Ray ray, float tMin, float tMax);
         AABB GetBoundingBox(float t0, float t1);
 
-        float GetPdfValue(PosVector origin, PosVector v);
-        PosVector Random(PosVector origin);
+        float GetPdfValue(Vector3 origin, Vector3 v);
+        Vector3 Random(Vector3 origin);
     }
 }

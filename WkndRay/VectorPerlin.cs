@@ -5,12 +5,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay
 {
     public class VectorPerlin
     {
-        private static readonly PosVector[] s_ranVector;
+        private static readonly Vector3[] s_ranVector;
         private static readonly int[] s_permX;
         private static readonly int[] s_permY;
         private static readonly int[] s_permZ;
@@ -23,7 +24,7 @@ namespace WkndRay
             s_permZ = PerlinGenratePerm();
         }
 
-        public float Noise(PosVector p)
+        public float Noise(Vector3 p)
         {
             float u = p.X - MathF.Floor(p.X);
             float v = p.Y - MathF.Floor(p.Y);
@@ -31,7 +32,7 @@ namespace WkndRay
             int i = Convert.ToInt32(MathF.Floor(p.X));
             int j = Convert.ToInt32(MathF.Floor(p.Y));
             int k = Convert.ToInt32(MathF.Floor(p.Z));
-            var c = new PosVector[2, 2, 2];
+            var c = new Vector3[2, 2, 2];
             for (int di = 0; di < 2; di++)
             {
                 for (int dj = 0; dj < 2; dj++)
@@ -46,10 +47,10 @@ namespace WkndRay
             return PerlinInterpolate(c, u, v, w);
         }
 
-        public float Turbulence(PosVector p, int depth = 7)
+        public float Turbulence(Vector3 p, int depth = 7)
         {
             float accum = 0.0f;
-            PosVector tempP = p;
+            Vector3 tempP = p;
             float weight = 1.0f;
             for (int i = 0; i < depth; i++)
             {
@@ -61,7 +62,7 @@ namespace WkndRay
             return MathF.Abs(accum);
         }
 
-        private float PerlinInterpolate(PosVector[,,] c, float u, float v, float w)
+        private float PerlinInterpolate(Vector3[,,] c, float u, float v, float w)
         {
             float uu = u * u * (3.0f - (2.0f * u));
             float vv = v * v * (3.0f - (2.0f * v));
@@ -76,7 +77,7 @@ namespace WkndRay
                     for (int k = 0; k < 2; k++)
                     {
                         float dubk = Convert.ToSingle(k);
-                        PosVector weightVec = new PosVector(u - dubi, v - dubj, w - dubk);
+                        Vector3 weightVec = new Vector3(u - dubi, v - dubj, w - dubk);
                         accum += ((dubi * uu) + ((1.0f - dubi) * (1.0f - uu))) *
                                  ((dubj * vv) + ((1.0f - dubj) * (1.0f - vv))) *
                                  ((dubk * ww) + ((1.0f - dubk) * (1.0f - ww))) *
@@ -88,12 +89,12 @@ namespace WkndRay
             return accum;
         }
 
-        private static PosVector[] PerlinGenerate()
+        private static Vector3[] PerlinGenerate()
         {
-            var p = new PosVector[256];
+            var p = new Vector3[256];
             for (int i = 0; i < 256; i++)
             {
-                p[i] = new PosVector(
+                p[i] = new Vector3(
                   -1.0f + (2.0f * RandomService.Nextfloat()),
                   -1.0f + (2.0f * RandomService.Nextfloat()),
                   -1.0f + (2.0f * RandomService.Nextfloat())).ToUnitVector();

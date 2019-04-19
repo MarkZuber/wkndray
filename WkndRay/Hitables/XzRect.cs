@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 
 namespace WkndRay.Hitables
@@ -46,17 +47,17 @@ namespace WkndRay.Hitables
             return new HitRecord(
               t,
               ray.GetPointAtParameter(t),
-              PosVector.UnitY,
+              Vector3.UnitY,
               new Point2D((x - X0) / (X1 - X0), (z - Z0) / (Z1 - Z0)),
               Material);
         }
 
         public override AABB GetBoundingBox(float t0, float t1)
         {
-            return new AABB(new PosVector(X0, K - 0.001f, Z0), new PosVector(X1, K + 0.0001f, Z1));
+            return new AABB(new Vector3(X0, K - 0.001f, Z0), new Vector3(X1, K + 0.0001f, Z1));
         }
 
-        public override float GetPdfValue(PosVector origin, PosVector v)
+        public override float GetPdfValue(Vector3 origin, Vector3 v)
         {
             HitRecord hr = Hit(new Ray(origin, v), 0.001f, float.MaxValue);
             if (hr == null)
@@ -70,9 +71,9 @@ namespace WkndRay.Hitables
             return distanceSquared / (cosine * area);
         }
 
-        public override PosVector Random(PosVector origin)
+        public override Vector3 Random(Vector3 origin)
         {
-            var randomPoint = new PosVector(X0 + (RandomService.Nextfloat() * (X1 - X0)), K, Z0 + (RandomService.Nextfloat() * (Z1 - Z0)));
+            var randomPoint = new Vector3(X0 + (RandomService.Nextfloat() * (X1 - X0)), K, Z0 + (RandomService.Nextfloat() * (Z1 - Z0)));
             return randomPoint - origin;
         }
     }

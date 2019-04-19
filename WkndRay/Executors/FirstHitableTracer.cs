@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay.Executors
 {
@@ -13,15 +14,15 @@ namespace WkndRay.Executors
         public PixelBuffer Execute(int width, int height)
         {
             var pixelBuffer = new PixelBuffer(width, height);
-            var lowerLeftCorner = new PosVector(-2.0f, -1.0f, -1.0f);
-            var horizontal = new PosVector(4.0f, 0.0f, 0.0f);
-            var vertical = new PosVector(0.0f, 2.0f, 0.0f);
-            var origin = PosVector.Zero;
+            var lowerLeftCorner = new Vector3(-2.0f, -1.0f, -1.0f);
+            var horizontal = new Vector3(4.0f, 0.0f, 0.0f);
+            var vertical = new Vector3(0.0f, 2.0f, 0.0f);
+            var origin = Vector3.Zero;
 
             var hitables = new HitableList
       {
-        new Sphere(new PosVector(0.0f, 0.0f, -1.0f), 0.5f),
-        new Sphere(new PosVector(0.0f, -100.5f, -1.0f), 100.0f)
+        new Sphere(new Vector3(0.0f, 0.0f, -1.0f), 0.5f),
+        new Sphere(new Vector3(0.0f, -100.5f, -1.0f), 100.0f)
       };
 
             var world = new HitableList
@@ -50,13 +51,13 @@ namespace WkndRay.Executors
             HitRecord hr = world.Hit(ray, 0.0f, float.MaxValue);
             if (hr != null)
             {
-                return (0.5f * new PosVector(hr.Normal.X + 1.0f, hr.Normal.Y + 1.0f, hr.Normal.Z + 1.0f)).ToColorVector();
+                return (0.5f * new Vector3(hr.Normal.X + 1.0f, hr.Normal.Y + 1.0f, hr.Normal.Z + 1.0f)).ToColorVector();
             }
             else
             {
                 var unitDirection = ray.Direction.ToUnitVector();
                 float t = 0.5f * (unitDirection.Y + 1.0f);
-                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
+                return (((1.0f - t) * Vector3.One) + (t * new Vector3(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

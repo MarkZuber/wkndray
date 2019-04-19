@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 using WkndRay.Textures;
 
@@ -23,13 +24,13 @@ namespace WkndRay.Executors
         {
             var pixelBuffer = new PixelBuffer(width, height);
             float aperture = 2.0f;
-            var lookFrom = new PosVector(3.0f, 3.0f, 2.0f);
-            var lookAt = new PosVector(0.0f, 0.0f, -1.0f);
-            float distanceToFocus = (lookFrom - lookAt).Magnitude();
+            var lookFrom = new Vector3(3.0f, 3.0f, 2.0f);
+            var lookAt = new Vector3(0.0f, 0.0f, -1.0f);
+            float distanceToFocus = (lookFrom - lookAt).Length(); // .Magnitude();
             var camera = new Camera(
                 lookFrom,
                 lookAt,
-                new PosVector(0.0f, 1.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f),
                 30.0f,
                 Convert.ToSingle(width) / Convert.ToSingle(height),
                 aperture,
@@ -37,11 +38,11 @@ namespace WkndRay.Executors
 
             var hitables = new HitableList
             {
-                new Sphere(new PosVector(0.0f, 0.0f, -1.0f), 0.5f, new LambertianMaterial(new ColorTexture(0.1f, 0.2f, 0.5f))),
-                new Sphere(new PosVector(0.0f, -100.5f, -1.0f), 100.0f, new LambertianMaterial(new ColorTexture(0.8f, 0.8f, 0.0f))),
-                new Sphere(new PosVector(1.0f, 0.0f, -1.0f), 0.5f, new MetalMaterial(new ColorVector(0.8f, 0.6f, 0.2f), 0.3f)),
-                new Sphere(new PosVector(-1.0f, 0.0f, -1.0f), 0.5f, new DialectricMaterial(1.5f)),
-                new Sphere(new PosVector(-1.0f, 0.0f, -1.0f), -0.45f, new DialectricMaterial(1.5f)),
+                new Sphere(new Vector3(0.0f, 0.0f, -1.0f), 0.5f, new LambertianMaterial(new ColorTexture(0.1f, 0.2f, 0.5f))),
+                new Sphere(new Vector3(0.0f, -100.5f, -1.0f), 100.0f, new LambertianMaterial(new ColorTexture(0.8f, 0.8f, 0.0f))),
+                new Sphere(new Vector3(1.0f, 0.0f, -1.0f), 0.5f, new MetalMaterial(new ColorVector(0.8f, 0.6f, 0.2f), 0.3f)),
+                new Sphere(new Vector3(-1.0f, 0.0f, -1.0f), 0.5f, new DialectricMaterial(1.5f)),
+                new Sphere(new Vector3(-1.0f, 0.0f, -1.0f), -0.45f, new DialectricMaterial(1.5f)),
             };
 
             var world = new HitableList
@@ -97,7 +98,7 @@ namespace WkndRay.Executors
             {
                 var unitDirection = ray.Direction.ToUnitVector();
                 float t = 0.5f * (unitDirection.Y + 1.0f);
-                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
+                return (((1.0f - t) * Vector3.One) + (t * new Vector3(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

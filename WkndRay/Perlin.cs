@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay
 {
@@ -23,7 +24,7 @@ namespace WkndRay
             s_permZ = PerlinGenratePerm();
         }
 
-        public float Noise(PosVector p, bool interpolate)
+        public float Noise(Vector3 p, bool interpolate)
         {
             float u = p.X - MathF.Floor(p.X);
             float v = p.Y - MathF.Floor(p.Y);

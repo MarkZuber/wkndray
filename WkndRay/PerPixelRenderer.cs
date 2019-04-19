@@ -50,7 +50,7 @@ namespace WkndRay
             var inputQueue = new ConcurrentQueue<RenderInput>();
             var resultQueue = new ConcurrentQueue<RenderResult>();
 
-            for (var y = 0; y < pixelArray.Height; y++)
+            for (var y = pixelArray.Height-1; y >= 0; y--)
             {
                 for (var x = 0; x < pixelArray.Width; x++)
                 {

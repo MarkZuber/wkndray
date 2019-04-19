@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Materials
 {
     public class MetalMaterial : AbstractMaterial
@@ -21,7 +23,7 @@ namespace WkndRay.Materials
         public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
         {
             var reflected = rayIn.Direction.ToUnitVector().Reflect(hitRecord.Normal);
-            var specularRay = new Ray(hitRecord.P, reflected + (Fuzz * PosVector.GetRandomInUnitSphere()));
+            var specularRay = new Ray(hitRecord.P, reflected + (Fuzz * Vector3Extensions.GetRandomInUnitSphere()));
             var attenuation = Albedo;
             return new ScatterResult(true, attenuation, specularRay, null);
         }

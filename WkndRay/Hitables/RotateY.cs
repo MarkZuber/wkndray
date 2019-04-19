@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace WkndRay.Hitables
@@ -15,8 +16,8 @@ namespace WkndRay.Hitables
             SinTheta = MathF.Sin(radians);
             CosTheta = MathF.Cos(radians);
             var box = Hitable.GetBoundingBox(0.0f, 1.0f);
-            var min = new PosVector(float.MaxValue, float.MaxValue, float.MaxValue).ToSingleArray();
-            var max = new PosVector(-float.MaxValue, -float.MaxValue, -float.MaxValue).ToSingleArray();
+            var min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue).ToSingleArray();
+            var max = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue).ToSingleArray();
 
             for (int i = 0; i < 2; i++)
             {
@@ -32,7 +33,7 @@ namespace WkndRay.Hitables
                         float z = (dubk * box.Max.Z) + ((1.0f - dubk) * box.Min.Z);
                         float newx = (CosTheta * x) + (SinTheta * z);
                         float newz = (-SinTheta * x) + (CosTheta * z);
-                        var tester = new PosVector(newx, y, newz).ToSingleArray();
+                        var tester = new Vector3(newx, y, newz).ToSingleArray();
                         for (int c = 0; c < 3; c++)
                         {
                             if (tester[c] > max[c])
@@ -49,7 +50,7 @@ namespace WkndRay.Hitables
                 }
             }
 
-            BoundingBox = new AABB(new PosVector(min), new PosVector(max));
+            BoundingBox = new AABB(new Vector3(min[0], min[1], min[2]), new Vector3(max[0], max[1], max[2]));
         }
 
         public IHitable Hitable { get; }
@@ -66,7 +67,7 @@ namespace WkndRay.Hitables
             origin[2] = (SinTheta * ray.Origin.X) + (CosTheta * ray.Origin.Z);
             dir[0] = (CosTheta * ray.Direction.X) - (SinTheta * ray.Direction.Z);
             dir[2] = (SinTheta * ray.Direction.X) + (CosTheta * ray.Direction.Z);
-            var rotatedRay = new Ray(new PosVector(origin), new PosVector(dir));
+            var rotatedRay = new Ray(new Vector3(origin[0], origin[1], origin[2]), new Vector3(dir[0], dir[1], dir[2]));
             var hitRecord = Hitable.Hit(rotatedRay, tMin, tMax);
             if (hitRecord == null)
             {
@@ -79,7 +80,7 @@ namespace WkndRay.Hitables
             p[2] = (-SinTheta * hitRecord.P.X) + (CosTheta * hitRecord.P.Z);
             normal[0] = (CosTheta * hitRecord.Normal.X) + (SinTheta * hitRecord.Normal.Z);
             normal[2] = (-SinTheta * hitRecord.Normal.X) + (CosTheta * hitRecord.Normal.Z);
-            return new HitRecord(hitRecord.T, new PosVector(p), new PosVector(normal), hitRecord.UvCoords, hitRecord.Material);
+            return new HitRecord(hitRecord.T, new Vector3(p[0], p[1], p[2]), new Vector3(normal[0], normal[1], normal[2]), hitRecord.UvCoords, hitRecord.Material);
         }
 
         public override AABB GetBoundingBox(float t0, float t1)

@@ -29,24 +29,26 @@ namespace RayWpf
         private void RenderButton_OnClick(object sender, RoutedEventArgs e)
         {
             int numThreads = Environment.ProcessorCount;
-            const int ImageWidth = 1920;
-            const int ImageHeight = 1920;
+            const int ImageWidth = 1000; 
+            const int ImageHeight = 1000;
             const int RayTraceDepth = 50;
-            const int NumSamples = 2000;
+            const int NumSamples = 10000;
             var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples)
             {
                 TwoPhase = false
             };
 
+            // var scene = new ManySpheresScene();
             var scene = new CornellBoxScene();
             // var scene = NffParser.ParseFile(Path.Combine(NffDirectory, "balls5.nff"), ImageWidth, ImageHeight);
 
-            var pixelBuffer = new WpfPixelBuffer(Dispatcher, ImageWidth, ImageHeight);
-            RenderImage.Source = pixelBuffer.WriteableBitmap;
+            var pixelBuffer = new PixelBuffer(ImageWidth, ImageHeight);
+            // new WpfPixelBuffer(Dispatcher, ImageWidth, ImageHeight);
+            // RenderImage.Source = pixelBuffer.WriteableBitmap;
             IRenderer renderer = new PerPixelRenderer();
 
             string name = scene.GetType().Name.ToLowerInvariant();
-            string outputPath = System.IO.Path.Combine(OutputDirectory, $"{name}.png");
+            string outputPath = Path.Combine(OutputDirectory, $"{name}.png");
 
             renderer.Progress += (_, args) => { Dispatcher.Invoke(() => { RenderProgress.Value = args.PercentComplete; }); };
             Task.Run(

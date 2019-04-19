@@ -7,13 +7,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using WkndRay.Materials;
 
 namespace WkndRay.Hitables
 {
     public class Triangle : AbstractHitable
     {
-        public Triangle(IEnumerable<PosVector> vertices, IMaterial material)
+        public Triangle(IEnumerable<Vector3> vertices, IMaterial material)
         {
             var verts = vertices.ToList();
             if (verts.Count != 3)
@@ -26,8 +27,8 @@ namespace WkndRay.Hitables
             Material = material;
         }
 
-        public List<PosVector> Vertices { get; }
-        public PosVector SurfaceNormal { get; }
+        public List<Vector3> Vertices { get; }
+        public Vector3 SurfaceNormal { get; }
         public IMaterial Material { get; }
 
         public override HitRecord Hit(Ray ray, float tMin, float tMax)
@@ -72,20 +73,20 @@ namespace WkndRay.Hitables
 
         public override AABB GetBoundingBox(float t0, float t1)
         {
-            var min = new PosVector(
+            var min = new Vector3(
               MathF.Min(Vertices[0].X, Vertices[1].X),
               MathF.Min(Vertices[0].Y, Vertices[1].Y),
               MathF.Min(Vertices[0].Z, Vertices[1].Z));
-            min = new PosVector(
+            min = new Vector3(
               MathF.Min(min.X, Vertices[2].X),
               MathF.Min(min.Y, Vertices[2].Y),
               MathF.Min(min.Z, Vertices[2].Z));
 
-            var max = new PosVector(
+            var max = new Vector3(
               MathF.Max(Vertices[0].X, Vertices[1].X),
               MathF.Max(Vertices[0].Y, Vertices[1].Y),
               MathF.Max(Vertices[0].Z, Vertices[1].Z));
-            max = new PosVector(
+            max = new Vector3(
               MathF.Max(max.X, Vertices[2].X),
               MathF.Max(max.Y, Vertices[2].Y),
               MathF.Max(max.Z, Vertices[2].Z));

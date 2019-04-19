@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 using WkndRay.Textures;
 
@@ -69,7 +70,7 @@ namespace WkndRay.Hitables
                 return new HitRecord(
                   recT,
                   ray.GetPointAtParameter(recT),
-                  PosVector.UnitX,  // arbitrary
+                  Vector3.UnitX,  // arbitrary
                   new Point2D(0.0f, 0.0f), // don't need u/v since PhaseFunction is a calculation
                   PhaseFunction);
             }

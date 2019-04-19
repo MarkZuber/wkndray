@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 
 namespace WkndRay.Hitables
@@ -13,7 +14,7 @@ namespace WkndRay.Hitables
     {
         private readonly HitableList _list = new HitableList();
 
-        public Box(PosVector p0, PosVector p1, IMaterial material)
+        public Box(Vector3 p0, Vector3 p1, IMaterial material)
         {
             PosMin = p0;
             PosMax = p1;
@@ -26,8 +27,8 @@ namespace WkndRay.Hitables
             _list.Add(new FlipNormals(new YzRect(p0.Y, p1.Y, p0.Z, p1.Z, p0.X, material)));
         }
 
-        public PosVector PosMin { get; }
-        public PosVector PosMax { get; }
+        public Vector3 PosMin { get; }
+        public Vector3 PosMax { get; }
 
         public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {

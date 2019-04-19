@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Hitables
 {
     public abstract class AbstractHitable : IHitable
@@ -12,14 +14,14 @@ namespace WkndRay.Hitables
 
         public abstract AABB GetBoundingBox(float t0, float t1);
 
-        public virtual float GetPdfValue(PosVector origin, PosVector v)
+        public virtual float GetPdfValue(Vector3 origin, Vector3 v)
         {
             return 1.0f;
         }
 
-        public virtual PosVector Random(PosVector origin)
+        public virtual Vector3 Random(Vector3 origin)
         {
-            return PosVector.UnitX;
+            return Vector3.UnitX;
         }
     }
 }

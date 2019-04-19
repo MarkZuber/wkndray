@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Pdfs
 {
     /// <summary>
@@ -11,7 +13,7 @@ namespace WkndRay.Pdfs
     /// </summary>
     public interface IPdf
     {
-        float GetValue(PosVector direction);
-        PosVector Generate();
+        float GetValue(Vector3 direction);
+        Vector3 Generate();
     }
 }

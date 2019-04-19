@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 
 namespace WkndRay.Hitables
@@ -46,14 +47,14 @@ namespace WkndRay.Hitables
             return new HitRecord(
               t,
               ray.GetPointAtParameter(t),
-              PosVector.UnitX,
+              Vector3.UnitX,
               new Point2D((y - Y0) / (Y1 - Y0), (z - Z0) / (Z1 - Z0)),
               Material);
         }
 
         public override AABB GetBoundingBox(float t0, float t1)
         {
-            return new AABB(new PosVector(K - 0.001f, Y0, Z0), new PosVector(K + 0.0001f, Y1, Z1));
+            return new AABB(new Vector3(K - 0.001f, Y0, Z0), new Vector3(K + 0.0001f, Y1, Z1));
         }
     }
 }

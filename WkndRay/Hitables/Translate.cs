@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace WkndRay.Hitables
 {
     public class Translate : AbstractHitable
     {
-        public Translate(IHitable hitable, PosVector displacement)
+        public Translate(IHitable hitable, Vector3 displacement)
         {
             Hitable = hitable;
             Displacement = displacement;
         }
 
         public IHitable Hitable { get; }
-        public PosVector Displacement { get; }
+        public Vector3 Displacement { get; }
 
         public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {

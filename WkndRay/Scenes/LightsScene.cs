@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Hitables;
 using WkndRay.Materials;
 using WkndRay.Textures;
@@ -23,14 +24,14 @@ namespace WkndRay.Scenes
         /// <inheritdoc />
         public Camera GetCamera(int imageWidth, int imageHeight)
         {
-            var lookFrom = new PosVector(13.0f, 2.0f, 3.0f);
-            var lookAt = PosVector.Zero;
+            var lookFrom = new Vector3(13.0f, 2.0f, 3.0f);
+            var lookAt = Vector3.Zero;
             float distToFocus = 10.0f;
             float aperture = 0.0f;
             return new Camera(
               lookFrom,
               lookAt,
-              PosVector.UnitY,
+              Vector3.UnitY,
               40.0f,
               Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
               aperture,
@@ -45,14 +46,14 @@ namespace WkndRay.Scenes
             var list = new HitableList()
       {
         new Sphere(
-          new PosVector(0.0f, -1000.0f, 0.0f),
+          new Vector3(0.0f, -1000.0f, 0.0f),
           1000.0f,
           new LambertianMaterial(new VectorNoiseTexture(VectorNoiseMode.Marble, 3.0f))),
         new Sphere(
-          new PosVector(0.0f, 2.0f, 0.0f),
+          new Vector3(0.0f, 2.0f, 0.0f),
           2.0f,
           new LambertianMaterial(new ImageTexture(globe))),
-        new Sphere(new PosVector(0.0f, 7.0f, 0.0f), 2.0f, new DiffuseLight(new ColorTexture(4.0f, 4.0f, 4.0f))),
+        new Sphere(new Vector3(0.0f, 7.0f, 0.0f), 2.0f, new DiffuseLight(new ColorTexture(4.0f, 4.0f, 4.0f))),
         new XyRect(3.0f, 5.0f, 1.0f, 3.0f, -2.0f, new DiffuseLight(new ColorTexture(4.0f, 4.0f, 4.0f)))
       };
 

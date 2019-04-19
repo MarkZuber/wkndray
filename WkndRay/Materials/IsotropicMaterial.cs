@@ -4,6 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
 using WkndRay.Textures;
 
 namespace WkndRay.Materials
@@ -20,7 +21,7 @@ namespace WkndRay.Materials
         /// <inheritdoc />
         public override ScatterResult Scatter(Ray rayIn, HitRecord hitRecord)
         {
-            var scattered = new Ray(hitRecord.P, PosVector.GetRandomInUnitSphere());
+            var scattered = new Ray(hitRecord.P, Vector3Extensions.GetRandomInUnitSphere());
             var attenuation = Albedo.GetValue(hitRecord.UvCoords, hitRecord.P);
             return new ScatterResult(true, attenuation, scattered, null);
         }

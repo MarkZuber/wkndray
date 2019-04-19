@@ -64,9 +64,8 @@ namespace WkndRay
                 color = GetRayColor(_camera.GetRay(xfloat / _imageWidth, yfloat / _imageHeight), _world, 0).DeNan();
             }
 
-            Debug.WriteLine($"{color.R}, {color.G}, {color.B}");
-
             color = color.DeNan().ApplyGamma2();
+            Debug.WriteLine($"Final Color at ({x}, {y}) -> ({color.R}, {color.G}, {color.B})");
             return color;
         }
 
@@ -103,9 +102,10 @@ namespace WkndRay
                                 float pdfValue = p.GetValue(scattered.Direction);
 
                                 var scatteringPdf = hr.Material.ScatteringPdf(ray, hr, scattered);
-                                //if (scatteringPdf < 0.01f)
+                                if (scatteringPdf < 0.01f)
                                 {
-                                    //scatteringPdf = 0.8f;
+                                    scatteringPdf = 0.01f;
+                                //    //pdfValue = 1.0f;
                                 }
 
                                 {
@@ -114,7 +114,7 @@ namespace WkndRay
 
                                 var depthRayColor = GetRayColor(scattered, world, depth + 1);
                                 ColorVector recurseColor = ((scatterResult.Attenuation * scatteringPdf * depthRayColor) / pdfValue);
-                                Debug.WriteLine($"Attenuation ({scatterResult.Attenuation}) ScatteringPdf ({scatteringPdf}) DepthRayColor({depthRayColor}) PdfValue({pdfValue}");
+                                Debug.WriteLine($"Attenuation ({scatterResult.Attenuation}) ScatteringPdf ({scatteringPdf}) DepthRayColor({depthRayColor}) PdfValue({pdfValue})");
                                 Debug.WriteLine($"emitted: {emitted}");
                                 Debug.WriteLine($"RecurseColor: {recurseColor}");
                                 return emitted + recurseColor;
@@ -133,6 +133,8 @@ namespace WkndRay
                 {
                     Debug.WriteLine("depth at 0...");
                 }
+
+                Debug.WriteLine("returning backgroundfunc");
                 return _backgroundFunc(ray);
             }
             finally

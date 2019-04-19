@@ -5,19 +5,20 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay
 {
     public class AABB
     {
-        public AABB(PosVector min, PosVector max)
+        public AABB(Vector3 min, Vector3 max)
         {
             Min = min;
             Max = max;
         }
 
-        public PosVector Min { get; }
-        public PosVector Max { get; }
+        public Vector3 Min { get; }
+        public Vector3 Max { get; }
 
         private float DMin(float a, float b)
         {
@@ -76,11 +77,11 @@ namespace WkndRay
 
         public AABB GetSurroundingBox(AABB other)
         {
-            var small = new PosVector(
+            var small = new Vector3(
               MathF.Min(Min.X, other.Min.X),
               MathF.Min(Min.Y, other.Min.Y),
               MathF.Min(Min.Z, other.Min.Z));
-            var big = new PosVector(MathF.Max(Max.X, other.Max.X), MathF.Max(Max.Y, other.Max.Y), MathF.Max(Max.Z, other.Max.Z));
+            var big = new Vector3(MathF.Max(Max.X, other.Max.X), MathF.Max(Max.Y, other.Max.Y), MathF.Max(Max.Z, other.Max.Z));
             return new AABB(small, big);
         }
     }

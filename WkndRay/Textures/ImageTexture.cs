@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay.Textures
 {
@@ -20,7 +21,7 @@ namespace WkndRay.Textures
         public int Width => _pixelBuffer.Width;
         public int Height => _pixelBuffer.Height;
 
-        public ColorVector GetValue(Point2D uvCoords, PosVector p)
+        public ColorVector GetValue(Point2D uvCoords, Vector3 p)
         {
             int i = Convert.ToInt32(uvCoords.U * Convert.ToSingle(Width));
             int j = Convert.ToInt32(((1.0f - uvCoords.V) * Convert.ToSingle(Height)) - 0.001);

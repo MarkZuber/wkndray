@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace WkndRay
 {
@@ -60,7 +61,7 @@ namespace WkndRay
             return box;
         }
 
-        public float GetPdfValue(PosVector origin, PosVector v)
+        public float GetPdfValue(Vector3 origin, Vector3 v)
         {
             float weight = 1.0f / Count;
             float sum = 0.0f;
@@ -71,10 +72,17 @@ namespace WkndRay
             return sum;
         }
 
-        public PosVector Random(PosVector origin)
+        public Vector3 Random(Vector3 origin)
         {
             int index = Convert.ToInt32(MathF.Floor(RandomService.Nextfloat() * Convert.ToSingle(Count)));
-            return this[index].Random(origin);
+            if (index < Count)
+            {
+                return this[index].Random(origin);
+            }
+            else
+            {
+                return origin;
+            }
         }
     }
 }

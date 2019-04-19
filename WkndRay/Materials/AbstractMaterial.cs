@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Materials
 {
     public abstract class AbstractMaterial : IMaterial
@@ -15,7 +17,7 @@ namespace WkndRay.Materials
             return 0.0f;
         }
 
-        public virtual ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, PosVector p)
+        public virtual ColorVector Emitted(Ray rayIn, HitRecord hitRecord, Point2D uvCoords, Vector3 p)
         {
             return ColorVector.Zero;
         }

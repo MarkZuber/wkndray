@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Pdfs
 {
     public class MixturePdf : IPdf
@@ -17,12 +19,12 @@ namespace WkndRay.Pdfs
         public IPdf P0 { get; }
         public IPdf P1 { get; }
 
-        public float GetValue(PosVector direction)
+        public float GetValue(Vector3 direction)
         {
             return (0.5f * P0.GetValue(direction)) + (0.5f * P1.GetValue(direction));
         }
 
-        public PosVector Generate()
+        public Vector3 Generate()
         {
             return RandomService.Nextfloat() < 0.5f ? P0.Generate() : P1.Generate();
         }

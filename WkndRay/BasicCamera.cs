@@ -4,11 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay
 {
     public class BasicCamera
     {
-        public BasicCamera(PosVector origin, PosVector lowerLeftCorner, PosVector horizontal, PosVector vertical)
+        public BasicCamera(Vector3 origin, Vector3 lowerLeftCorner, Vector3 horizontal, Vector3 vertical)
         {
             Origin = origin;
             LowerLeftCorner = lowerLeftCorner;
@@ -16,10 +18,10 @@ namespace WkndRay
             Vertical = vertical;
         }
 
-        public PosVector Origin { get; }
-        public PosVector LowerLeftCorner { get; }
-        public PosVector Horizontal { get; }
-        public PosVector Vertical { get; }
+        public Vector3 Origin { get; }
+        public Vector3 LowerLeftCorner { get; }
+        public Vector3 Horizontal { get; }
+        public Vector3 Vertical { get; }
 
         public Ray GetRay(float u, float v)
         {

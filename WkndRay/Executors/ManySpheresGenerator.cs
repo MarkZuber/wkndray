@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Materials;
 using WkndRay.Textures;
 
@@ -23,13 +24,13 @@ namespace WkndRay.Executors
         {
             var pixelBuffer = new PixelBuffer(width, height);
             float aperture = 0.01f;
-            var lookFrom = new PosVector(24.0f, 2.0f, 6.0f);
-            var lookAt = PosVector.UnitY;
+            var lookFrom = new Vector3(24.0f, 2.0f, 6.0f);
+            var lookAt = Vector3.UnitY;
             float distanceToFocus = (lookFrom - lookAt).Magnitude();
             var camera = new Camera(
               lookFrom,
               lookAt,
-              PosVector.UnitY,
+              Vector3.UnitY,
               15.0f,
               Convert.ToSingle(width) / Convert.ToSingle(height),
               aperture,
@@ -68,18 +69,18 @@ namespace WkndRay.Executors
         {
             var list = new HitableList
             {
-                new Sphere(new PosVector(0.0f, -1000.0f, 0.0f), 1000.0f, new LambertianMaterial(new ColorTexture(0.5f, 0.5f, 0.5f)))
+                new Sphere(new Vector3(0.0f, -1000.0f, 0.0f), 1000.0f, new LambertianMaterial(new ColorTexture(0.5f, 0.5f, 0.5f)))
             };
             for (int a = -11; a < 11; a++)
             {
                 for (int b = -11; b < 11; b++)
                 {
                     float chooseMat = RandomService.Nextfloat();
-                    var center = new PosVector(
+                    var center = new Vector3(
                       Convert.ToSingle(a) * RandomService.Nextfloat(),
                       0.2f,
                       Convert.ToSingle(b) + (0.9f * RandomService.Nextfloat()));
-                    if ((center - new PosVector(4.0f, 0.2f, 0.0f)).Magnitude() > 0.9)
+                    if ((center - new Vector3(4.0f, 0.2f, 0.0f)).Magnitude() > 0.9)
                     {
                         if (chooseMat < 0.8)
                         {
@@ -117,9 +118,9 @@ namespace WkndRay.Executors
                 }
             }
 
-            list.Add(new Sphere(new PosVector(0.0f, 1.0f, 0.0f), 1.0f, new DialectricMaterial(1.5f)));
-            list.Add(new Sphere(new PosVector(-4.0f, 1.0f, 0.0f), 1.0f, new LambertianMaterial(new ColorTexture(0.4f, 0.2f, 0.1f))));
-            list.Add(new Sphere(new PosVector(4.0f, 1.0f, 0.0f), 1.0f, new MetalMaterial(new ColorVector(0.7f, 0.6f, 0.5f), 0.0f)));
+            list.Add(new Sphere(new Vector3(0.0f, 1.0f, 0.0f), 1.0f, new DialectricMaterial(1.5f)));
+            list.Add(new Sphere(new Vector3(-4.0f, 1.0f, 0.0f), 1.0f, new LambertianMaterial(new ColorTexture(0.4f, 0.2f, 0.1f))));
+            list.Add(new Sphere(new Vector3(4.0f, 1.0f, 0.0f), 1.0f, new MetalMaterial(new ColorVector(0.7f, 0.6f, 0.5f), 0.0f)));
 
             return list;
         }
@@ -150,7 +151,7 @@ namespace WkndRay.Executors
             {
                 var unitDirection = ray.Direction.ToUnitVector();
                 float t = 0.5f * (unitDirection.Y + 1.0f);
-                return (((1.0f - t) * PosVector.One) + (t * new PosVector(0.5f, 0.7f, 1.0f))).ToColorVector();
+                return (((1.0f - t) * Vector3.One) + (t * new Vector3(0.5f, 0.7f, 1.0f))).ToColorVector();
             }
         }
     }

@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay.Textures
 {
@@ -29,7 +30,7 @@ namespace WkndRay.Textures
         public float Scale { get; }
         public VectorNoiseMode Mode { get; }
 
-        public ColorVector GetValue(Point2D uvCoords, PosVector p)
+        public ColorVector GetValue(Point2D uvCoords, Vector3 p)
         {
             switch (Mode)
             {

@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 
 namespace WkndRay.Materials
 {
@@ -23,7 +24,7 @@ namespace WkndRay.Materials
             var reflected = rayIn.Direction.Reflect(hitRecord.Normal);
             var attenuation = new ColorVector(1.0f, 1.0f, 1.0f);
             float niOverNt;
-            PosVector outwardNormal;
+            Vector3 outwardNormal;
             float cosine;
             if (rayIn.Direction.Dot(hitRecord.Normal) > 0.0f)
             {
@@ -41,7 +42,7 @@ namespace WkndRay.Materials
             float reflectProbability;
             Ray scattered;
             var refracted = rayIn.Direction.Refract(outwardNormal, niOverNt);
-            if (refracted != null)
+            if (refracted != Vector3.Zero)
             {
                 reflectProbability = CalculateSchlickApproximation(cosine, RefractionIndex);
             }
@@ -66,7 +67,7 @@ namespace WkndRay.Materials
         private float CalculateSchlickApproximation(float cosine, float refractionIndex)
         {
             float r0 = (1.0f - refractionIndex) / (1.0f + refractionIndex);
-            r0 = r0 * r0;
+            r0 *= r0;
             return r0 + ((1.0f - r0) * MathF.Pow(1.0f - cosine, 5.0f));
         }
     }

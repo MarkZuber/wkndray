@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace WkndRay
@@ -93,14 +94,14 @@ namespace WkndRay
             return new ColorVector(ClampValue(R, min.R, max.R), ClampValue(G, min.G, max.G), ClampValue(B, min.B, max.B));
         }
 
-        public static float CosVectors(PosVector v1, PosVector v2)
+        public static float CosVectors(Vector3 v1, Vector3 v2)
         {
             return v1.Dot(v2) / MathF.Sqrt(v1.MagnitudeSquared() * v2.MagnitudeSquared());
         }
 
-        public PosVector ToPosVector()
+        public Vector3 ToVector3()
         {
-            return new PosVector(R, G, B);
+            return new Vector3(R, G, B);
         }
 
         public static ColorVector operator +(ColorVector a, ColorVector b)

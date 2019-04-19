@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using WkndRay.Hitables;
 using WkndRay.Materials;
 using WkndRay.Textures;
@@ -20,15 +21,15 @@ namespace WkndRay.Scenes
             var background = new Func<Ray, ColorVector>(ray => new ColorVector(0.0f, 0.0f, 0.0f));
             var lights = new HitableList();
             var world = new HitableList();
-            var cameraAt = new PosVector(0.0f, 0.0f, 0.0f);
-            var cameraFrom = new PosVector(0.0f, 0.0f, 0.0f);
-            var cameraUp = new PosVector(0.0f, 0.0f, 0.0f);
+            var cameraAt = new Vector3(0.0f, 0.0f, 0.0f);
+            var cameraFrom = new Vector3(0.0f, 0.0f, 0.0f);
+            var cameraUp = new Vector3(0.0f, 0.0f, 0.0f);
 
             var lookingFor = LookingFor.Instruction;
 
             IMaterial currentMaterial = new LambertianMaterial(new ColorTexture(0.0f, 0.0f, 0.0f));
 
-            var polyVectors = new List<PosVector>();
+            var polyVectors = new List<Vector3>();
             var currentItemCounter = 0;
 
             var lines = File.ReadAllLines(filePath);
@@ -64,7 +65,7 @@ namespace WkndRay.Scenes
                             //                    : new ColorVector(7.0f, 7.0f, 7.0f);
                             var colorVector = new ColorVector(7.0f, 7.0f, 7.0f);
                             var sphere = new Sphere(
-                              new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
+                              new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
                               1.5f,
                               new DiffuseLight(new ColorTexture(colorVector)));
                             lights.Add(sphere);
@@ -117,7 +118,7 @@ namespace WkndRay.Scenes
                             // sphere
                             world.Add(
                               new Sphere(
-                                new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
+                                new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])),
                                 float.Parse(split[4]),
                                 currentMaterial));
                         }
@@ -125,7 +126,7 @@ namespace WkndRay.Scenes
                         {
                             // polygon
                             currentItemCounter = int.Parse(split[1]);
-                            polyVectors = new List<PosVector>();
+                            polyVectors = new List<Vector3>();
                             lookingFor = LookingFor.Polygon;
                         }
                         else if (instruction == "pp")
@@ -143,7 +144,7 @@ namespace WkndRay.Scenes
                         if (currentItemCounter > 0)
                         {
                             currentItemCounter--;
-                            polyVectors.Add(new PosVector(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2])));
+                            polyVectors.Add(new Vector3(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2])));
                         }
 
                         if (currentItemCounter == 0)
@@ -155,7 +156,7 @@ namespace WkndRay.Scenes
                                 var thisVert = polyVectors[2];
                                 world.Add(
                                   new Triangle(
-                                    new List<PosVector>
+                                    new List<Vector3>
                                     {
                     firstVert,
                     prevVert,
@@ -169,7 +170,7 @@ namespace WkndRay.Scenes
                                     thisVert = polyVectors[i];
                                     world.Add(
                                       new Triangle(
-                                        new List<PosVector>
+                                        new List<Vector3>
                                         {
                       firstVert,
                       prevVert,
@@ -185,19 +186,19 @@ namespace WkndRay.Scenes
                     break;
                 case LookingFor.ViewpointFrom:
                     {
-                        cameraFrom = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
+                        cameraFrom = new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointAt;
                     }
                     break;
                 case LookingFor.ViewpointAt:
                     {
-                        cameraAt = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
+                        cameraAt = new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointUp;
                     }
                     break;
                 case LookingFor.ViewpointUp:
                     {
-                        cameraUp = new PosVector(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
+                        cameraUp = new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
                         lookingFor = LookingFor.ViewpointAngle;
                     }
                     break;

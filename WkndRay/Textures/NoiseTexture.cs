@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace WkndRay.Textures
 {
     public class NoiseTexture : ITexture
@@ -19,7 +21,7 @@ namespace WkndRay.Textures
         public bool Interpolate { get; }
         public float Scale { get; }
 
-        public ColorVector GetValue(Point2D uvCoords, PosVector p)
+        public ColorVector GetValue(Point2D uvCoords, Vector3 p)
         {
             return ColorVector.One * _noise.Noise(Scale * p, Interpolate);
         }

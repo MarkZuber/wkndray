@@ -1,39 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace WkndRay
 {
     public class OrthoNormalBase
     {
-        public static OrthoNormalBase FromW(PosVector n)
+        public static OrthoNormalBase FromW(Vector3 n)
         {
-            PosVector w = n.ToUnitVector();
-            PosVector a = MathF.Abs(w.X) > 0.9 ? PosVector.UnitY : PosVector.UnitX;
-            PosVector v = w.Cross(a).ToUnitVector();
-            PosVector u = w.Cross(v);
+            Vector3 w = n.ToUnitVector();
+            Vector3 a = MathF.Abs(w.X) > 0.9 ? Vector3.UnitY : Vector3.UnitX;
+            Vector3 v = w.Cross(a).ToUnitVector();
+            Vector3 u = w.Cross(v);
             return new OrthoNormalBase(u, v, w);
         }
 
-        public PosVector Local(float a, float b, float c)
+        public Vector3 Local(float a, float b, float c)
         {
             return (a * U) + (b * V) + (c * W);
         }
 
-        public PosVector Local(PosVector a)
+        public Vector3 Local(Vector3 a)
         {
             return (a.X * U) + (a.Y * V) + (a.Z * W);
         }
 
-        private OrthoNormalBase(PosVector u, PosVector v, PosVector w)
+        private OrthoNormalBase(Vector3 u, Vector3 v, Vector3 w)
         {
             U = u;
             V = v;
             W = w;
         }
 
-        public PosVector U { get; }
-        public PosVector V { get; }
-        public PosVector W { get; }
+        public Vector3 U { get; }
+        public Vector3 V { get; }
+        public Vector3 W { get; }
     }
 }

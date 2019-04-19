@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Hitables;
 using WkndRay.Materials;
 using WkndRay.Textures;
@@ -24,14 +25,14 @@ namespace WkndRay.Scenes
         /// <inheritdoc />
         public Camera GetCamera(int imageWidth, int imageHeight)
         {
-            var lookFrom = new PosVector(278.0f, 278.0f, -800.0f);
-            var lookAt = new PosVector(278.0f, 278.0f, 0.0f);
+            var lookFrom = new Vector3(278.0f, 278.0f, -800.0f);
+            var lookAt = new Vector3(278.0f, 278.0f, 0.0f);
             float distToFocus = 10.0f;
             float aperture = 0.0f;
             return new Camera(
               lookFrom,
               lookAt,
-              PosVector.UnitY,
+              Vector3.UnitY,
               40.0f,
               Convert.ToSingle(imageWidth) / Convert.ToSingle(imageHeight),
               aperture,
@@ -46,11 +47,11 @@ namespace WkndRay.Scenes
             var green = new LambertianMaterial(new ColorTexture(0.12f, 0.45f, 0.15f));
 
             var b1 = new Translate(
-              new RotateY(new Box(new PosVector(0.0f, 0.0f, 0.0f), new PosVector(165.0f, 165.0f, 165.0f), white), -18.0f),
-              new PosVector(130.0f, 0.0f, 65.0f));
+              new RotateY(new Box(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(165.0f, 165.0f, 165.0f), white), -18.0f),
+              new Vector3(130.0f, 0.0f, 65.0f));
             var b2 = new Translate(
-              new RotateY(new Box(new PosVector(0.0f, 0.0f, 0.0f), new PosVector(165.0f, 330.0f, 165.0f), white), 15.0f),
-              new PosVector(265.0f, 0.0f, 295.0f));
+              new RotateY(new Box(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(165.0f, 330.0f, 165.0f), white), 15.0f),
+              new Vector3(265.0f, 0.0f, 295.0f));
 
             var list = new HitableList()
       {

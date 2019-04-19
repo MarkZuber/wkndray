@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace WkndRay.Textures
 {
@@ -15,7 +16,7 @@ namespace WkndRay.Textures
 
         public ColorVector Color { get; }
 
-        public ColorVector GetValue(Point2D uvCoords, PosVector p)
+        public ColorVector GetValue(Point2D uvCoords, Vector3 p)
         {
             return Color;
         }
