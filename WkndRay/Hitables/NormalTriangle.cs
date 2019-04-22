@@ -43,8 +43,8 @@ namespace WkndRay.Hitables
             var e2 = Vertices[2] - Vertices[0];
             var dir = ray.Direction;
 
-            var pvec = dir.Cross(e2);
-            var det = e1.Dot(pvec);
+            var pvec = Vector3.Cross(dir, e2);
+            var det = Vector3.Dot(e1, pvec);
 
             if (det > -0.0001 && det < 0.0001)
             {
@@ -53,22 +53,22 @@ namespace WkndRay.Hitables
 
             var invDet = 1.0f / det;
             var tvec = ray.Origin - Vertices[0];
-            var u = tvec.Dot(pvec) * invDet;
+            var u = Vector3.Dot(tvec, pvec) * invDet;
 
             if (u < 0.0f || u > 1.0f)
             {
                 return null;
             }
 
-            var qvec = tvec.Cross(e1);
-            var v = dir.Dot(qvec) * invDet;
+            var qvec = Vector3.Cross(tvec, e1);
+            var v = Vector3.Dot(dir, qvec) * invDet;
 
             if (v < 0.0f || (u + v) > 1.0f)
             {
                 return null;
             }
 
-            var t = e2.Dot(qvec) * invDet;
+            var t = Vector3.Dot(e2, qvec) * invDet;
             if (t > 0.00001 && t < tMax && t > tMin)
             {
                 var normal = (u * Normals[1]) + (v * Normals[2]) + ((1.0f - u - v) * Normals[0]);

@@ -71,7 +71,6 @@ namespace RayWpf
 
         public ColorVector GetPixelColor(int x, int y)
         {
-            // throw new NotImplementedException();
             return _pixelBuffer.GetPixelColor(x, y);
         }
 

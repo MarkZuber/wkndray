@@ -61,11 +61,11 @@ namespace WkndRay.Hitables
                 rec1T = 0.0f;
             }
 
-            float distanceInsideBoundary = ((rec2T - rec1T) * ray.Direction).Magnitude();
+            float distanceInsideBoundary = ((rec2T - rec1T) * ray.Direction).Length();
             float hitDistance = -(1.0f / Density) * MathF.Log(RandomService.Nextfloat());
             if (hitDistance < distanceInsideBoundary)
             {
-                float recT = rec1T + (hitDistance / ray.Direction.Magnitude());
+                float recT = rec1T + (hitDistance / ray.Direction.Length());
 
                 return new HitRecord(
                   recT,

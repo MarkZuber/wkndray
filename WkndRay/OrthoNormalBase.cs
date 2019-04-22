@@ -11,8 +11,8 @@ namespace WkndRay
         {
             Vector3 w = n.ToUnitVector();
             Vector3 a = MathF.Abs(w.X) > 0.9 ? Vector3.UnitY : Vector3.UnitX;
-            Vector3 v = w.Cross(a).ToUnitVector();
-            Vector3 u = w.Cross(v);
+            Vector3 v = (Vector3.Cross(w, a)).ToUnitVector();
+            Vector3 u = Vector3.Cross(w, v);
             return new OrthoNormalBase(u, v, w);
         }
 

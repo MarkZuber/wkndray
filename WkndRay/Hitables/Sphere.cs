@@ -27,9 +27,9 @@ namespace WkndRay
         public override HitRecord Hit(Ray ray, float tMin, float tMax)
         {
             var oc = ray.Origin - Center;
-            float a = ray.Direction.Dot(ray.Direction);
-            float b = oc.Dot(ray.Direction);
-            float c = oc.Dot(oc) - (Radius * Radius);
+            float a = Vector3.Dot(ray.Direction, ray.Direction);
+            float b = Vector3.Dot(oc, ray.Direction);
+            float c = Vector3.Dot(oc, oc) - (Radius * Radius);
             float discriminant = (b * b) - (a * c);
             if (discriminant > 0.0f)
             {
@@ -64,7 +64,7 @@ namespace WkndRay
                 return 0.0f;
             }
 
-            float cosThetaMax = MathF.Sqrt(1.0f - (Radius * Radius / (Center - origin).MagnitudeSquared()));
+            float cosThetaMax = MathF.Sqrt(1.0f - (Radius * Radius / (Center - origin).LengthSquared()));
             float solidAngle = 2.0f * MathF.PI * (1.0f - cosThetaMax);
             return 1.0f / solidAngle;
         }
@@ -72,7 +72,7 @@ namespace WkndRay
         public override Vector3 Random(Vector3 origin)
         {
             Vector3 direction = Center - origin;
-            float distanceSquared = direction.MagnitudeSquared();
+            float distanceSquared = direction.LengthSquared();
             OrthoNormalBase uvw = OrthoNormalBase.FromW(direction);
             return uvw.Local(RandomService.RandomToSphere(Radius, distanceSquared));
         }

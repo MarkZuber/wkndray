@@ -11,15 +11,11 @@ namespace WkndRay
 {
     public class RandomService
     {
-        private static readonly Random s_random = new Random();
-        private static readonly object s_lock = new object();
+        private static readonly SafeRandom s_random = new SafeRandom();
 
         public static float Nextfloat()
         {
-            lock (s_lock)
-            {
-                return Convert.ToSingle(s_random.NextDouble());
-            }
+            return Convert.ToSingle(s_random.NextDouble());
         }
 
         public static Vector3 GetRandomCosineDirection()

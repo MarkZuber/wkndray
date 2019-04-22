@@ -20,7 +20,6 @@ namespace WkndRay.Materials
 
         public static ScatterResult False()
         {
-            // return new ScatterResult(false, new ColorVector(0.1f, 0.1f, 0.1f) /*ColorVector.Zero*/, null, null);
             return new ScatterResult(false, ColorVector.Zero, null, null);
         }
 

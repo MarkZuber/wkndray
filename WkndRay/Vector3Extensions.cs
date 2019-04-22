@@ -9,28 +9,7 @@ namespace WkndRay
     {
         public static Vector3 ToUnitVector(this Vector3 vec)
         {
-            float k = 1.0f / vec.Magnitude();
-            return vec * k;
-        }
-
-        public static float Magnitude(this Vector3 vec)
-        {
-            return vec.Length();
-        }
-
-        public static float MagnitudeSquared(this Vector3 vec)
-        {
-            return vec.LengthSquared();
-        }
-
-        public static float Dot(this Vector3 vec, Vector3 other)
-        {
-            return Vector3.Dot(vec, other);
-        }
-
-        public static Vector3 Cross(this Vector3 vec, Vector3 other)
-        {
-            return Vector3.Cross(vec, other);
+            return vec * (1.0f / vec.Length());
         }
 
         public static ColorVector ToColorVector(this Vector3 vec)

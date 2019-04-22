@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Numerics;
 using WkndRay.Pdfs;
 using WkndRay.Textures;
 
@@ -33,7 +34,7 @@ namespace WkndRay.Materials
 
         public override float ScatteringPdf(Ray rayIn, HitRecord hitRecord, Ray scattered)
         {
-            float cosine = hitRecord.Normal.Dot(scattered.Direction.ToUnitVector());
+            float cosine = Vector3.Dot(hitRecord.Normal, scattered.Direction.ToUnitVector());
             if (cosine < 0.0f)
             {
                 cosine = 0.0f;

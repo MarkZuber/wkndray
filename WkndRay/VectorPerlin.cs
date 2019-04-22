@@ -81,7 +81,7 @@ namespace WkndRay
                         accum += ((dubi * uu) + ((1.0f - dubi) * (1.0f - uu))) *
                                  ((dubj * vv) + ((1.0f - dubj) * (1.0f - vv))) *
                                  ((dubk * ww) + ((1.0f - dubk) * (1.0f - ww))) *
-                                 c[i, j, k].Dot(weightVec);
+                                 Vector3.Dot(c[i, j, k], weightVec);
                     }
                 }
             }

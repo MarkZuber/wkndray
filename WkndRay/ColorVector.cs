@@ -10,27 +10,27 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace WkndRay
 {
-    public class ColorVector
+    public struct ColorVector 
     {
-        public ColorVector()
-          : this(0.0f, 0.0f, 0.0f)
-        {
-        }
+        private readonly Vector3 _vector3;
 
         /// <inheritdoc />
         public ColorVector(float r, float g, float b)
         {
-            R = float.IsNaN(r) ? 0.0f : r;
-            G = float.IsNaN(g) ? 0.0f : g;
-            B = float.IsNaN(b) ? 0.0f : b;
+            _vector3 = new Vector3(float.IsNaN(r) ? 0.0f : r, float.IsNaN(g) ? 0.0f : g, float.IsNaN(b) ? 0.0f : b);
         }
 
-        public float R { get; }
-        public float G { get; }
-        public float B { get; }
+        private ColorVector(Vector3 vec)
+        {
+            _vector3 = vec;
+        }
 
-        public static ColorVector Zero => new ColorVector(0.0f, 0.0f, 0.0f);
-        public static ColorVector One => new ColorVector(1.0f, 1.0f, 1.0f);
+        public float R => _vector3.X;
+        public float G => _vector3.Y;
+        public float B => _vector3.Z;
+
+        public static ColorVector Zero => new ColorVector(Vector3.Zero);
+        public static ColorVector One => new ColorVector(Vector3.One);
 
         public static ColorVector FromBytes(byte r, byte g, byte b)
         {
@@ -47,7 +47,7 @@ namespace WkndRay
 
         public ColorVector ClampColor()
         {
-            return Clamp(ColorVector.Zero, ColorVector.One);
+            return new ColorVector(Vector3.Clamp(_vector3, Vector3.Zero, Vector3.One));
         }
 
         public Rgba32 ToRgba32()
@@ -79,69 +79,45 @@ namespace WkndRay
             return string.Format($"({R},{G},{B})");
         }
 
-        private static float ClampValue(float val, float min, float max)
-        {
-            if (val < min)
-            {
-                return min;
-            }
-
-            return val > max ? max : val;
-        }
-
-        public ColorVector Clamp(ColorVector min, ColorVector max)
-        {
-            return new ColorVector(ClampValue(R, min.R, max.R), ClampValue(G, min.G, max.G), ClampValue(B, min.B, max.B));
-        }
-
         public static float CosVectors(Vector3 v1, Vector3 v2)
         {
-            return v1.Dot(v2) / MathF.Sqrt(v1.MagnitudeSquared() * v2.MagnitudeSquared());
-        }
-
-        public Vector3 ToVector3()
-        {
-            return new Vector3(R, G, B);
+            return Vector3.Dot(v1, v2) / MathF.Sqrt(v1.LengthSquared() * v2.LengthSquared());
         }
 
         public static ColorVector operator +(ColorVector a, ColorVector b)
         {
-            return new ColorVector(a.R + b.R, a.G + b.G, a.B + b.B);
+            return new ColorVector(a._vector3 + b._vector3);
         }
 
         public static ColorVector operator -(ColorVector a, ColorVector b)
         {
-            return new ColorVector(a.R - b.R, a.G - b.G, a.B - b.B);
+            return new ColorVector(a._vector3 - b._vector3);
         }
 
         public static ColorVector operator *(ColorVector a, ColorVector b)
         {
-            return new ColorVector(a.R * b.R, a.G * b.G, a.B * b.B);
+            return new ColorVector(a._vector3 * b._vector3);
         }
 
         public static ColorVector operator *(ColorVector a, float scalar)
         {
-            return new ColorVector(a.R * scalar, a.G * scalar, a.B * scalar);
+            return new ColorVector(a._vector3 * scalar);
         }
 
         public static ColorVector operator *(float scalar, ColorVector a)
         {
-            return new ColorVector(a.R * scalar, a.G * scalar, a.B * scalar);
+            return new ColorVector(a._vector3 * scalar);
         }
 
         public static ColorVector operator /(ColorVector a, float scalar)
         {
-            return new ColorVector(a.R / scalar, a.G / scalar, a.B / scalar);
-        }
-
-        public ColorVector AddScaled(ColorVector b, float scale)
-        {
-            return new ColorVector(R + (scale * b.R), G + (scale * b.G), B + (scale * b.B));
+            return new ColorVector(a._vector3 / scalar);
         }
 
         public ColorVector ApplyGamma2()
         {
-            return new ColorVector(MathF.Sqrt(R), MathF.Sqrt(G), MathF.Sqrt(B));
+            return new ColorVector(Vector3.SquareRoot(_vector3));
+            // return new ColorVector(MathF.Sqrt(R), MathF.Sqrt(G), MathF.Sqrt(B));
         }
     }
 }

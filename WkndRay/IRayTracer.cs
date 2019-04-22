@@ -8,6 +8,6 @@ namespace WkndRay
 {
     public interface IRayTracer
     {
-        ColorVector GetPixelColor(int x, int y);
+        PixelData GetPixelColor(int x, int y);
     }
 }

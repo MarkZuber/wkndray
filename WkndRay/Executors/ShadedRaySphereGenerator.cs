@@ -51,10 +51,10 @@ namespace WkndRay.Executors
         private float HitSphere(Vector3 center, float radius, Ray ray)
         {
             var oc = ray.Origin - center;
-            float a = ray.Direction.Dot(ray.Direction);
-            float b = 2.0f * oc.Dot(ray.Direction);
-            float c = oc.Dot(oc) - (radius * radius);
-            float discriminant = (b * b) - (4 * a * c);
+            float a = Vector3.Dot(ray.Direction, ray.Direction);
+            float b = 2.0f * Vector3.Dot(oc, ray.Direction);
+            float c = Vector3.Dot(oc, oc) - (radius * radius);
+            float discriminant = (b * b) - (4.0f * a * c);
             if (discriminant < 0.0f)
             {
                 return -1.0f;

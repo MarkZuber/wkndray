@@ -66,8 +66,8 @@ namespace WkndRay.Hitables
             }
 
             float area = (X1 - X0) * (Z1 - Z0);
-            float distanceSquared = hr.T * hr.T * v.MagnitudeSquared();
-            float cosine = MathF.Abs(v.Dot(hr.Normal) / v.Magnitude());
+            float distanceSquared = hr.T * hr.T * v.LengthSquared();
+            float cosine = MathF.Abs(Vector3.Dot(v, hr.Normal) / v.Length());
             return distanceSquared / (cosine * area);
         }
 

@@ -10,6 +10,10 @@
         <StackPanel Orientation="Horizontal">
             <Button x:Name="RenderButton" Content="Render" Click="RenderButton_OnClick"></Button>
             <ProgressBar x:Name="RenderProgress" MinWidth="200" Minimum="0.0" Maximum="100.0"></ProgressBar>
+            <Label>Render Time:</Label>
+            <TextBox x:Name="RenderTime"></TextBox>
+            <Label>Average GetColor PerPixel(ms):</Label>
+            <TextBox x:Name="AvgGetColorMs"></TextBox>
         </StackPanel>
         <Image x:Name="RenderImage" Width="500" Height="500"></Image>
     </StackPanel>

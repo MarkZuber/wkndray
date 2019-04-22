@@ -20,7 +20,7 @@ namespace WkndRay.Pdfs
 
         public float GetValue(Vector3 direction)
         {
-            float cosine = direction.ToUnitVector().Dot(Uvw.W);
+            float cosine = Vector3.Dot(direction.ToUnitVector(), Uvw.W);
             return cosine > 0.0f ? cosine / MathF.PI : 1.0f;  // todo: book has this as 1.0f, but that causes NaN due to div by zero
         }
 

@@ -26,17 +26,17 @@ namespace WkndRay.Materials
             float niOverNt;
             Vector3 outwardNormal;
             float cosine;
-            if (rayIn.Direction.Dot(hitRecord.Normal) > 0.0f)
+            if (Vector3.Dot(rayIn.Direction, hitRecord.Normal) > 0.0f)
             {
                 outwardNormal = -hitRecord.Normal;
                 niOverNt = RefractionIndex;
-                cosine = RefractionIndex * rayIn.Direction.Dot(hitRecord.Normal) / rayIn.Direction.Magnitude();
+                cosine = RefractionIndex * Vector3.Dot(rayIn.Direction, hitRecord.Normal) / rayIn.Direction.Length();
             }
             else
             {
                 outwardNormal = hitRecord.Normal;
                 niOverNt = 1.0f / RefractionIndex;
-                cosine = -rayIn.Direction.Dot(hitRecord.Normal) / rayIn.Direction.Magnitude();
+                cosine = -Vector3.Dot(rayIn.Direction, hitRecord.Normal) / rayIn.Direction.Length();
             }
 
             float reflectProbability;

@@ -17,12 +17,24 @@ namespace WkndRay
     {
         public event EventHandler<RenderProgressEventArgs> Progress;
 
-        public void Render(IPixelBuffer pixelArray, IScene scene, RenderConfig renderConfig)
+        public RendererData Render(IPixelBuffer pixelArray, IScene scene, RenderConfig renderConfig)
         {
-            Render(pixelArray, scene.GetCamera(pixelArray.Width, pixelArray.Height), scene.GetWorld(), scene.GetLightHitable(), renderConfig, scene.GetBackgroundFunc());
+            return Render(
+                pixelArray,
+                scene.GetCamera(pixelArray.Width, pixelArray.Height),
+                scene.GetWorld(),
+                scene.GetLightHitable(),
+                renderConfig,
+                scene.GetBackgroundFunc());
         }
 
-        public void Render(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+        public RendererData Render(
+            IPixelBuffer pixelArray,
+            Camera camera,
+            IHitable world,
+            IHitable lightHitable,
+            RenderConfig renderConfig,
+            Func<Ray, ColorVector> backgroundFunc)
         {
             Progress?.Invoke(this, new RenderProgressEventArgs(0.0f));
 
@@ -38,11 +50,19 @@ namespace WkndRay
                   backgroundFunc);
             }
 
-            RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
+            return RenderMultiThreaded(pixelArray, camera, world, lightHitable, renderConfig, backgroundFunc);
         }
 
-        private void RenderMultiThreaded(IPixelBuffer pixelArray, Camera camera, IHitable world, IHitable lightHitable, RenderConfig renderConfig, Func<Ray, ColorVector> backgroundFunc)
+        private RendererData RenderMultiThreaded(
+            IPixelBuffer pixelArray,
+            Camera camera,
+            IHitable world,
+            IHitable lightHitable,
+            RenderConfig renderConfig,
+            Func<Ray, ColorVector> backgroundFunc)
         {
+            var rendererData = new RendererData(pixelArray.Width, pixelArray.Height);
+
             var rayTracer = new RayTracer(camera, world, lightHitable, renderConfig, pixelArray.Width, pixelArray.Height, backgroundFunc);
             ThreadPool.SetMinThreads(renderConfig.NumThreads * 3, renderConfig.NumThreads * 3);
 
@@ -68,7 +88,7 @@ namespace WkndRay
                       Task.Run(() => RenderFunc(rayTracer, inputQueue, resultQueue, queueDataAvailableEvent)));
                 }
 
-                tasks.Add(Task.Run(() => ResultFunc(pixelArray, resultQueue, queueDataAvailableEvent)));
+                tasks.Add(Task.Run(() => ResultFunc(pixelArray, rendererData, resultQueue, queueDataAvailableEvent)));
 
                 Task.WaitAll(tasks.ToArray());
             }
@@ -76,6 +96,8 @@ namespace WkndRay
             {
                 Console.WriteLine(ex);
             }
+
+            return rendererData;
         }
 
         private static void RenderFunc(
@@ -88,8 +110,8 @@ namespace WkndRay
             {
                 while (inputQueue.TryDequeue(out RenderInput input))
                 {
-                    var color = rayTracer.GetPixelColor(input.X, input.Y);
-                    resultQueue.Enqueue(new RenderResult(input.X, input.Y, color));
+                    var pixelData = rayTracer.GetPixelColor(input.X, input.Y);
+                    resultQueue.Enqueue(new RenderResult(input.X, input.Y, pixelData));
                     queueDataAvailableEvent.Set();
                 }
             }
@@ -101,6 +123,7 @@ namespace WkndRay
 
         private void ResultFunc(
           IPixelBuffer pixelBuffer,
+          RendererData rendererData,
           ConcurrentQueue<RenderResult> resultQueue,
           AutoResetEvent queueDataAvailableEvent)
         {
@@ -125,8 +148,10 @@ namespace WkndRay
 
                     while (resultQueue.TryDequeue(out var renderResult))
                     {
+                        rendererData.SetPixelData(renderResult.PixelData);
+
                         // assert pixelArray.Width == renderLineResult.Count
-                        pixelBuffer.SetPixelColor(renderResult.X, renderResult.Y, renderResult.Color);
+                        pixelBuffer.SetPixelColor(renderResult.X, renderResult.Y, renderResult.PixelData.Color);
                         incompletePixels.Remove(Tuple.Create(renderResult.X, renderResult.Y));
 
                         var completePixels = Convert.ToSingle(totalPixels - incompletePixels.Count);
@@ -161,16 +186,16 @@ namespace WkndRay
 
         private class RenderResult
         {
-            public RenderResult(int x, int y, ColorVector color)
+            public RenderResult(int x, int y, PixelData pixelData)
             {
                 X = x;
                 Y = y;
-                Color = color;
+                PixelData = pixelData;
             }
 
             public int X { get; }
             public int Y { get; }
-            public ColorVector Color { get; }
+            public PixelData PixelData { get; }
         }
     }
 }

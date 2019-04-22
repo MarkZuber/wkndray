@@ -26,7 +26,7 @@ namespace WkndRay.Executors
             float aperture = 0.01f;
             var lookFrom = new Vector3(24.0f, 2.0f, 6.0f);
             var lookAt = Vector3.UnitY;
-            float distanceToFocus = (lookFrom - lookAt).Magnitude();
+            float distanceToFocus = (lookFrom - lookAt).Length();
             var camera = new Camera(
               lookFrom,
               lookAt,
@@ -80,7 +80,7 @@ namespace WkndRay.Executors
                       Convert.ToSingle(a) * RandomService.Nextfloat(),
                       0.2f,
                       Convert.ToSingle(b) + (0.9f * RandomService.Nextfloat()));
-                    if ((center - new Vector3(4.0f, 0.2f, 0.0f)).Magnitude() > 0.9)
+                    if ((center - new Vector3(4.0f, 0.2f, 0.0f)).Length() > 0.9)
                     {
                         if (chooseMat < 0.8)
                         {

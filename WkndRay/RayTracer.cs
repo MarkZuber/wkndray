@@ -40,38 +40,57 @@ namespace WkndRay
         }
 
         /// <inheritdoc />
-        public ColorVector GetPixelColor(int x, int y)
+        public PixelData GetPixelColor(int x, int y)
         {
             Debug.WriteLine($"Pixel: ({x}, {y})");
-            ColorVector color = ColorVector.Zero;
-            float xfloat = Convert.ToSingle(x);
-            float yfloat = Convert.ToSingle(y);
-            if (_renderConfig.NumSamples > 1)
-            {
-                for (int sample = 0; sample < _renderConfig.NumSamples; sample++)
-                {
-                    float u = (xfloat + RandomService.Nextfloat()) / _imageWidth;
-                    float v = (yfloat + RandomService.Nextfloat()) / _imageHeight;
-                    var r = _camera.GetRay(u, v);
 
-                    color += GetRayColor(r, _world, 0).DeNan();
+            var pixelData = new PixelData(x, y);
+
+            using (new BlockTimer(pixelData.SetPixelColorMilliseconds))
+            {
+                ColorVector color = ColorVector.Zero;
+                float xfloat = Convert.ToSingle(x);
+                float yfloat = Convert.ToSingle(y);
+
+                long totalSampleMilliseconds = 0;
+
+                if (_renderConfig.NumSamples > 1)
+                {
+                    for (int sample = 0; sample < _renderConfig.NumSamples; sample++)
+                    {
+                        var sw = Stopwatch.StartNew();
+                        float u = (xfloat + RandomService.Nextfloat()) / _imageWidth;
+                        float v = (yfloat + RandomService.Nextfloat()) / _imageHeight;
+                        var r = _camera.GetRay(u, v);
+
+                        color += GetRayColor(r, _world, pixelData, 0).DeNan();
+                        sw.Stop();
+                        totalSampleMilliseconds += sw.ElapsedMilliseconds;
+                    }
+
+                    color /= Convert.ToSingle(_renderConfig.NumSamples);
+                }
+                else
+                {
+                    var sw = Stopwatch.StartNew();
+                    color = GetRayColor(_camera.GetRay(xfloat / _imageWidth, yfloat / _imageHeight), _world, pixelData, 0).DeNan();
+                    totalSampleMilliseconds += sw.ElapsedMilliseconds;
                 }
 
-                color /= Convert.ToSingle(_renderConfig.NumSamples);
-            }
-            else
-            {
-                color = GetRayColor(_camera.GetRay(xfloat / _imageWidth, yfloat / _imageHeight), _world, 0).DeNan();
+                pixelData.AverageSampleMilliseconds = totalSampleMilliseconds / _renderConfig.NumSamples;
+
+                color = color.DeNan().ApplyGamma2();
+                Debug.WriteLine($"Final Color at ({x}, {y}) -> ({color.R}, {color.G}, {color.B})");
+                pixelData.Color = color;
             }
 
-            color = color.DeNan().ApplyGamma2();
-            Debug.WriteLine($"Final Color at ({x}, {y}) -> ({color.R}, {color.G}, {color.B})");
-            return color;
+            return pixelData;
         }
 
-        private ColorVector GetRayColor(Ray ray, IHitable world, int depth)
+        private ColorVector GetRayColor(Ray ray, IHitable world, PixelData pixelData, int depth)
         {
             Debug.WriteLine($"Depth: {depth}");
+            pixelData.SetDepth(depth);
             try
             {
                 // the 0.001 corrects for the "shadow acne"
@@ -92,7 +111,7 @@ namespace WkndRay
                         {
                             if (scatterResult.IsSpecular)
                             {
-                                return scatterResult.Attenuation * GetRayColor(scatterResult.SpecularRay, world, depth + 1);
+                                return scatterResult.Attenuation * GetRayColor(scatterResult.SpecularRay, world, pixelData, depth + 1);
                             }
                             else
                             {
@@ -112,7 +131,7 @@ namespace WkndRay
                                     //pdfValue = 1.0f;
                                 }
 
-                                var depthRayColor = GetRayColor(scattered, world, depth + 1);
+                                var depthRayColor = GetRayColor(scattered, world, pixelData, depth + 1);
                                 ColorVector recurseColor = ((scatterResult.Attenuation * scatteringPdf * depthRayColor) / pdfValue);
                                 Debug.WriteLine($"Attenuation ({scatterResult.Attenuation}) ScatteringPdf ({scatteringPdf}) DepthRayColor({depthRayColor}) PdfValue({pdfValue})");
                                 Debug.WriteLine($"emitted: {emitted}");
