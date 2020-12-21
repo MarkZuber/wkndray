@@ -80,7 +80,7 @@ namespace WkndRay
                 pixelData.AverageSampleMilliseconds = totalSampleMilliseconds / _renderConfig.NumSamples;
 
                 color = color.DeNan().ApplyGamma2();
-                Debug.WriteLine($"Final Color at ({x}, {y}) -> ({color.R}, {color.G}, {color.B})");
+                // Debug.WriteLine($"Final Color at ({x}, {y}) -> ({color.R}, {color.G}, {color.B})");
                 pixelData.Color = color;
             }
 
@@ -124,7 +124,7 @@ namespace WkndRay
                                 if (scatteringPdf < 0.01f)
                                 {
                                     scatteringPdf = 0.01f;
-                                //    //pdfValue = 1.0f;
+                                    //    //pdfValue = 1.0f;
                                 }
 
                                 {

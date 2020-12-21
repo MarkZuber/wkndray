@@ -17,13 +17,13 @@ namespace RayCon
 {
     public static class Program
     {
-        private const string OutputDirectory = @"c:\repos\wkndray\images";
+        private const string OutputDirectory = @"/Users/zube/repos/wkndray/images";
         private const int Width = 1000;
         private const int Height = 1000;
 
         public static void Main(string[] args)
         {
-            int numThreads = Environment.ProcessorCount;
+            int numThreads = Environment.ProcessorCount / 2;
             const int RayTraceDepth = 50;
             const int NumSamples = 1000;
             var renderConfig = new RenderConfig(numThreads, RayTraceDepth, NumSamples);

@@ -70,7 +70,7 @@ namespace WkndRay
             var inputQueue = new ConcurrentQueue<RenderInput>();
             var resultQueue = new ConcurrentQueue<RenderResult>();
 
-            for (var y = pixelArray.Height-1; y >= 0; y--)
+            for (var y = pixelArray.Height - 1; y >= 0; y--)
             {
                 for (var x = 0; x < pixelArray.Width; x++)
                 {
@@ -84,6 +84,7 @@ namespace WkndRay
             {
                 for (var thid = 0; thid < renderConfig.NumThreads; thid++)
                 {
+                    Console.WriteLine($"Creating task for thread id: {thid}");
                     tasks.Add(
                       Task.Run(() => RenderFunc(rayTracer, inputQueue, resultQueue, queueDataAvailableEvent)));
                 }
